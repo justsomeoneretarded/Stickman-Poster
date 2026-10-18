@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "title": "What If Gravity Took a Ten-Second Break?",
+  "description": "An original fictional thought experiment about an ordinary morning becoming weightless. This is an animation development benchmark, not a scientific prediction of gravity switching off.",
+  "keywords": ["what if", "gravity", "animated story", "thought experiment"],
+  "scenes": [
+    {"id":"opening","duration":5,"location":"room","action":"think","heading":"AN ORDINARY MORNING","label":"One tiny interruption.","narration":"Your coffee leaves the table. The cup hangs in midair.","levitate":true,"camera_zoom":1.04},
+    {"id":"reveal","duration":5,"location":"room","action":"float","heading":"GRAVITY TAKES A BREAK","label":"Ten seconds. No warning.","narration":"Imagine gravity taking a ten-second break. What would you reach for first?","levitate":true,"camera_zoom":1.06},
+    {"id":"street","duration":5,"location":"street","action":"worried","heading":"THE STREET FEELS DIFFERENT","label":"Suddenly, every loose object matters.","narration":"Outside, loose objects drift. A normal street becomes a room with no floor.","secondary":true,"levitate":true},
+    {"id":"explain","duration":5,"location":"diagram","action":"point","heading":"A FICTIONAL RULE","label":"A pause in gravity. Not in motion.","narration":"For this story, motion continues. Only the familiar pull has disappeared.","levitate":true},
+    {"id":"choice","duration":5,"location":"stage","action":"point","heading":"WHAT DO YOU HOLD ON TO?","label":"Your coffee? Or your friend?","narration":"Your coffee slips away. Your friend looks scared. Suddenly, the choice feels easy.","secondary":true,"levitate":true,"camera_zoom":1.04},
+    {"id":"return","duration":5,"location":"street","action":"celebrate","heading":"THE MOMENT IT RETURNS","label":"The ordinary becomes extraordinary.","narration":"Then the countdown ends. You have never been happier to feel the ground.","secondary":true},
+    {"id":"ending","duration":5,"location":"room","action":"idle","heading":"WHAT WOULD YOU GRAB?","label":"Think fast. You have ten seconds.","narration":"What would you grab first? And who would you make sure was beside you?","camera_zoom":1.03}
+  ]
+}

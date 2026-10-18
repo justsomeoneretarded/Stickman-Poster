@@ -1,0 +1,5 @@
+# Optional heavy dependencies, separate from rendering CI.
+# Source pinned to the API inspected for the adapter. Its transitive dependency
+# graph is not fully locked yet; perform an installation/inference qualification.
+chatterbox-tts @ git+https://github.com/resemble-ai/chatterbox.git@5de7a54aa4e5e2baadb0182dde554908b48b85c2
+soundfile>=0.12,<1

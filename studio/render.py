@@ -1,0 +1,275 @@
+"""Small deterministic Pillow backend for CI, not a replacement Motion Canvas fork.
+
+All illustrations are procedural original artwork. Frame times are absolute,
+so rerendering a scene does not depend on having rendered earlier frames.
+"""
+import math
+import os
+from functools import lru_cache
+from pathlib import Path
+
+import numpy as np
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from .project import caption_chunks
+
+W, H = 1920, 1080
+TEAL, GOLD, WHITE = "#56e2d0", "#ffc587", "#f5f0e8"
+
+
+@lru_cache(maxsize=100)
+def font(size, bold=False):
+    override = os.environ.get("STUDIO_FONT_BOLD" if bold else "STUDIO_FONT")
+    names = [override] if override else []
+    names += (["C:/Windows/Fonts/arialbd.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]
+              if bold else ["C:/Windows/Fonts/arial.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"])
+    for name in names:
+        if name and Path(name).is_file():
+            return ImageFont.truetype(name, size)
+    return ImageFont.load_default(size=size)
+
+
+def circle(draw, x, y, r, fill, outline=None, width=1):
+    draw.ellipse((x-r, y-r, x+r, y+r), fill=fill, outline=outline, width=width)
+
+
+def line(draw, points, fill, width):
+    draw.line(points, fill=fill, width=width, joint="curve")
+    r = width / 2
+    for x, y in [points[0], points[-1]]:
+        circle(draw, x, y, r, fill)
+
+
+def fit_text(draw, text, x, y, size, maxwidth, fill=WHITE, bold=False, anchor="mm"):
+    while size > 18 and draw.textlength(text, font=font(size, bold)) > maxwidth:
+        size -= 1
+    draw.text((x, y), text, font=font(size, bold), fill=fill, anchor=anchor)
+
+
+def glow(image, xy, radius, color, opacity=100):
+    """Radial glow at low resolution; normally cached with static backgrounds."""
+    small = Image.new("RGBA", (W//4, H//4))
+    d = ImageDraw.Draw(small)
+    rgb = tuple(int(color[i:i+2], 16) for i in (1, 3, 5))
+    for r in range(int(radius/4), 0, -2):
+        alpha = int(opacity * (1-r/(radius/4))**2)
+        x, y = xy[0]/4, xy[1]/4
+        circle(d, x, y, r, (*rgb, alpha))
+    image.alpha_composite(small.resize((W, H), Image.Resampling.BILINEAR))
+
+
+@lru_cache(maxsize=4)
+def background(location):
+    y = np.linspace(0, 1, H)[:, None, None]
+    top = np.array([16, 24, 45])[None, None, :]
+    bottom = np.array([50, 38, 64])[None, None, :]
+    pixels = np.broadcast_to(top*(1-y)+bottom*y, (H, W, 3)).astype("uint8").copy()
+    im = Image.fromarray(pixels).convert("RGBA")
+    d = ImageDraw.Draw(im)
+    if location == "room":
+        d.rectangle((140, 150, 1190, 700), fill="#191f38", outline="#4b4261", width=12)
+        # Sunset window, distant city silhouettes.
+        sky = Image.new("RGBA", (1010, 510), "#604b74")
+        sd = ImageDraw.Draw(sky)
+        for i in range(10):
+            x, topy = i*112-20, 220+(i*71)%170
+            sd.rectangle((x, topy, x+85, 510), fill="#302a49")
+            for row in range(5):
+                for col in range(3):
+                    if (row+col+i)%3:
+                        sd.rectangle((x+12+col*22, topy+18+row*43, x+19+col*22, topy+29+row*43), fill="#e8bc94")
+        im.alpha_composite(sky, (160, 170))
+        d = ImageDraw.Draw(im)
+        for x in (485, 830): d.rectangle((x, 156, x+12, 699), fill="#25283f")
+        d.rectangle((145, 430, 1188, 440), fill="#25283f")
+        d.rectangle((1300, 300, 1730, 320), fill="#171c31")
+        for i in range(7):
+            d.rounded_rectangle((1320+i*49, 225+(i%3)*14, 1352+i*49, 300), radius=3,
+                                fill=["#5d6583", "#927568", "#456a78"][i%3])
+        d.rectangle((0, 830, W, H), fill="#151c30")
+        d.line((0, 830, W, 830), fill="#6c536d", width=3)
+        d.polygon([(130, 700), (1190, 700), (1500, 830), (0, 830)], fill="#3a344c")
+        glow(im, (700, 400), 780, "#d29b8d", 65)
+    elif location == "street":
+        for i in range(9):
+            x, roof = i*250-50, 180+(i*79)%190
+            d.rectangle((x, roof, x+220, 850), fill=["#292d49", "#34304b", "#222a40"][i%3])
+            for row in range(6):
+                for col in range(3):
+                    if (row*7+col+i)%4:
+                        xx, yy = x+30+col*60, roof+40+row*88
+                        d.rectangle((xx, yy, xx+24, yy+39), fill="#b59a80" if (row+col+i)%3 else "#455a76")
+        d.rectangle((0, 830, W, H), fill="#141c2d")
+        d.rectangle((0, 830, W, 838), fill="#747083")
+        for x in (220, 1650):
+            line(d, [(x, 835), (x, 330), (x+80, 330)], "#131a29", 12)
+            d.ellipse((x+50, 325, x+120, 350), fill=GOLD)
+            glow(im, (x+85, 370), 280, GOLD, 160)
+    elif location == "stage":
+        for x in range(0, W, 90):
+            d.rectangle((x, 100, x+45, 830), fill="#26243f")
+        d.ellipse((230, 660, 1700, 965), fill="#3a3659", outline="#5f607e", width=4)
+        for x in (430, 960, 1490):
+            beam = Image.new("RGBA", (W, H)); bd = ImageDraw.Draw(beam)
+            bd.polygon([(x-16, 100), (x+16, 100), (x+210, 870), (x-210, 870)], fill=(210, 218, 234, 17))
+            im.alpha_composite(beam)
+        glow(im, (960, 500), 650, "#8479b9", 70)
+    else:
+        d.rounded_rectangle((170, 230, 1750, 825), radius=28, fill="#18263b", outline="#36536b", width=3)
+        for x in range(210, 1740, 80): d.line((x, 250, x, 800), fill="#203248", width=1)
+        for yy in range(260, 810, 80): d.line((190, yy, 1730, yy), fill="#203248", width=1)
+        glow(im, (1200, 500), 600, "#319e9f", 55)
+    return im
+
+
+def character(t, action="idle", color="#ea996b", secondary=False):
+    im = Image.new("RGBA", (420, 650))
+    d = ImageDraw.Draw(im)
+    root = (205, 405)
+    sway = math.sin(t*2.2)*2
+    neck = (205+sway, 265)
+    shoulder_l, shoulder_r = (169+sway, 285), (241+sway, 285)
+    hip_l, hip_r = (185, 405), (225, 405)
+    if action == "walk":
+        step = math.sin(t*7)
+        legs = [[hip_l, (175+step*28, 485), (180+step*53, 573)],
+                [hip_r, (235-step*28, 485), (235-step*53, 573)]]
+    elif action == "float":
+        legs = [[hip_l, (150, 465), (170+math.sin(t*4)*22, 530)],
+                [hip_r, (260, 470), (285+math.cos(t*4)*20, 530)]]
+    else:
+        legs = [[hip_l, (174, 493), (160, 575)], [hip_r, (234, 493), (247, 575)]]
+    for leg in legs:
+        line(d, [(x-3,y) for x,y in leg], GOLD, 13)
+        line(d, leg, "#151b2c", 10)
+        line(d, [leg[-1], (leg[-1][0]+22,leg[-1][1])], "#111827", 14)
+    d.rounded_rectangle((162+sway, 270, 248+sway, 420), radius=17, fill=color)
+    d.polygon([(163+sway, 283), (177+sway, 277), (177+sway, 408), (163+sway, 411)], fill="#fbcf9c")
+    d.line((192+sway, 282, 192+sway, 321), fill=WHITE, width=3)
+    d.line((211+sway, 282, 211+sway, 321), fill=WHITE, width=3)
+    d.line((188+sway, 391, 230+sway, 391), fill="#b87964", width=3)
+    arms = [[shoulder_l, (142, 355), (148, 400)], [shoulder_r, (269, 352), (274, 400)]]
+    if action == "point": arms[1] = [shoulder_r, (295, 300), (358, 273+math.sin(t*2)*3)]
+    elif action == "think": arms[1] = [shoulder_r, (279, 330), (244, 245)]
+    elif action in {"float", "celebrate"}:
+        arms = [[shoulder_l, (120, 245), (110, 185+math.sin(t*4)*12)],
+                [shoulder_r, (291, 239), (314, 181-math.sin(t*4)*12)]]
+    elif action == "worried": arms[1] = [shoulder_r, (290, 245), (259, 180)]
+    elif action == "walk":
+        k = math.sin(t*7)*24
+        arms[0] = [shoulder_l, (140-k, 340), (145-k, 392)]
+        arms[1] = [shoulder_r, (274+k, 340), (280+k, 392)]
+    for arm in arms:
+        line(d, arm[:2], color, 19)
+        line(d, arm[1:], GOLD, 11)
+        circle(d, *arm[-1], 11, "#161b2b")
+    headx, heady = neck[0], 207+sway
+    circle(d, headx-3, heady-2, 61, GOLD)
+    circle(d, headx, heady, 59, "#121a2b")
+    if secondary:
+        d.arc((headx-64, heady-62, headx+64, heady+45), 180, 350, fill="#9bc8ba", width=13)
+    blink = int(t*30)%129 in (0, 1, 2)
+    for x in (headx-20, headx+20):
+        if blink: d.line((x-6,heady-2,x+6,heady-2), fill=WHITE, width=4)
+        else: circle(d,x,heady,5,WHITE)
+    if action == "worried":
+        d.arc((headx-16,heady+20,headx+16,heady+48),180,360,fill=WHITE,width=4)
+        d.line((headx-29,heady-17,headx-13,heady-24),fill=WHITE,width=4)
+        d.line((headx+13,heady-24,headx+29,heady-17),fill=WHITE,width=4)
+    elif action in {"float", "celebrate", "idle"}:
+        d.arc((headx-18,heady+4,headx+18,heady+33),0,180,fill=WHITE,width=4)
+    else:
+        d.line((headx-9,heady+25,headx+9,heady+25),fill=WHITE,width=4)
+    return im
+
+
+def put_character(image, x, floor, scale, t, action, secondary=False, levitate=False):
+    body = character(t, action, "#79baa9" if secondary else "#ea996b", secondary)
+    w, h = round(body.width*scale), round(body.height*scale)
+    body = body.resize((w,h),Image.Resampling.LANCZOS)
+    lift = (95+math.sin(t*2)*18) if levitate else 0
+    px, py = round(x-205*scale), round(floor-575*scale-lift)
+    d = ImageDraw.Draw(image)
+    d.ellipse((x-60*scale,floor-5,x+65*scale,floor+16),fill=(5,9,18,180))
+    image.alpha_composite(body,(px,py))
+
+
+def prop(image, x, y, angle=0):
+    cup = Image.new("RGBA",(180,150)); d=ImageDraw.Draw(cup)
+    d.arc((105,38,167,108),260,100,fill=GOLD,width=12)
+    d.rounded_rectangle((35,25,121,112),radius=12,fill="#dfb895",outline="#ffe0b8",width=3)
+    d.ellipse((35,18,121,39),fill="#f5d9bd")
+    d.ellipse((44,23,112,35),fill="#614941")
+    d.line((45,67,110,67),fill="#6faeab",width=9)
+    cup=cup.rotate(angle,Image.Resampling.BICUBIC,expand=True)
+    aura=Image.new("RGBA",cup.size);ad=ImageDraw.Draw(aura)
+    ad.ellipse((0,0,cup.width,cup.height),fill=(86,226,208,55))
+    image.alpha_composite(aura.filter(ImageFilter.GaussianBlur(24)),(round(x-cup.width/2),round(y-cup.height/2)))
+    image.alpha_composite(cup,(round(x-cup.width/2),round(y-cup.height/2)))
+
+
+def frame(scene, local_t, width, height, preview=True):
+    im=background(scene["location"]).copy()
+    t=local_t
+    d=ImageDraw.Draw(im)
+    if scene["location"] == "room":
+        d.rounded_rectangle((1110,650,1620,677),radius=8,fill="#b29288")
+        d.rectangle((1140,676,1154,845),fill="#1a2132")
+        d.rectangle((1580,676,1594,845),fill="#1a2132")
+    if scene["location"] == "diagram":
+        put_character(im,430,815,.79,t,"point")
+        d=ImageDraw.Draw(im)
+        d.ellipse((920,310,1430,790),outline="#3c6974",width=3)
+        for i in range(8):
+            a=t*.25+i*math.tau/8
+            circle(d,1175+255*math.cos(a),550+240*math.sin(a),5,TEAL)
+        remaining=max(0,10-int(t*2))
+        fit_text(d,str(remaining).zfill(2),1170,505,160,400,TEAL,True)
+        fit_text(d,"SECONDS",1170,635,26,400,WHITE,True)
+    else:
+        x=690 if scene["location"]!="stage" else 730
+        if scene["action"]=="walk": x+=t*24
+        put_character(im,x,850,.93,t,scene["action"],levitate=scene["action"]=="float")
+        if scene.get("secondary"):
+            put_character(im,1250,850,.84,t+.7,"worried" if scene.get("levitate") else "celebrate",True,
+                          levitate=scene.get("levitate",False))
+        if scene.get("levitate"):
+            px,py=1390+math.sin(t*.9)*42,520+math.sin(t*1.7)*23
+            prop(im,px,py,math.sin(t)*12)
+            d=ImageDraw.Draw(im)
+            for i in range(18):
+                a=t*.45+i*2.39996;r=92+(i*29)%90
+                circle(d,px+math.cos(a)*r,py+math.sin(a)*r*.65,2+i%3,(112,236,220,130))
+    # Subtle deterministic camera push; HUD and captions remain screen-space.
+    zoom=1+(scene.get("camera_zoom",1)-1)*min(1,t/max(scene["duration"],.01))
+    if zoom>1:
+        cw,ch=W/zoom,H/zoom
+        im=im.crop(((W-cw)/2,(H-ch)/2,(W+cw)/2,(H+ch)/2)).resize((W,H),Image.Resampling.LANCZOS)
+    d=ImageDraw.Draw(im)
+    d.rectangle((0,0,W,61),fill="#080e1b")
+    d.rectangle((0,1018,W,H),fill="#080e1b")
+    d.rounded_rectangle((100,100,330,140),radius=20,fill="#20384a")
+    d.text((125,109),"A WHAT-IF STORY",font=font(17,True),fill=TEAL)
+    fit_text(d,scene.get("heading",""),100,192,42,1660,bold=True,anchor="lm")
+    fit_text(d,scene.get("label",""),100,245,25,1660,fill="#c9bfcd",anchor="lm")
+    # Estimated phrase captions, deliberately not claimed as forced alignment.
+    words=scene.get("narration","").split()
+    chunks=caption_chunks(scene.get("narration",""))
+    position=min(len(words)-1,int(t/max(scene["duration"],.01)*len(words)))
+    if chunks:
+        cursor=0
+        chosen=chunks[-1]
+        for chunk in chunks:
+            cursor+=len(chunk)
+            if position<cursor:
+                chosen=chunk
+                break
+        text=" ".join(chosen)
+        tw=d.textlength(text,font=font(31))
+        d.rounded_rectangle((W/2-tw/2-28,925,W/2+tw/2+28,990),radius=15,fill="#101a2c")
+        fit_text(d,text,W/2,957,31,1600)
+    if preview:
+        d.text((W-100,30),"DEVELOPMENT PREVIEW · NO NARRATION",font=font(19),fill="#b6c4d4",anchor="rm")
+    fade=min(1,t/.3,(scene["duration"]-t)/.3)
+    if fade<1:
+        im=Image.blend(Image.new("RGBA",im.size,"#080e1b"),im,max(0,fade))
+    return im.convert("RGB").resize((width,height),Image.Resampling.LANCZOS)

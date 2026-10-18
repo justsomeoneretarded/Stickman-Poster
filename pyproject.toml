@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stickman-studio-prototype"
+version = "0.1.0"
+description = "Deterministic CPU animation development benchmark with private voice profiles"
+requires-python = ">=3.11,<3.14"
+dependencies = ["Pillow>=11,<13", "numpy>=1.26,<3"]
+
+[project.scripts]
+stickman-studio = "studio.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["studio*"]

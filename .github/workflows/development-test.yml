@@ -1,0 +1,48 @@
+name: Generator development checks
+
+on:
+  push:
+    paths: ['studio/**', 'tests/**', 'examples/**', 'pyproject.toml', '.github/workflows/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: development-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  development-benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install renderer prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          python -m pip install -r requirements-render.lock
+          python -m pip install --no-deps -e .
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Fixed development fixture, not channel production
+        run: |
+          python -m studio.cli render examples/gravity.json --out output/ci --width 640 --fps 12 --max-seconds 10 --silent-preview
+          ffmpeg -v error -i output/ci/final.mp4 -f null -
+      - name: Upload only public synthetic development outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: silent-render-development-benchmark
+          retention-days: 3
+          path: |
+            output/ci/final.mp4
+            output/ci/contact-sheet.jpg
+            output/ci/report.json
+            output/ci/captions.srt
+            output/ci/posting.json
+          if-no-files-found: error

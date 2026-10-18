@@ -1,0 +1,3 @@
+# Versions used by the local development benchmark, Python 3.12.
+Pillow==12.3.0
+numpy==2.3.5
