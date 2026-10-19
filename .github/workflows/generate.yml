@@ -84,7 +84,7 @@ jobs:
           tar -xzf work/llama-cpu.tar.gz -C work/llama-cpu
       - name: Download public models
         run: PYTHONPATH=. .venv/bin/python ci/download_models.py
-      - name: Generate planned scenes and dialogue from title and description
+      - name: Generate scene plan and natural dialogue
         run: .venv/bin/python -m studio.actions_entry --stage write
       - name: Upload generated script for early review
         uses: actions/upload-artifact@v4

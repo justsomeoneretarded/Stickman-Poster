@@ -156,11 +156,11 @@ def write_planned(request, out, model_dir, started):
         for index,slot in enumerate(plan):
             if index<len(completed):continue
             remaining=round(minutes*160)-sum(len(b['text'].split()) for b in completed)
-            words=max(8,round(remaining/(len(plan)-index)))
+            words=min(55,max(8,round(remaining/(len(plan)-index))))
             history=[{'speaker':b['speaker'],'speech':b['text']} for b in completed[-4:]]
             prompt=(f'Write scene {index+1}/{len(plan)}. Assigned scene: {json.dumps(slot)}. '
                     f'Previous spoken dialogue: {json.dumps(history)}. '
-                    f'Write exactly {words} words of speech by {VOICE_NAMES[slot["speaker"]][1]}, '
+                    f'Write approximately {words} words of speech by {VOICE_NAMES[slot["speaker"]][1]}, '
                     'responding to the previous dialogue and progressing the story. '
                     'No character names at the start. End with a complete sentence.')
             error=''
@@ -171,8 +171,8 @@ def write_planned(request, out, model_dir, started):
                     content=json.loads(raw)
                     text=content['speech'].strip()
                     tokens=text.split()
-                    if abs(len(tokens)-words)>3:
-                        raise ValueError(f'Your line has {len(tokens)} words; write {words-3} to {words+3} words of natural dialogue.')
+                    if not 8<=len(tokens)<=65:
+                        raise ValueError('Write a complete spoken turn of 8 to 65 words. The requested word count is a guide, not an exact limit.')
                     if len(text)>480 or any(len(w)>30 for w in tokens):
                         raise ValueError('Use normal English with spaces between words, not joined phrases.')
                     beat={**slot,'text':text}
@@ -200,7 +200,9 @@ def write_planned(request, out, model_dir, started):
             'passes':['app scene plan','per-scene dialogue generation and validation'],
             'seconds':time.perf_counter()-started,'word_count':sum(len(b['text'].split()) for b in completed),
             'target_minutes':minutes,'selected_voices':voices,'required_locations':request['required_locations'],
-            'word_budget':'adaptive per-scene target; final line within three words of total target','timing_note':'Final duration follows measured speech',
+            'word_budget':'adaptive per-scene guidance; natural turns of 8 to 65 words',
+            'target_word_count':round(minutes*160),
+            'word_count_deviation':sum(len(b['text'].split()) for b in completed)-round(minutes*160),'timing_note':'Final duration follows measured speech',
             'factual_status':'generated fiction; no external fact verification'}
     (out/'writer-report.json').write_text(json.dumps(report,indent=2))
     return report

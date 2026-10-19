@@ -272,3 +272,14 @@ actual video duration must still be measured. Normal speech and punctuation were
 confirmed in the local model's first turn. All 33 tests pass, including setting
 coverage, chase/contact staging, and interrupted generation resume. Full hosted
 episode and voice/artistic qualification are still pending; no final video claim.
+
+## Per-line word limit failure
+
+Run 39287901346 failed on scene 3 because a natural 31-word turn exceeded the
+adaptive 23–29-word window. This was an overly strict validation rule. Per-scene
+word counts are now guidance; natural 8–65-word turns are accepted within the
+existing character limit. Remaining scene targets rebalance the overall budget,
+with targets bounded to avoid asking for an excessively long or negative turn.
+The report records the total word-count deviation; no exact-duration claim is
+made. The regression reproduces the 31-word scene, verifies no extra retry, and
+allows a slightly longer final sentence. All 33 tests pass.

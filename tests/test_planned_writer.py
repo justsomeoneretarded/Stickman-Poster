@@ -39,7 +39,9 @@ class PlannedWriterTests(unittest.TestCase):
             def complete(self,messages,schema,max_tokens):
                 FakeWriter.calls+=1
                 if FakeWriter.fail and FakeWriter.calls==3:raise RuntimeError('interrupted')
-                count=int(re.search(r'Write exactly (\d+) words',messages[-1]['content'])[1])
+                count=int(re.search(r'Write approximately (\d+) words',messages[-1]['content'])[1])
+                if FakeWriter.calls==4:count=31  # original scene-3 failure: accept and rebalance
+                if FakeWriter.calls==19:count+=5  # final turn may also finish naturally
                 return json.dumps({'speech':' '.join(['I']+['really']*(count-3)+['like','coffee.'])})
         with tempfile.TemporaryDirectory() as d,patch('studio.local_llm.LocalWriter',FakeWriter):
             out=Path(d)
@@ -52,4 +54,6 @@ class PlannedWriterTests(unittest.TestCase):
             self.assertEqual(len(project['scenes']),18)
             self.assertEqual({s['location'] for s in project['scenes']},set(request['required_locations']))
             self.assertEqual(FakeWriter.calls,19)  # 18 turns plus the interrupted call, no replay
-            self.assertEqual(json.loads((out/'writer-report.json').read_text())['word_count'],480)
+            self.assertEqual(json.loads((out/'writer-report.json').read_text())['word_count'],485)
+            self.assertEqual(len(json.loads((out/'story.json').read_text())['beats'][2]['text'].split()),31)
+            self.assertEqual(json.loads((out/'writer-report.json').read_text())['word_count_deviation'],5)
