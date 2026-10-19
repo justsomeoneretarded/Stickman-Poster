@@ -342,3 +342,13 @@ thumbnail were inspected. Fixed an observed wheel/face occlusion and a duplicate
 standing hero; tests protect both. Re-rendered and decoded both outputs after
 those fixes. Sanitized public outputs are under previews/comedy-two-format-qualification,
 clearly labeled miniature trials. Final local suite: 40 passing tests.
+
+Hosted verification: development run 39316154733 on bcb7e0a passed every step,
+including 40 tests, landscape/portrait style rendering and full FFmpeg decode.
+Published artifacts: expressive-style-study-both-formats (12217782537), and
+local-voiced-comedy-two-format-qualification (12217587949). The latter contains
+the locally generated/verified miniature voiced trials, not Actions-hosted
+speech synthesis. Production remains manual; this code push did not start an
+episode. Review links expire after 7 days; the voiced qualification files are
+also preserved in the public repository. Full-length production with the revised
+visual/comedy approach still requires a new manual run and artistic review.
