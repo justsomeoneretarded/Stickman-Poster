@@ -7,7 +7,7 @@ Download `voiced-episode-<run number>` from the completed run's Artifacts sectio
 No manual script is required. The local Qwen3-4B-Instruct-2507 Q4_K_M model
 writes a draft and a separate revision. llama.cpp constrains JSON output to the
 supported scene schema. The app validates speaker IDs and scene content, routes
-turns to the private character profiles, synthesizes narration, transcribes it with Whisper base.en to check spoken text, retries failed turns up to twice, measures its
+turns to the public character profiles, synthesizes narration, transcribes it with Whisper base.en to check spoken text, retries failed turns up to twice, measures its
 actual duration, renders scenes and captions, normalizes the final mix, decodes
 the video, and packages the result. A generation failure stops the job; it never
 substitutes a canned script, silent video, or stock narrator.
@@ -18,32 +18,16 @@ posting metadata, writer report, speech-verification report, rendering report, a
 It does not contain conditioning profiles or original recordings. On this public
 repository, treat artifacts and generated scripts as public review material.
 
-## One-time private voice setup
+## Public voice profiles — no secret setup
 
-The repository includes `ci/voice-profiles.tar.gz.enc` and its authentication
-signature. This contains only encrypted saved conditioning and profile metadata,
-not original recordings. The key is not in Git. A fresh runner cannot synthesize
-the three character voices until its Actions secret is configured.
+The user explicitly authorized publication of all three reusable voice profiles.
+They are in `voices/profiles/`, with routing in `voices/cast-profiles.json`.
+Actions reads them directly after checkout. **VOICE_PROFILE_KEY is no longer
+required.** The encrypted archive and decryption helper have been retired.
 
-The current cloud workspace has the matching key at `private/actions-key.txt`.
-From the project terminal, using a GitHub login authorized to manage repository
-Actions secrets, run:
-
-```sh
-gh secret set VOICE_PROFILE_KEY --repo justsomeoneretarded/Stickman-Poster < private/actions-key.txt
-```
-
-Alternatively, use GitHub **Settings → Secrets and variables → Actions → New
-repository secret**. Name it `VOICE_PROFILE_KEY` and use the matching private key
-file's contents. Do not paste the key into chat, issues, workflow inputs, source
-files, or a public artifact. This chat's GitHub integration returned HTTP 403 for
-the secrets public-key endpoint, so the secret could not be installed through
-that integration. No repository access setting was changed.
-
-The workflow authenticates the encrypted archive before decryption and extracts
-only seven allowlisted files. The key is supplied only to the restore step, and
-decrypted state is removed at the end. Model caching contains only public model
-files; it never includes private speaker data.
+The profiles contain speaker conditioning and can be reused by anyone with
+repository access. Original recordings remain outside the repository. Each
+conditioning file is checked against the SHA-256 in its metadata before synthesis.
 
 ## Characters
 
@@ -68,13 +52,13 @@ python -m studio.cli generate \
   --title 'What if your coffee could float?' \
   --description 'A fictional morning with three friends, a floating cup, and a comic payoff.' \
   --minutes 1 --voices female,male1,male2 \
-  --cast-profiles private/cast-profiles.json \
+  --cast-profiles voices/cast-profiles.json \
   --writer-model-dir models/script-qwen3 \
   --model-dir models/chatterbox-nano \
   --out private/episode --width 1280 --fps 24
 ```
 
-The private profile mapping resolves directories relative to its own file.
+The profile mapping resolves directories relative to its own file.
 The writer exits before voice inference, avoiding simultaneous model memory use.
 Add `--resume` to reuse completed writing when the title, description, cast,
 length, and writer model revision match; speech verification still runs.
@@ -112,4 +96,4 @@ not evidence of ten-minute throughput, artistic parity, or speaker likeness.
 The development-check workflow also uploads the committed local qualification
 sample as `local-title-to-video-qualification`. This artifact is explicitly a
 locally generated sample, not a successful run of Actions-hosted synthesis.
-The separate Generate voiced episode workflow still requires VOICE_PROFILE_KEY.
+The separate Generate voiced episode workflow now loads public profiles directly.

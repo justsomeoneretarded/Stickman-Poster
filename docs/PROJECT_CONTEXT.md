@@ -176,3 +176,14 @@ matching key stays at ignored `private/actions-key.txt`. User must install the
 repository Actions secret using an account with permission; docs/ACTIONS.md
 contains the command and GitHub settings instructions. No successful
 Actions-hosted synthesis is claimed before that secret is configured.
+
+## Public voice profiles authorized
+
+On 19 October 2026, the user explicitly confirmed publication of the reusable
+three-speaker conditioning profiles after their public reusability was explained.
+Published them under voices/profiles with a relative cast-profiles mapping.
+Original MP3s remain outside Git. Removed the encrypted profile archive, secret
+preflight, decryption helper, and workflow dependency on VOICE_PROFILE_KEY.
+Earlier private-profile and missing-secret notes above are historical and are
+superseded by this decision. Next verification is the full generation workflow
+on the hosted Actions runner with public profiles.

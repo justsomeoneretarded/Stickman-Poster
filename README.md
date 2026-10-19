@@ -2,7 +2,7 @@
 
 **New:** [Generate an episode with GitHub Actions](docs/ACTIONS.md): enter a title
 and short description, choose one to three voices, and download the generated
-script and voiced video artifact. Private voice-secret setup is required once.
+script and voiced video artifact. The three reusable voice profiles are public; no voice secret is required.
 Local model scripting and character dialogue are now implemented; artistic and
 voice qualification remain ongoing.
 
@@ -15,8 +15,8 @@ sample and downloaded model weights. Nano CPU inference passed a bundled-voice s
 test; three saved voice profiles passed reload and text-fidelity checks.
 Human voice-similarity and listening approval remain pending.
 The sample project is an original fictional fixture, not a generated result from
-an arbitrary title. No reference video art, scripts, voice recordings or models are
-included. The Pillow backend is a minimal portability benchmark; Motion Canvas
+an arbitrary title. Original reference video art and source recordings are not included.
+The user-authorized reusable voice conditioning is published in `voices/`. The Pillow backend is a minimal portability benchmark; Motion Canvas
 remains a possible richer renderer behind the same scene specification.
 
 ## What works

@@ -13,3 +13,8 @@ models/
 *.wav
 *.mp4
 work/
+
+# The three explicitly public reusable character profiles.
+!voices/profiles/female/conditioning.pt
+!voices/profiles/male1-kit-laser/conditioning.pt
+!voices/profiles/male2-warguy/conditioning.pt

@@ -1,5 +1,4 @@
 import hashlib
-import hmac
 import json
 import os
 import subprocess
@@ -10,7 +9,6 @@ from pathlib import Path
 from unittest.mock import patch
 
 from studio.writer import parse_story, compile_project
-from studio.ci import restore_profiles
 from studio import project, render
 
 class WriterTests(unittest.TestCase):
@@ -42,24 +40,16 @@ class WriterTests(unittest.TestCase):
         p['scenes'][0]['movement']='execute_code'
         with self.assertRaises(ValueError): project.validate(p)
 
-@unittest.skipUnless(__import__('shutil').which('openssl'), 'Needs OpenSSL')
-class PrivateArchiveTests(unittest.TestCase):
-    def test_authenticated_roundtrip_and_tamper_rejection(self):
-        with tempfile.TemporaryDirectory() as folder:
-            root=Path(folder); source=root/'source'; source.mkdir()
-            files=['cast-profiles.json']+[f'profiles/{s}/{name}' for s in ('female','male1-kit-laser','male2-warguy') for name in ('conditioning.pt','profile.json')]
-            for file in files:
-                p=source/file;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(b'fixture')
-            with tarfile.open(root/'clear.tar.gz','w:gz') as tar:
-                for file in files: tar.add(source/file,arcname=file)
-            key='synthetic-test-key-not-a-real-secret'
-            (root/'key').write_text(key+'\n')
-            subprocess.run(['openssl','enc','-aes-256-cbc','-salt','-pbkdf2','-iter','200000',
-                            '-in',str(root/'clear.tar.gz'),'-out',str(root/'cipher'),'-pass','file:'+str(root/'key')],check=True)
-            signing=hashlib.sha256(b'stickman-profile-auth-v1:'+key.encode()).digest()
-            (root/'signature').write_text(hmac.new(signing,(root/'cipher').read_bytes(),hashlib.sha256).hexdigest())
-            restore_profiles(root/'cipher',root/'signature',root/'restored',key)
-            self.assertEqual((root/'restored/profiles/female/conditioning.pt').read_bytes(),b'fixture')
-            (root/'cipher').write_bytes((root/'cipher').read_bytes()+b'tamper')
-            with self.assertRaises(ValueError): restore_profiles(root/'cipher',root/'signature',root/'rejected',key)
-            self.assertFalse((root/'rejected').exists())
+class PublicProfileTests(unittest.TestCase):
+    def test_all_published_profiles_match_checksums_and_source_version(self):
+        from studio.voice import SOURCE_COMMIT, sha256
+        root = Path(__file__).resolve().parents[1] / 'voices'
+        mapping = json.loads((root/'cast-profiles.json').read_text())
+        self.assertEqual(set(mapping), {'female', 'male1', 'male2'})
+        for relative in mapping.values():
+            profile = (root/relative).resolve()
+            self.assertIn(root, profile.parents)
+            metadata = json.loads((profile/'profile.json').read_text())
+            self.assertEqual(metadata['visibility'], 'public')
+            self.assertEqual(metadata['source_commit'], SOURCE_COMMIT)
+            self.assertEqual(metadata['conditioning_sha256'], sha256(profile/'conditioning.pt'))

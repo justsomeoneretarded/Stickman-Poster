@@ -15,7 +15,7 @@ def main():
     args = [sys.executable, '-m', 'studio.cli', 'generate', '--title', request['title'],
             '--description', request['description'], '--minutes', str(request['minutes']),
             '--voices', request['voices'], '--width', str(request.get('width', 960)), '--fps', '24',
-            '--cast-profiles', 'private/cast-profiles.json', '--writer-model-dir', 'models/script-qwen3',
+            '--cast-profiles', 'voices/cast-profiles.json', '--writer-model-dir', 'models/script-qwen3',
             '--model-dir', 'models/chatterbox-nano', '--out', 'output/episode']
     subprocess.run(args, check=True)
     summary = Path(os.environ.get('GITHUB_STEP_SUMMARY', 'work/actions-summary.md'))
