@@ -31,10 +31,11 @@ def render_project(args):
     p = project.load(args.project)
     out = Path(args.out).resolve()
     out.mkdir(parents=True, exist_ok=True)
-    if args.width < 320 or args.width > 1920 or args.width % 32:
+    portrait_height=getattr(args,"height",None)
+    if args.width < 320 or args.width > 1920 or args.width % (2 if portrait_height else 32):
         raise ValueError("Width must be a multiple of 32 between 320 and 1920")
-    height = args.width * 9 // 16
-    if height % 2:
+    height = portrait_height or args.width * 9 // 16
+    if height % 2 or not 180<=height<=3840:
         raise ValueError("Video dimensions must be even")
     if not args.silent_preview and not args.audio_manifest:
         raise ValueError("Provide --audio-manifest or explicitly choose --silent-preview. No substitute voice is generated.")
@@ -60,20 +61,22 @@ def render_project(args):
             selected.append(scene)
             remaining -= scene["duration"]
         p["scenes"] = selected
+    for scene in p["scenes"]:
+        if scene.get("visual_style")=="expressive-v2":scene["caption_words"]=5 if height>args.width else 7
     scenes = project.timeline(p, args.fps)
     project.write_package(p, scenes, args.fps, out)
     (out / "resolved-project.json").write_text(json.dumps(p, indent=2))
     video_dir, audio_dir = out / "video", out / "audio-normalized"
     video_dir.mkdir(exist_ok=True)
     audio_dir.mkdir(exist_ok=True)
-    implementation = b"".join(Path(__file__).with_name(n).read_bytes() for n in ("render.py", "project.py", "cli.py"))
+    implementation = b"".join(Path(__file__).with_name(n).read_bytes() for n in ("render.py", "project.py", "cli.py", "cinematic.py", "animation.py", "locations.py"))
     implementation_hash = hashlib.sha256(implementation).hexdigest()
     scene_times, contacts = [], []
     for i, scene in enumerate(scenes):
         begin = time.perf_counter()
         path = video_dir / f"{i:03}.mp4"
         stamp = video_dir / f"{i:03}.json"
-        key = hashlib.sha256(json.dumps({"scene": scene, "width": args.width, "fps": args.fps,
+        key = hashlib.sha256(json.dumps({"scene": scene, "width": args.width, "height":height, "fps": args.fps,
                                         "silent": args.silent_preview, "code": implementation_hash,
                                         "font": str(render.font(30).path) if hasattr(render.font(30),"path") else "default"},
                                        sort_keys=True).encode()).hexdigest()
@@ -106,7 +109,7 @@ def render_project(args):
             media.run([media.require_tool("ffmpeg"), "-v", "error", "-y", "-i", audio_files[i], "-af",
                        f"aresample=24000,apad,atrim=duration={seconds}", "-ac", "1", "-c:a", "pcm_s16le",
                        audio_dir / f"{i:03}.wav"])
-        contacts.append(render.frame(scene, scene["duration"]*.55, 640, 360, args.silent_preview))
+        contacts.append(render.frame(scene, scene["duration"]*.55, 360 if height>args.width else 640, 640 if height>args.width else 360, args.silent_preview))
         scene_times.append({"id": scene["id"], "frames": scene["frames"], "cache_hit": cached,
                             "render_seconds": round(time.perf_counter()-begin, 3)})
         print(f"Scene {i+1}/{len(scenes)}: {scene['id']} ({'cached' if cached else 'rendered'})", flush=True)
@@ -126,12 +129,13 @@ def render_project(args):
                    "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-movflags", "+faststart", out / "final.mp4"])
     else:
         shutil.copyfile(silent_video, out / "final.mp4")
-    sheet = Image.new("RGB", (1280, ((len(contacts)+1)//2)*400), "#101a2c")
+    cell_width,cell_height=contacts[0].width,contacts[0].height+40
+    sheet = Image.new("RGB", (cell_width*2, ((len(contacts)+1)//2)*cell_height), "#101a2c")
     sd = ImageDraw.Draw(sheet)
     for i, im in enumerate(contacts):
-        x,y=i%2*640,i//2*400
+        x,y=i%2*cell_width,i//2*cell_height
         sheet.paste(im,(x,y))
-        sd.text((x+20,y+370),scenes[i]["id"],font=render.font(18),fill="white")
+        sd.text((x+20,y+cell_height-30),scenes[i]["id"],font=render.font(18),fill="white")
     sheet.save(out / "contact-sheet.jpg", quality=90)
     contacts[0].save(out / "thumbnail-preview.jpg", quality=95)
     metadata = media.probe(out / "final.mp4")
@@ -195,6 +199,7 @@ def main():
     p.add_argument("--out", required=True)
     p.add_argument("--model-dir")
     p.add_argument("--writer-model-dir")
+    p.add_argument("--short-seconds", type=float, default=60, help="Soft target for a standalone 9:16 highlight short")
     p.add_argument("--required-locations", default="", help="Comma-separated story locations that must appear")
     p.add_argument("--revise-project", help="Revise a previously generated project instead of starting from an empty draft")
     p.add_argument("--asr-model-dir", default="models/asr-base-en")

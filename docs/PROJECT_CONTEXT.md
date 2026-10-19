@@ -296,3 +296,49 @@ Regression test accepts over five minutes of dialogue for a three-minute target;
 all 34 tests pass. Technical validation and malformed-output errors still apply;
 this does not claim every possible pipeline failure is fixed. The active brief
 now explicitly allows a longer complete story.
+
+## Reference review, playful hypotheticals and two-format workflow
+
+User confirmed the 3-minute episode completed but strongly rejected the art,
+movement and writing. They want funny, feel-good hypotheticals (bench a car,
+bench 400 pounds, fly), not ethical lessons. Every run should accept a new idea,
+description and length, always delivering landscape and a strong vertical short.
+Reviewed the reattached IFOLOGY reference: expressive black faces with white
+features, hoodie silhouettes, varied shot sizes, layered lighting/space and
+specific visual actions, not a static presenter lineup.
+
+Implemented expressive-v2 original procedural art with rim lighting, face and
+mouth motion, articulated poses, attached coffee cups, physical bench press
+(car or barbell), and airborne travel. Added gym/rooftop/park settings and native
+portrait composition. Removed title/name HUD. Captions, thumbnails and contact
+sheets respect the output orientation. This remains a limited vector-animation
+prototype, not reference-quality hand-directed animation.
+
+Production Actions is manual-only. Title and description are required fresh
+inputs; no bank demo, required locations or seed are inherited. Form includes
+long minutes, short seconds, cast, output width (default 1920). Both lengths are
+soft guidance. Known bench/fly ideas use curated renderable comic beat blueprints;
+all spoken lines are LLM-generated. Other ideas use a model pitch/outline with
+less reliable visual/plot fidelity. Actual initial free-outline trial was weak
+and proposed unsupported crashes; it was not accepted as a quality result.
+
+Shorts select unique high-scored comic beats plus opening/payoff, rewrite speech
+for standalone continuity, synthesize a separate track, and render native 9:16.
+Successful production artifacts are long-form-N and short-form-N. No change of
+speech engine or claim that echo/robotic quality is fixed. The new local writing
+trial uses bench-car warmth/parking/membership gags and no imposed ethics ending.
+
+40 tests pass, including encoded dual-format/audio packaging, independently
+written scripts, portrait thumbnails, input isolation, premise blueprints,
+visible car-load motion, and on-screen flying character framing. Development
+checks create a clearly labeled 20-second silent motion study in both formats.
+Voiced miniature qualification and hosted artifact verification follow below.
+
+Local dual-format voiced qualification completed: long-form 1280x720/24fps,
+22.5 seconds, 6 spoken turns; separate short 720x1280/24fps, 29.8 seconds,
+3 rewritten turns. Both full decode checks passed. Final ASR WER maximum was
+0.154 on landscape and 0.069 on portrait. Encoded contact sheets and portrait
+thumbnail were inspected. Fixed an observed wheel/face occlusion and a duplicate
+standing hero; tests protect both. Re-rendered and decoded both outputs after
+those fixes. Sanitized public outputs are under previews/comedy-two-format-qualification,
+clearly labeled miniature trials. Final local suite: 40 passing tests.

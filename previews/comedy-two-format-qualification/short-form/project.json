@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "title": "What if you could bench a car?",
+  "description": "Funny feel-good superstrength mini adventure. Show a full-sized car being bench-pressed, a shocked friend, then a parking or gym-membership joke. No lesson, guilt or fake-car twist. Immediate visual hook and a funny payoff. Create a STANDALONE punchy vertical short from the selected source beats. Rewrite dialogue to connect the chosen gags naturally; do not assume viewers saw the long version. Hook in the first sentence. Keep the funniest visual payoff. Avoid references to omitted scenes.",
+  "keywords": [
+    "original story",
+    "animated",
+    "what if"
+  ],
+  "cast": [
+    {
+      "id": "maya",
+      "name": "Maya",
+      "voice": "female"
+    },
+    {
+      "id": "leo",
+      "name": "Leo",
+      "voice": "male1"
+    },
+    {
+      "id": "max",
+      "name": "Max",
+      "voice": "male2"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "beat-001",
+      "duration": 10.766666666666667,
+      "location": "gym",
+      "action": "point",
+      "speaker": "maya",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Leo just bench-pressed a full-sized car? I\u2019m not even sure how that works. That\u2019s like gravity doing a backflip and inviting itself to the gym.",
+      "heading": "What if you could bench a car?",
+      "label": "",
+      "shot": "wide",
+      "prop": "car",
+      "staging": "lift",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "visual_style": "expressive-v2",
+      "purpose": "Open by visibly bench-pressing a full-sized car. The friend expected a normal workout, not this absurd sight. Source line: Leo just bench-pressed a car. I'm not even sure how that works.",
+      "comic_role": "hook",
+      "short_score": 10,
+      "gag_id": null,
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-002",
+      "duration": 9.1,
+      "location": "gym",
+      "action": "point",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Easy, I just warmed up. The car\u2019s been doing push-ups all week\u2014must\u2019ve been the only one with a driveway that strong.",
+      "heading": "What if you could bench a car?",
+      "label": "",
+      "shot": "wide",
+      "prop": "car",
+      "staging": "lift",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "visual_style": "expressive-v2",
+      "purpose": "The lifter treats the huge load as a casual warm-up while the friend tries to sound unimpressed. Source line: Easy, I just warmed up. The car's been doing push-ups all week.",
+      "comic_role": "escalation",
+      "short_score": 9,
+      "gag_id": null,
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-003",
+      "duration": 14.516666666666667,
+      "location": "gym",
+      "action": "point",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "I guess the car\u2019s got its own membership now. It\u2019s been doing push-ups, so it\u2019s gotta have a personal trainer. Leo\u2019s the only one who can lift it\u2014so it\u2019s officially on the gym roster.",
+      "heading": "What if you could bench a car?",
+      "label": "",
+      "shot": "wide",
+      "prop": "car",
+      "staging": "lift",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "visual_style": "expressive-v2",
+      "purpose": "Final callback: the car now needs its own gym membership, so the hero has become their own vehicle\u2019s personal trainer. Land the specific joke, no lesson. Source line: I guess the car\u2019s got its own membership now.",
+      "comic_role": "payoff",
+      "short_score": 10,
+      "gag_id": null,
+      "camera_zoom": 1.045,
+      "cinematic": true
+    }
+  ]
+}

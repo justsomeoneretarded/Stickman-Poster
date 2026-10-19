@@ -1,7 +1,7 @@
 """Deterministic actor blocking and hand contact for original 2D story scenes."""
 import math
 
-STAGINGS = {'talk', 'travel', 'enter', 'chase', 'drink', 'carry', 'handoff', 'react'}
+STAGINGS = {'talk', 'travel', 'enter', 'chase', 'drink', 'carry', 'handoff', 'react', 'lift', 'fly', 'reveal'}
 
 
 def smooth(value):

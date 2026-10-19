@@ -1,22 +1,25 @@
 name: Generate voiced episode
-run-name: Generate episode from title and description
+run-name: "${{ inputs.title }} — long + vertical short"
 on:
   workflow_dispatch:
     inputs:
       title:
-        description: Video title
+        description: Idea / title (example — What if you could bench a car?)
         required: true
-        default: What if your coffee could float?
         type: string
       description:
-        description: Short story direction or premise (fiction unless supported facts are supplied)
+        description: Describe the ability, funny situations, tone, and ending you want
         required: true
-        default: Three friends discover one floating coffee cup. Surprise, contrasting reactions, and a comic payoff.
         type: string
       minutes:
-        description: Target script minutes (.2–10); actual duration follows speech
+        description: Long video target minutes (guidance only; longer stories are allowed)
         required: true
-        default: '1'
+        default: '3'
+        type: string
+      short_seconds:
+        description: Vertical short target seconds (standalone best-gags edit, guidance only)
+        required: true
+        default: '60'
         type: string
       voices:
         description: Character cast
@@ -34,10 +37,8 @@ on:
       width:
         description: Video width
         type: choice
-        default: '1280'
+        default: '1920'
         options: ['960', '1280', '1920']
-  push:
-    paths: ['ci/demo-request.json', '.github/workflows/generate.yml']
 permissions:
   contents: read
 concurrency:
@@ -57,6 +58,7 @@ jobs:
       EPISODE_MINUTES: ${{ inputs.minutes }}
       EPISODE_VOICES: ${{ inputs.voices }}
       EPISODE_WIDTH: ${{ inputs.width }}
+      EPISODE_SHORT_SECONDS: ${{ inputs.short_seconds }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -96,17 +98,26 @@ jobs:
             output/episode/writing/writer-report.json
             output/episode/writing/scene-plan.json
             output/episode/writing/planned-scenes.json
+            output/episode/writing/creative-outline.json
+            output/episode/short/writing/*.json
           if-no-files-found: error
       - name: Synthesize character voices and verify spoken words
         run: .venv/bin/python -m studio.actions_entry --stage speech
-      - name: Render moving actors, environments, and captions
+      - name: Render landscape story and native portrait short
         run: .venv/bin/python -m studio.actions_entry --stage render
-      - name: Upload finished episode only
+      - name: Upload long-form 16:9 video
         uses: actions/upload-artifact@v4
         with:
-          name: voiced-episode-${{ github.run_number }}
+          name: long-form-${{ github.run_number }}
           retention-days: 7
-          path: output/episode/deliverables/
+          path: output/episode/deliverables/long-form/
+          if-no-files-found: error
+      - name: Upload short-form 9:16 video
+        uses: actions/upload-artifact@v4
+        with:
+          name: short-form-${{ github.run_number }}
+          retention-days: 7
+          path: output/episode/deliverables/short-form/
           if-no-files-found: error
       - name: Upload generation diagnostics on failure
         if: failure()
@@ -119,4 +130,8 @@ jobs:
             output/episode/writing/*.txt
             output/episode/speech/speech-check.json
             output/episode/render/report.json
+            output/episode/short/writing/*.json
+            output/episode/short/writing/*.txt
+            output/episode/short/speech/speech-check.json
+            output/episode/short/render/report.json
           if-no-files-found: ignore

@@ -47,11 +47,29 @@ jobs:
             output/ci/posting.json
           if-no-files-found: error
 
-      - name: Upload locally generated end-to-end qualification sample
-        if: hashFiles('previews/title-to-video-qualification/final.mp4') != ''
+      - name: Render expressive visual studies in both aspect ratios
+        run: |
+          python ci/style_preview.py
+          ffmpeg -v error -i output/style-study/landscape/final.mp4 -f null -
+          ffmpeg -v error -i output/style-study/portrait/final.mp4 -f null -
+      - name: Upload expressive motion studies for review
         uses: actions/upload-artifact@v4
         with:
-          name: local-title-to-video-qualification
+          name: expressive-style-study-both-formats
           retention-days: 7
-          path: previews/title-to-video-qualification/
+          path: |
+            output/style-study/landscape/final.mp4
+            output/style-study/landscape/contact-sheet.jpg
+            output/style-study/landscape/report.json
+            output/style-study/portrait/final.mp4
+            output/style-study/portrait/contact-sheet.jpg
+            output/style-study/portrait/report.json
+          if-no-files-found: error
+      - name: Upload locally generated voiced dual-format qualification
+        if: hashFiles('previews/comedy-two-format-qualification/long-form/final.mp4') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-voiced-comedy-two-format-qualification
+          retention-days: 7
+          path: previews/comedy-two-format-qualification/
           if-no-files-found: error

@@ -2,7 +2,7 @@
 
 **New:** [Generate an episode with GitHub Actions](docs/ACTIONS.md): enter a title
 and short description, choose one to three voices, and download the generated
-script and voiced video artifact. The three reusable voice profiles are public; no voice secret is required.
+scripts and two voiced video artifacts: 16:9 long-form and a standalone 9:16 short. The three reusable voice profiles are public; no voice secret is required.
 Local model scripting and character dialogue are now implemented; artistic and
 voice qualification remain ongoing.
 
@@ -21,7 +21,7 @@ remains a possible richer renderer behind the same scene specification.
 
 ## What works
 
-- Eight illustrated location templates; articulated characters; face changes;
+- Original expressive vector scenes, native portrait compositions, gym/rooftop/park settings; articulated characters; face changes;
   floating props; glow/particles; camera pushes; cuts/fades; captions.
 - Declarative validated JSON, not executable LLM-written code.
 - Measured audio duration drives scene lengths when narration is supplied.
@@ -73,7 +73,7 @@ destabilize the small rendering environment.
    snapshot is available in `requirements-voice-cpu.lock`. Upstream documents Python
    3.11 as tested; try that environment if 3.12 resolution fails.
 3. Model downloads need access to Hugging Face and its asset hosts. No paid API is
-   necessary. No model download is attempted by the public CI workflow.
+   necessary. Development fixture tests do not download voice models; the manual production workflow downloads pinned public models.
 
 ```sh
 python -m studio.cli prepare-reference private/source.mp3 private/reference.wav --start 0 --seconds 12
@@ -123,7 +123,7 @@ python -m studio.cli produce --title "Your title" --minutes 10 --endpoint http:/
 When required locations are supplied, the app assigns every location, speaker, and
 movement before generating dialogue one scene at a time. Each spoken turn is
 validated and checkpointed; retries repair that turn instead of restarting the story.
-Without required locations, the planner requests a draft and a separate editorial revision. These are model
+Without required locations, the writer uses renderable comic blueprints for benching/flying, or a model pitch/outline for other topics, then generates every spoken line. These are model
 instructions, not a guarantee of better writing or verified factual accuracy.
 
 ## GitHub Actions
@@ -134,9 +134,8 @@ workflow. It checks a fixed 10-second silent fixture, decodes the video and uplo
 public technical outputs for three days. It neither clones the private voice nor
 publishes videos. GitHub terms and account availability still apply.
 
-There is no daily cron job and no general content-generation endpoint. Deployment
-to a channel-production host is a separate step. This workflow has been prepared,
-but cannot be claimed as run on GitHub until a repository and run result exist.
+Production starts manually through **Generate voiced episode → Run workflow**, with a fresh title and description every time. There is no daily cron job. Deployment
+to a channel-production host is a separate step. The previous single-format workflow has produced a complete episode; the revised two-format path has separate verification evidence in the project context.
 
 ## Known limits / next milestones
 

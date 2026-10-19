@@ -1,0 +1,19 @@
+{
+  "status": "generated and decoded; editorial, voice, and artistic review required",
+  "title": "What if you could bench a car?",
+  "voices": [
+    "female",
+    "male1",
+    "male2"
+  ],
+  "engine": "chatterbox-nano CPU baseline, not audition winner",
+  "video": "final.mp4",
+  "script_source": "local language model; comic outline and per-scene dialogue",
+  "reused_validated_writing": false,
+  "unqualified": [
+    "voice similarity",
+    "human listening review",
+    "factual claims",
+    "reference visual parity"
+  ]
+}

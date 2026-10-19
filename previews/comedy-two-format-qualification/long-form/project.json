@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "title": "What if you could bench a car?",
+  "description": "Funny feel-good superstrength mini adventure. Show a full-sized car being bench-pressed, a shocked friend, then a parking or gym-membership joke. No lesson, guilt or fake-car twist. Immediate visual hook and a funny payoff.",
+  "keywords": [
+    "original story",
+    "animated",
+    "what if"
+  ],
+  "cast": [
+    {
+      "id": "maya",
+      "name": "Maya",
+      "voice": "female"
+    },
+    {
+      "id": "leo",
+      "name": "Leo",
+      "voice": "male1"
+    },
+    {
+      "id": "max",
+      "name": "Max",
+      "voice": "male2"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "beat-001",
+      "duration": 5.35,
+      "location": "gym",
+      "action": "point",
+      "speaker": "maya",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Leo just bench-pressed a car. I'm not even sure how that works.",
+      "heading": "What if you could bench a car?",
+      "label": "",
+      "shot": "wide",
+      "prop": "car",
+      "staging": "lift",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "visual_style": "expressive-v2",
+      "purpose": "Open by visibly bench-pressing a full-sized car. The friend expected a normal workout, not this absurd sight.",
+      "comic_role": "hook",
+      "short_score": 10,
+      "gag_id": 0,
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-002",
+      "duration": 5.35,
+      "location": "gym",
+      "action": "point",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Easy, I just warmed up. The car's been doing push-ups all week.",
+      "heading": "What if you could bench a car?",
+      "label": "",
+      "shot": "wide",
+      "prop": "car",
+      "staging": "lift",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "visual_style": "expressive-v2",
+      "purpose": "The lifter treats the huge load as a casual warm-up while the friend tries to sound unimpressed.",
+      "comic_role": "escalation",
+      "short_score": 9,
+      "gag_id": 2,
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-003",
+      "duration": 4.933333333333334,
+      "location": "street",
+      "action": "point",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "So... does that mean I need to pay for parking now?",
+      "heading": "What if you could bench a car?",
+      "label": "",
+      "shot": "wide",
+      "prop": "car",
+      "staging": "reveal",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "visual_style": "expressive-v2",
+      "purpose": "The same car is now parked normally. Being incredibly strong still does not create an empty parking space.",
+      "comic_role": "escalation",
+      "short_score": 9,
+      "gag_id": 4,
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-004",
+      "duration": 4.933333333333334,
+      "location": "gym",
+      "action": "point",
+      "speaker": "maya",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Still, picking a workout playlist is harder than lifting a car.",
+      "heading": "What if you could bench a car?",
+      "label": "",
+      "shot": "close",
+      "prop": "car",
+      "staging": "talk",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "visual_style": "expressive-v2",
+      "purpose": "The hero admits the hardest part of gym day is still choosing a playlist. Banter about an ordinary decision next to extraordinary strength.",
+      "comic_role": "escalation",
+      "short_score": 7,
+      "gag_id": 7,
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-005",
+      "duration": 5.35,
+      "location": "gym",
+      "action": "point",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Another one, just like last time. Car's on the third rep now.",
+      "heading": "What if you could bench a car?",
+      "label": "",
+      "shot": "wide",
+      "prop": "car",
+      "staging": "lift",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "visual_style": "expressive-v2",
+      "purpose": "The hero completes another relaxed rep and the friend becomes hilariously formal about counting it. No danger, crashes or fake reveal.",
+      "comic_role": "escalation",
+      "short_score": 8,
+      "gag_id": 9,
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-006",
+      "duration": 4.1,
+      "location": "gym",
+      "action": "point",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "I guess the car\u2019s got its own membership now.",
+      "heading": "What if you could bench a car?",
+      "label": "",
+      "shot": "wide",
+      "prop": "car",
+      "staging": "lift",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "visual_style": "expressive-v2",
+      "purpose": "Final callback: the car now needs its own gym membership, so the hero has become their own vehicle\u2019s personal trainer. Land the specific joke, no lesson.",
+      "comic_role": "payoff",
+      "short_score": 10,
+      "gag_id": 11,
+      "camera_zoom": 1.045,
+      "cinematic": true
+    }
+  ]
+}

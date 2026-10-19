@@ -3,8 +3,8 @@ import json
 import math
 from pathlib import Path
 
-LOCATIONS = {"room", "street", "diagram", "stage", "classroom", "field", "bank", "cafe"}
-ACTIONS = {"idle", "point", "walk", "float", "think", "worried", "celebrate", "run", "drink", "carry"}
+LOCATIONS = {"room", "street", "diagram", "stage", "classroom", "field", "bank", "cafe", "gym", "rooftop", "park"}
+ACTIONS = {"idle", "point", "walk", "float", "think", "worried", "celebrate", "run", "drink", "carry", "lift", "fly"}
 
 
 def finite_number(value):
@@ -66,7 +66,7 @@ def validate(project):
         if len(scene.get("heading", "")) > 72 or len(scene.get("label", "")) > 90:
             raise ValueError("Headings and labels must fit the layout")
         for field, allowed in (("shot", {"wide", "medium", "close"}),
-                               ("prop", {"none", "cup", "phone", "orb", "bag"}),
+                               ("prop", {"none", "cup", "phone", "orb", "bag", "car", "barbell"}),
                                ("movement", {"stay", "enter", "cross", "approach"})):
             if field in scene and scene[field] not in allowed:
                 raise ValueError(f"Unsupported {field} in {sid}")
@@ -122,12 +122,12 @@ def srt_time(seconds):
     return f"{hours:02}:{minutes:02}:{secs:02},{ms:03}"
 
 
-def caption_chunks(text):
+def caption_chunks(text, max_words=10):
     words = text.split()
     if not words:
         return []
     # Balance chunks to avoid a one-word final caption.
-    count = math.ceil(len(words) / 10)
+    count = math.ceil(len(words) / max_words)
     size = math.ceil(len(words) / count)
     return [words[i:i+size] for i in range(0, len(words), size)]
 
@@ -139,7 +139,7 @@ def caption_cues(scene, fps):
     adapter; phrase estimates must be reviewed against actual synthesized speech.
     """
     words = scene.get("narration", "").split()
-    chunks = caption_chunks(scene.get("narration", ""))
+    chunks = caption_chunks(scene.get("narration", ""),scene.get("caption_words",10))
     start = scene["start_frame"] / fps
     duration = scene["frames"] / fps
     cursor, result = 0, []

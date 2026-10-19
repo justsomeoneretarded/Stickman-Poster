@@ -14,7 +14,7 @@ from .animation import STAGINGS, blocking_for
 MODEL_ID = 'unsloth/Qwen3-4B-Instruct-2507-GGUF'
 MODEL_REVISION = 'a06e946bb6b655725eafa393f4a9745d460374c9'
 VOICE_NAMES = {'female': ('maya', 'Maya'), 'male1': ('leo', 'Leo'), 'male2': ('max', 'Max')}
-PROPS = {'none', 'cup', 'phone', 'orb', 'bag'}
+PROPS = {'none', 'cup', 'phone', 'orb', 'bag', 'car', 'barbell'}
 MOVEMENTS = {'stay', 'enter', 'cross', 'approach'}
 SHOTS = {'wide', 'medium', 'close'}
 
@@ -92,6 +92,9 @@ def compile_project(story, title, description, voices):
             'prop': visible_prop, 'staging': staging,
             'blocking': blocking_for(cast,VOICE_NAMES[beat['speaker']][0],staging),
             'movement': choice('movement', MOVEMENTS, 'stay'),
+            'visual_style':story.get('visual_style','legacy'),
+            'purpose':beat.get('purpose',''), 'comic_role':beat.get('comic_role','setup'),
+            'short_score':beat.get('short_score',0),'gag_id':beat.get('gag_id'),
             'camera_zoom': 1 if staging in {'chase','travel','carry'} else 1.045, 'cinematic': True,
         })
     return validate({'schema_version': 1, 'title': title, 'description': description,
@@ -123,11 +126,12 @@ def scene_plan(count, voices, locations, title):
     return result
 
 
-def write_planned(request, out, model_dir, started):
+def write_planned(request, out, model_dir, started, plan=None):
     """Generate and repair individual dialogue turns; metadata is app-owned."""
     from .local_llm import LocalWriter
     title,description,minutes,voices=(request[k] for k in ('title','description','minutes','voices'))
-    plan=scene_plan(max(len(voices),math.ceil(minutes*6)),voices,request['required_locations'],title)
+    if plan is None:
+        plan=scene_plan(max(len(voices),math.ceil(minutes*6)),voices,request.get('required_locations',[]),title)
     words=max(8,round(minutes*160/len(plan)))
     schema={'type':'object','properties':{'speech':{'type':'string','minLength':1,'maxLength':1500}},
             'required':['speech'],'additionalProperties':False}
@@ -136,15 +140,24 @@ def write_planned(request, out, model_dir, started):
             'Finish a complete thought with sentence punctuation. Duration is approximate; prioritize a complete story over the suggested word count. '
             'Speak as the assigned character using I, we, or you. Never start with a character name or write '
             'stage directions, speaker labels, descriptions of speaking, or third-person actor actions. '
-            'Maya=female, Leo=male1, Officer Max=male2. The app animates the scene plan; speech must match it. '
+            'Maya=female, Leo=male1, Max=male2. The app animates the scene plan; speech must match it. '
             'Use natural conversational phrasing, varied sentences, and concrete reactions. '
             'Do not repeat earlier lines. Stay within the title and brief. This is fictional; '
             'do not give practical crime methods, security details, weapons, or evasion advice.')
+    if request.get('tone')=='playful-comedy':
+        system+=(' Make this funny, playful and feel-good: a surprising hook, escalating physical gags, '
+                 'specific everyday inconveniences and a final callback joke. No ethical lecture, guilt, '
+                 'classroom discussion, or inspirational moral. Treat the impossible ability as real within '
+                 'the fiction. Narrate in direct second person for one voice; use snappy banter for a cast. '
+                 'Use the assigned purpose and comic role. Never describe an action absent from the assigned staging.')
     premise=('Theft and chase occur within the story. Only capture is impossible; people can see Leo. '
              if 'bank' in title.lower() and 'caught' in title.lower() else 'Preserve the title and brief throughout the story. ')
+    milestones=[{'scene':i+1,'location':plan[i]['location'],'intent':plan[i].get('purpose',plan[i]['staging'])[:180]}
+                for i in range(0,len(plan),max(1,math.ceil(len(plan)/12)))]
+    hero_name=VOICE_NAMES['male1' if 'male1' in voices else voices[0]][1]
     common=[{'role':'system','content':system},{'role':'user','content':
-            f'Title: {title}\nBrief: {description}\nComplete scene plan (not spoken): {json.dumps(plan)}\n'
-            +premise+'Carry: Leo holds bag. Chase: Leo runs, Max follows. Drink: assigned speaker sips coffee. '
+            f'Title: {title}\nBrief: {description}\nStory milestones (not spoken): {json.dumps(milestones)}\n'
+            +premise+f'Lift: {hero_name} bench-presses the assigned car or barbell; other speakers react or narrate, never claim to lift it themselves. Fly: assigned speaker flies. Carry: Leo holds bag. Chase: Leo runs, Max follows. Drink: assigned speaker sips coffee. '
             f'Handoff: Leo gives bag to Maya voluntarily. Final scene: a small concrete payoff in {plan[-1]["location"]}.'}]
     signature=hashlib.sha256(json.dumps([request,plan,common,schema,MODEL_REVISION],sort_keys=True).encode()).hexdigest()
     checkpoint=out/'planned-scenes.json'
@@ -160,7 +173,7 @@ def write_planned(request, out, model_dir, started):
                     f'Previous spoken dialogue: {json.dumps(history)}. '
                     f'Write approximately {words} words of speech by {VOICE_NAMES[slot["speaker"]][1]}, '
                     'responding to the previous dialogue and progressing the story. '
-                    'No character names at the start. End with a complete sentence.')
+                    'No speaker labels or stage directions. End with a complete sentence.')
             error=''
             for attempt in range(3):
                 try:
@@ -173,8 +186,6 @@ def write_planned(request, out, model_dir, started):
                         raise ValueError('Use normal English with spaces between words, not joined phrases.')
                     beat={**slot,'text':text}
                     validate_spoken_style({'beats':[beat]})
-                    if re.match(r'^(?:Maya|Leo|(?:Officer\s+)?Max)\b',beat['text'],re.I):
-                        raise ValueError('Speak directly in first person; do not begin with a character name.')
                     if tokens[-1][-1] not in '.!?':raise ValueError('Finish the sentence with punctuation.')
                     if re.search(r"never (?:took|robbed|stole)|you didn.t take|never did anything|no crime|nothing happened|only imagined it|just a dream",beat['text'],re.I) and 'bank' in title.lower():
                         raise ValueError('The fictional theft actually occurs. Do not deny or erase it.')
@@ -186,22 +197,109 @@ def write_planned(request, out, model_dir, started):
             checkpoint.write_text(json.dumps({'signature':signature,'beats':completed},indent=2))
             print(f'Dialogue scene {index+1}/{len(plan)} validated',file=sys.stderr,flush=True)
     story=parse_story(json.dumps({'beats':completed}),voices)
+    if request.get('tone')=='playful-comedy':story['visual_style']='expressive-v2'
     (out/'story.json').write_text(json.dumps(story,indent=2))
     project=compile_project(story,title,description,voices)
-    missing=set(request['required_locations'])-{b['location'] for b in project['scenes']}
+    missing=set(request.get('required_locations',[]))-{b['location'] for b in project['scenes']}
     if missing:raise ValueError(f'Compiled scene plan lost required locations: {sorted(missing)}')
     (out/'project.json').write_text(json.dumps(project,indent=2))
     (out/'scene-plan.json').write_text(json.dumps(plan,indent=2))
     report={'model':MODEL_ID,'revision':MODEL_REVISION,'runtime':'llama.cpp b11729 CPU',
             'passes':['app scene plan','per-scene dialogue generation and validation'],
             'seconds':time.perf_counter()-started,'word_count':sum(len(b['text'].split()) for b in completed),
-            'target_minutes':minutes,'selected_voices':voices,'required_locations':request['required_locations'],
+            'target_minutes':minutes,'selected_voices':voices,'required_locations':request.get('required_locations',[]),
             'word_budget':'duration and word targets are guidance only; no word-count rejection',
             'target_word_count':round(minutes*160),
             'word_count_deviation':sum(len(b['text'].split()) for b in completed)-round(minutes*160),'timing_note':'Final duration follows measured speech',
             'factual_status':'generated fiction; no external fact verification'}
     (out/'writer-report.json').write_text(json.dumps(report,indent=2))
     return report
+
+
+
+def validate_outline(plan, voices):
+    if not isinstance(plan,list) or not plan:raise ValueError('A nonempty comedy scene plan is required')
+    for slot in plan:
+        if slot.get('speaker') not in voices or slot.get('location') not in LOCATIONS or slot.get('staging') not in STAGINGS:
+            raise ValueError('Outline contains an unsupported actor, location or staging')
+        if slot['staging']=='lift':slot.update(location='gym',prop='barbell' if slot.get('prop')=='barbell' else 'car',shot='wide')
+        if slot['staging']=='fly':slot.update(location='rooftop',shot='wide')
+        if slot['staging']=='drink':slot.update(location='cafe',prop='cup')
+    # Casting is deterministic; the model cannot silently drop a selected voice.
+    for i,voice in enumerate(voices):plan[i]['speaker']=voice
+    plan[0]['comic_role']='hook';plan[-1]['comic_role']='payoff'
+    return plan
+
+
+def write_creative(request,out,model_dir,started):
+    from .local_llm import LocalWriter
+    request={**request,'tone':'playful-comedy'}
+    from .blueprints import comic_blueprint
+    blueprint=comic_blueprint(request['title'],request['voices'],request['minutes'])
+    if blueprint is not None:
+        (out/'creative-outline.json').write_text(json.dumps({'source':'renderable comic idea library; dialogue generated by model','beats':blueprint},indent=2))
+        return write_planned(request,out,model_dir,started,blueprint)
+    cache=out/'creative-outline.json'
+    count=min(90,max(6,math.ceil(request['minutes']*10)))
+    signature=hashlib.sha256(json.dumps([request,MODEL_REVISION,'comedy-v2'],sort_keys=True).encode()).hexdigest()
+    saved=json.loads(cache.read_text()) if cache.exists() else {}
+    if saved.get('signature')==signature:
+        plan=validate_outline(saved['beats'],request['voices'])
+    else:
+        item={'type':'object','properties':{
+            'speaker':{'type':'string','enum':request['voices']},
+            'location':{'type':'string','enum':['gym','street','park','rooftop','room','cafe','field']},
+            'staging':{'type':'string','enum':['talk','travel','enter','react','drink','lift','fly','reveal']},
+            'shot':{'type':'string','enum':['wide','medium','close']},
+            'prop':{'type':'string','enum':['none','cup','car','barbell','phone']},
+            'purpose':{'type':'string','minLength':60,'maxLength':180},
+            'comic_role':{'type':'string','enum':['hook','setup','escalation','payoff']},
+            'short_score':{'type':'integer','minimum':0,'maximum':10}},
+            'required':['speaker','location','staging','shot','prop','purpose','comic_role','short_score'],
+            'additionalProperties':False}
+        schema={'type':'object','properties':{'beats':{'type':'array','minItems':count,'maxItems':count,'items':item}},'required':['beats'],'additionalProperties':False}
+        messages=[{'role':'system','content':
+            'Plan an original funny feel-good animated WHAT IF story. Return JSON only. '
+            'This is entertainment, NOT an ethics lesson or classroom debate. The power works within the fiction. '
+            'Open on an immediately visual absurdity, escalate through SPECIFIC everyday comic situations, '
+            'then land a concrete callback joke. No generic lessons about responsibility, guilt, humanity or consequences. '
+            'Use ONE coherent ability; do not invent unrelated powers. Vary shots and expressions, and avoid repeated talking scenes. '
+            'Each purpose is a concise visual story beat, not dialogue. Give the strongest self-contained gags high short_score. '
+            'Supported actions: lift means lying on a gym bench pressing prop=car or prop=barbell; use car only if the premise is benching a car. '
+            'fly means an airborne character moving above a city; only use it for flight premises. '
+            'travel means walking; react is an expressive reaction; reveal shows a parked car only if prop=car. '
+            'Do not describe objects or actions unsupported by these scenes. Do not turn a 400-pound bench press into a flying car. '
+            'First scene=hook, final=payoff. A short highlight edit needs a strong hook, visible gag and payoff with little context.'},
+            {'role':'user','content':f'Title: {request["title"]}\nDescription: {request["description"]}\nPlan about {count} short scenes. Voices: {request["voices"]}. Runtime is flexible.'}]
+        sub=out/'outline-runtime';sub.mkdir(exist_ok=True)
+        with LocalWriter(model_dir or 'models/script-qwen3',sub,context=8192) as writer:
+            pitch_schema={'type':'object','properties':{'pitch':{'type':'string','minLength':500,'maxLength':4000}},'required':['pitch'],'additionalProperties':False}
+            pitch_raw=writer.complete([{'role':'system','content':
+                'You write funny feel-good WHAT IF animation ideas. Return JSON with pitch: one concrete story of about 200 words. '
+                'Give an immediate visual hook, three escalating everyday gags, and a specific final callback joke. '
+                'Use only Maya (female), Leo (male1), Max (male2), selected as supplied; Leo has the power unless there is one narrator. '
+                'Keep cause and effect logical: the power solves a mundane problem, then meets a funny everyday inconvenience. '
+                'Useful comedy mechanisms: role reversal, a ridiculous bureaucratic technicality, oversized ability versus a tiny ordinary annoyance. '
+                'Avoid destructive crashes, horror, danger, random nonsense, and unrelated extra powers. '
+                'Available visuals: bench press car/barbell in gym, parked car on street, flying over city, walking, coffee, expressive reactions. '
+                'Comedy comes from an absurd ability colliding with ordinary annoyances, not moral lessons or guilt. '
+                'For example, superstrength makes lifting a car easy but does not make finding a parking space easier; '
+                'flying skips traffic but introduces pigeon rush hour. Invent specific fresh situations suited to THIS idea. '
+                'The ability is real in the fiction. Do not say it was a dream, a toy, a fake, or a thought experiment. '
+                'Write the story events, not generic labels like hook, reaction, or payoff.'},messages[-1]],pitch_schema,1300)
+            pitch=json.loads(pitch_raw)['pitch']
+            (out/'comedy-pitch.txt').write_text(pitch)
+            messages[-1]['content']+='\nStory to visualize: '+pitch+'\nEach purpose must describe the exact specific gag or event, never just a label.'
+            raw=writer.complete(messages,schema,min(24000,count*200+100))
+        (out/'outline-raw.txt').write_text(raw)
+        plan=validate_outline(json.loads(raw)['beats'],request['voices'])
+        title=request['title'].lower()
+        if 'bench' in title:
+            plan[0].update(location='gym',staging='lift',shot='wide',prop='car' if 'car' in title else 'barbell')
+        elif 'fly' in title or 'flying' in title:
+            plan[0].update(location='rooftop',staging='fly',shot='wide',prop='none')
+        cache.write_text(json.dumps({'signature':signature,'beats':plan},indent=2))
+    return write_planned(request,out,model_dir,started,plan)
 
 
 def write(request, out, model_dir=None):
@@ -221,6 +319,8 @@ def write(request, out, model_dir=None):
         raise ValueError('Required locations must use supported environments')
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
+    if not required_locations and not request.get('revise_project'):
+        return write_creative(request,out,model_dir,time.perf_counter())
     if required_locations:
         return write_planned(request,out,model_dir,time.perf_counter())
     beats = max(len(voices), min(100, math.ceil(minutes * 6)))

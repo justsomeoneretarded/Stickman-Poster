@@ -269,6 +269,9 @@ def prop(image, x, y, angle=0):
 
 
 def frame(scene, local_t, width, height, preview=True):
+    if scene.get("visual_style")=="expressive-v2":
+        from .cinematic import frame as expressive_frame
+        return expressive_frame(scene,local_t,width,height,preview)
     im=background(scene["location"]).copy()
     t=local_t
     d=ImageDraw.Draw(im)

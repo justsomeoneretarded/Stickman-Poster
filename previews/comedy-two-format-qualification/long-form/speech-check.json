@@ -1,0 +1,68 @@
+[
+  {
+    "scene_id": "beat-001",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "Leo just bench pressed a car. I'm not even sure how that works.",
+        "word_error_rate": 0.0
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-002",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "Easy, I just warmed up. The car's been doing push-ups all week.",
+        "word_error_rate": 0.0
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-003",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "So, does that mean I need to pay for parking now?",
+        "word_error_rate": 0.0
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-004",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "Still, picking a workout playlist is harder than lifting a car.",
+        "word_error_rate": 0.0
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-005",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "Another one, just like last time. Cars on the third rep now.",
+        "word_error_rate": 0.15384615384615385
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-006",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "I guess the car's got its own membership now.",
+        "word_error_rate": 0.0
+      }
+    ]
+  }
+]

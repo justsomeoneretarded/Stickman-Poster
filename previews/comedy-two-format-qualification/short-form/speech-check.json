@@ -1,0 +1,35 @@
+[
+  {
+    "scene_id": "beat-001",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "Leo just bench pressed a full-sized car. I'm not even sure how that works. That's like gravity doing a back flip and inviting itself to the gym.",
+        "word_error_rate": 0.06896551724137931
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-002",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "Easy, I just warmed up. The car's been doing push-ups all week must have been the only one with a driveway that strong.",
+        "word_error_rate": 0.04
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-003",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "I guess the car has got its own membership now. It's been doing push-ups, so it's gotta have a personal trainer. Leo's the only one who can lift it. So it's officially on the Jim Roster.",
+        "word_error_rate": 0.04878048780487805
+      }
+    ]
+  }
+]

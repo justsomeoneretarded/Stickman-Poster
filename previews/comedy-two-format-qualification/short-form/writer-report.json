@@ -1,0 +1,23 @@
+{
+  "model": "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+  "revision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+  "runtime": "llama.cpp b11729 CPU",
+  "passes": [
+    "app scene plan",
+    "per-scene dialogue generation and validation"
+  ],
+  "seconds": 66.52072040399798,
+  "word_count": 80,
+  "target_minutes": 0.5,
+  "selected_voices": [
+    "female",
+    "male1",
+    "male2"
+  ],
+  "required_locations": [],
+  "word_budget": "duration and word targets are guidance only; no word-count rejection",
+  "target_word_count": 80,
+  "word_count_deviation": 0,
+  "timing_note": "Final duration follows measured speech",
+  "factual_status": "generated fiction; no external fact verification"
+}
