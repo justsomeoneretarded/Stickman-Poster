@@ -5,6 +5,7 @@ import json
 import math
 import re
 import subprocess
+from collections import Counter
 from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
@@ -172,6 +173,14 @@ def animation_review(video,project,render_report,out):
             if edge:issues.append({'scene_id':scene['id'],'category':'possible_edge_crop','concern':'Character-colored pixels touch a frame edge during the shot; check framing.'})
             entry['status']='measured'
         results.append(entry)
+    # Repeating a composition can feel monotonous even while its limbs move.
+    compositions=[(s.get('location'),s.get('staging'),s.get('prop'),s.get('shot')) for s in project['scenes']]
+    if len(compositions)>=3:
+        repeated,count=Counter(compositions).most_common(1)[0]
+        if count>=3 and count/len(compositions)>=.60:
+            issues.append({'category':'repeated_staging',
+                'scene_ids':[s['id'] for s,c in zip(project['scenes'],compositions) if c==repeated],
+                'concern':f'{count}/{len(compositions)} scenes reuse the same location, action, prop and shot; inspect visual variety. This may be intentional.'})
     sheet.save(Path(out)/'motion-review.jpg',quality=88)
     return {'status':'review_required' if issues else 'no_measured_fault_detected','issues':issues,'scenes':results,
             'sample_fps':rate,'evidence':'motion-review.jpg','unassessed':[

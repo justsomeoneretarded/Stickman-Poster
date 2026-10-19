@@ -85,8 +85,8 @@ class QualityTests(unittest.TestCase):
             video=root/'freeze.mp4'
             subprocess.run([require_tool('ffmpeg'),'-v','error','-y','-f','rawvideo','-pix_fmt','rgb24',
                 '-s','320x180','-r','2','-i','pipe:0','-c:v','libx264','-pix_fmt','yuv420p',str(video)],
-                input=np.tile(image[None],(8,1,1,1)).tobytes(),check=True)
-            report=animation_review(video,{'cast':[{'id':'hero','voice':'male1'}],'scenes':[scene]},
-                                    {'fps':2,'scenes':[{'frames':8}]},root)
-            self.assertIn('weak_motion',{i['category'] for i in report['issues']})
+                input=np.tile(image[None],(24,1,1,1)).tobytes(),check=True)
+            report=animation_review(video,{'cast':[{'id':'hero','voice':'male1'}],'scenes':[{**scene,'id':f'frozen-{i}'} for i in range(3)]},
+                                    {'fps':2,'scenes':[{'frames':8} for _ in range(3)]},root)
+            self.assertTrue({'weak_motion','repeated_staging'}<={i['category'] for i in report['issues']})
             self.assertTrue((root/'motion-review.jpg').exists())

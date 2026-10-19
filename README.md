@@ -148,7 +148,7 @@ review checks the description, continuity, repetition, dialogue and staging. It
 uses the same Qwen model as the writer and accepts only findings quoting actual
 scene dialogue; it is advisory, not independent creative approval. Animation
 checks decode the finished video, measure actor/load movement, flag possible
-edge cropping and supply a frame sheet. Audio checks decode the finished mix for
+edge cropping and repetitive staging, and supply a frame sheet. Audio checks decode the finished mix for
 clipping, long silence and level variation. These checks do not reject a video
 for missing a word count or target duration.
 

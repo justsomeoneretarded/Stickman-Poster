@@ -23,8 +23,18 @@
     ]
   },
   "animation": {
-    "status": "no_measured_fault_detected",
-    "issues": [],
+    "status": "review_required",
+    "issues": [
+      {
+        "category": "repeated_staging",
+        "scene_ids": [
+          "beat-001",
+          "beat-002",
+          "beat-003"
+        ],
+        "concern": "3/3 scenes reuse the same location, action, prop and shot; inspect visual variety. This may be intentional."
+      }
+    ],
     "scenes": [
       {
         "scene_id": "beat-001",
@@ -77,5 +87,5 @@
       "No word-count or duration target is used as a rejection rule."
     ]
   },
-  "automatic_flags": 1
+  "automatic_flags": 2
 }

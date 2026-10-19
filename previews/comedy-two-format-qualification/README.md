@@ -20,5 +20,5 @@ Updated qualification: automatic titles, nameplates and burned-in captions are
 absent. Both versions include decoded-frame motion evidence and audio/script
 review reports. The same-model text reviewer reported no issues; this is not
 independent creative approval. Audio RMS spread exceeded the advisory threshold
-in both mixes (28.3 dB landscape, 26.3 dB portrait). Motion was measurable; no
+in both mixes (28.3 dB landscape, 26.3 dB portrait). Motion was measurable, but repeated staging was flagged in both versions; no
 animation-quality or natural-speech approval is implied.
