@@ -1,0 +1,35 @@
+[
+  {
+    "scene_id": "beat-001",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "Wait, you can lift the whole car? I meant the shopping bags.",
+        "word_error_rate": 0.0
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-002",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "Well, that explains why the gym canceled my parking membership.",
+        "word_error_rate": 0.1
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-003",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "Please put my car down. I have groceries in the back.",
+        "word_error_rate": 0.0
+      }
+    ]
+  }
+]

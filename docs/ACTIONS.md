@@ -57,7 +57,8 @@ The three reusable profiles are public with the user's authorization:
 Original recordings remain outside the repository. The engine is Chatterbox Turbo
 on CPU, pinned to `749d1c1a46eb10492095d68fbcf55691ccf137cd`. VoiceStudio/OmniVoice
 and Qwen TTS are not integrated. A comparative listening winner is not established.
-Whisper screens spoken text, but does not prove naturalness or speaker similarity.
+The CPU production job allows up to six hours for the heavier model; that is a
+job resource limit, not a strict video-duration target. Whisper screens spoken text, but does not prove naturalness or speaker similarity.
 Audio echo/robotic quality is not claimed fixed by the visual redesign.
 
 Writer, speech and rendering run separately so models do not occupy memory at

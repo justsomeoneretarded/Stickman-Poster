@@ -6,7 +6,7 @@
   "reference_sha256": "b18182fcda6731dc3e8ce86e04699b0dfd771ab974cd19296642ef209d94d1b7",
   "conditioning_sha256": "cfb5cd42df9d61211abeedf4638912949425b3e7225b4c3f36a252828182dd78",
   "sample_rate": 24000,
-  "status": "Turbo migration; synthesis qualification pending",
+  "status": "Turbo CPU synthesis and ASR threshold passed; listening validation pending",
   "privacy": "Reusable speaker conditioning; intentionally published with user authorization on 19 October 2026",
   "visibility": "public",
   "model_revision": "749d1c1a46eb10492095d68fbcf55691ccf137cd",

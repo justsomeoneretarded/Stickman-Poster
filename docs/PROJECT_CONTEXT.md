@@ -9,6 +9,9 @@ The user requested replacing Nano with Turbo. Production model directory is now
 `models/chatterbox-turbo`, pinned at `749d1c1a46eb10492095d68fbcf55691ccf137cd`.
 Three saved profiles are configured for Turbo after shared encoder/decoder,
 tokenizer and conditioning-API compatibility checks. Nano audio caches invalidate.
+All three Turbo voice clips passed ASR (WER 0.00, 0.10, 0.00). See
+`previews/turbo-voice-qualification/` for clips and measured CPU evidence.
+The production job timeout is now 360 minutes for the heavier CPU engine.
 The older Nano observations below are historical. Turbo still needs listening
 review for voice similarity, echo and naturalness; a full-length CPU run is not
 qualified by short clips.

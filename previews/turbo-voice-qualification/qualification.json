@@ -1,0 +1,85 @@
+{
+  "engine": "chatterbox-turbo",
+  "model_revision": "749d1c1a46eb10492095d68fbcf55691ccf137cd",
+  "device": "cpu",
+  "wall_seconds_including_three_model_loads": 317.16,
+  "peak_process_rss_mib": 6606.0,
+  "clips": [
+    {
+      "voice": "female",
+      "file": "female.mp3",
+      "seconds": 3.576,
+      "sha256": "ddf6123d78865303eff77b11078c093bd9ae574508db3f249e63ae2b672b63e0",
+      "audio_review": {
+        "status": "review_required",
+        "issues": [
+          {
+            "category": "uneven_level",
+            "concern": "Voiced RMS spread is 23.9 dB; review whether this dynamic range is intentional."
+          }
+        ],
+        "metrics": {
+          "sample_peak_dbfs": -5.42,
+          "full_scale_sample_fraction": 0.0,
+          "quiet_fraction": 0.2479,
+          "longest_quiet_gap_seconds": 0.27,
+          "voiced_level_spread_db": 23.86
+        },
+        "unassessed": [
+          "Echo/reverberation, natural prosody, acting, timbre and voice similarity require listening or a validated perceptual model.",
+          "These waveform measurements are not a MOS or naturalness score."
+        ]
+      }
+    },
+    {
+      "voice": "male1",
+      "file": "male1.mp3",
+      "seconds": 2.856,
+      "sha256": "c01101732a9a40b73d91f80f716b2ad8723ae3a159f01742a59bd575f96f58e5",
+      "audio_review": {
+        "status": "no_measured_fault_detected",
+        "issues": [],
+        "metrics": {
+          "sample_peak_dbfs": -7.18,
+          "full_scale_sample_fraction": 0.0,
+          "quiet_fraction": 0.1183,
+          "longest_quiet_gap_seconds": 0.27,
+          "voiced_level_spread_db": 17.25
+        },
+        "unassessed": [
+          "Echo/reverberation, natural prosody, acting, timbre and voice similarity require listening or a validated perceptual model.",
+          "These waveform measurements are not a MOS or naturalness score."
+        ]
+      }
+    },
+    {
+      "voice": "male2",
+      "file": "male2.mp3",
+      "seconds": 3.168,
+      "sha256": "69d75bc7039fbbb5372026bbc5a948fa6de5e9da8ea6807bde5b93a40b69ea54",
+      "audio_review": {
+        "status": "review_required",
+        "issues": [
+          {
+            "category": "uneven_level",
+            "concern": "Voiced RMS spread is 22.3 dB; review whether this dynamic range is intentional."
+          }
+        ],
+        "metrics": {
+          "sample_peak_dbfs": -6.04,
+          "full_scale_sample_fraction": 0.0,
+          "quiet_fraction": 0.2019,
+          "longest_quiet_gap_seconds": 0.42,
+          "voiced_level_spread_db": 22.31
+        },
+        "unassessed": [
+          "Echo/reverberation, natural prosody, acting, timbre and voice similarity require listening or a validated perceptual model.",
+          "These waveform measurements are not a MOS or naturalness score."
+        ]
+      }
+    }
+  ],
+  "scope": "Short CPU synthesis and spoken-word qualification; not a full-length episode benchmark or a listening verdict.",
+  "total_audio_seconds": 9.6,
+  "listening_review": "Pending: naturalness, echo and speaker similarity are not certified by ASR or waveform checks."
+}

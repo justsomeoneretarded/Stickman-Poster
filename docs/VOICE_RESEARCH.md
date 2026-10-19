@@ -148,3 +148,18 @@ nonempty; intelligibility and similarity have not been independently reviewed.
 All 14 project tests passed after setup. No accessible user reference sample
 was present, so enrollment, clone listening review, and saved-profile reload
 qualification remain pending.
+
+## Reproduce the short Turbo cast check
+
+After installing the locked voice environment and downloading pinned Turbo and
+ASR weights, run these from the repository root:
+
+```sh
+PYTHONPATH=. work/voice-venv/bin/python ci/turbo_voice_preview.py --out work/turbo-qualification
+work/voice-venv/bin/python -m studio.speech_check --project work/turbo-qualification/project.json --manifest work/turbo-qualification/speech/manifest.json --cast-profiles voices/cast-profiles.json --model-dir models/chatterbox-turbo --asr-model-dir models/asr-base-en
+```
+
+This is manually written test dialogue, not a production story template. The
+manual production workflow still generates the script from each run's title and
+description. Short-clip timing and ASR do not qualify a full episode's runtime,
+voice likeness or naturalness.

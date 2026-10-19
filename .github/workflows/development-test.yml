@@ -73,3 +73,12 @@ jobs:
           retention-days: 7
           path: previews/comedy-two-format-qualification/
           if-no-files-found: error
+
+      - name: Upload locally generated Turbo voice qualification
+        if: hashFiles('previews/turbo-voice-qualification/qualification.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: turbo-three-voice-qualification
+          retention-days: 7
+          path: previews/turbo-voice-qualification/
+          if-no-files-found: error
