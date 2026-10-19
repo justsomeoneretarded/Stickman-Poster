@@ -170,7 +170,11 @@ def main():
     p.add_argument("--variant", choices=["nano", "turbo"], default="nano")
     p.add_argument("--device", default="cpu"); p.add_argument("--model-dir")
     p = sub.add_parser("speak")
-    p.add_argument("project"); p.add_argument("--profile", required=True); p.add_argument("--out", required=True)
+    p.add_argument("project")
+    voices = p.add_mutually_exclusive_group(required=True)
+    voices.add_argument("--profile")
+    voices.add_argument("--cast-profiles", help="Private JSON mapping voice IDs to profile directories")
+    p.add_argument("--out", required=True)
     p.add_argument("--device", default="cpu"); p.add_argument("--model-dir")
     p = sub.add_parser("plan")
     p.add_argument("--title", required=True); p.add_argument("--minutes", type=float, default=10)
@@ -182,8 +186,24 @@ def main():
     p.add_argument("--notes"); p.add_argument("--out", required=True); p.add_argument("--profile", required=True)
     p.add_argument("--device", default="cpu"); p.add_argument("--model-dir")
     p.add_argument("--width", type=int, default=1280); p.add_argument("--fps", type=int, default=30)
+    p = sub.add_parser("generate", help="Title + description -> generated cast script -> voiced video")
+    p.add_argument("--title", required=True)
+    p.add_argument("--description", required=True)
+    p.add_argument("--minutes", type=float, default=1)
+    p.add_argument("--voices", default="female,male1,male2")
+    p.add_argument("--cast-profiles", required=True)
+    p.add_argument("--out", required=True)
+    p.add_argument("--model-dir")
+    p.add_argument("--writer-model-dir")
+    p.add_argument("--asr-model-dir", default="models/asr-base-en")
+    p.add_argument("--resume", action="store_true", help="Reuse completed writing only when request and model revision match")
+    p.add_argument("--width", type=int, default=1280)
+    p.add_argument("--fps", type=int, default=24)
     args = parser.parse_args()
-    if args.command == "render": render_project(args)
+    if args.command == "generate":
+        from .generate import generate
+        generate(args)
+    elif args.command == "render": render_project(args)
     elif args.command == "prepare-reference":
         media.prepare_reference(args.source, args.destination, args.start, args.seconds)
         print("Prepared reference excerpt; no source file was deleted")
@@ -193,7 +213,19 @@ def main():
         print("Private profile enrolled; listening validation is still required")
     elif args.command == "speak":
         from .voice import synthesize_scenes
-        synthesize_scenes(project.load(args.project), args.profile, args.out, args.device, args.model_dir)
+        loaded = project.load(args.project)
+        if args.cast_profiles:
+            from .voice import synthesize_cast
+            mapping_path = Path(args.cast_profiles).resolve()
+            mapping = json.loads(mapping_path.read_text())
+            if not isinstance(mapping, dict) or not all(isinstance(v, str) for v in mapping.values()):
+                raise ValueError("Cast profiles JSON must map voice IDs to profile directory strings")
+            mapping = {k: str(mapping_path.parent / v) for k, v in mapping.items()}
+            synthesize_cast(loaded, mapping, args.out, args.device, args.model_dir)
+        elif loaded.get("cast"):
+            raise ValueError("Cast projects require --cast-profiles; no single-voice substitution")
+        else:
+            synthesize_scenes(loaded, args.profile, args.out, args.device, args.model_dir)
     elif args.command in {"plan", "produce"}:
         from .planner import plan
         notes = Path(args.notes).read_text() if args.notes else ""

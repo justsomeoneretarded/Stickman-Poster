@@ -1,0 +1,110 @@
+name: Generate voiced episode
+run-name: Generate episode from title and description
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: Video title
+        required: true
+        default: What if your coffee could float?
+        type: string
+      description:
+        description: Short story direction or premise (fiction unless supported facts are supplied)
+        required: true
+        default: Three friends discover one floating coffee cup. Surprise, contrasting reactions, and a comic payoff.
+        type: string
+      minutes:
+        description: Target script minutes (.2–10); actual duration follows speech
+        required: true
+        default: '1'
+        type: string
+      voices:
+        description: Character cast
+        required: true
+        default: female,male1,male2
+        type: choice
+        options:
+          - female
+          - male1
+          - male2
+          - female,male1
+          - female,male2
+          - male1,male2
+          - female,male1,male2
+      width:
+        description: Video width
+        type: choice
+        default: '1280'
+        options: ['960', '1280', '1920']
+  push:
+    paths: ['ci/demo-request.json', '.github/workflows/generate.yml']
+permissions:
+  contents: read
+concurrency:
+  group: voiced-episode-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      EPISODE_TITLE: ${{ inputs.title }}
+      EPISODE_DESCRIPTION: ${{ inputs.description }}
+      EPISODE_MINUTES: ${{ inputs.minutes }}
+      EPISODE_VOICES: ${{ inputs.voices }}
+      EPISODE_WIDTH: ${{ inputs.width }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check private profile configuration
+        env:
+          VOICE_PROFILE_KEY: ${{ secrets.VOICE_PROFILE_KEY }}
+        run: |
+          if [ -z "$VOICE_PROFILE_KEY" ]; then
+            echo '::error::Add the repository Actions secret VOICE_PROFILE_KEY. See docs/ACTIONS.md. No stock voice fallback is used.'
+            exit 1
+          fi
+      - name: Install CPU environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core openssl
+          python -m pip install uv==0.12.23
+          uv venv .venv --python 3.12
+          uv pip install --python .venv/bin/python --index-strategy unsafe-best-match -r requirements-voice-cpu.lock
+          uv pip install --python .venv/bin/python --no-deps -e .
+          uv pip check --python .venv/bin/python
+      - name: Restore private profiles
+        env:
+          VOICE_PROFILE_KEY: ${{ secrets.VOICE_PROFILE_KEY }}
+        run: .venv/bin/python -m studio.ci
+      - name: Cache pinned public models
+        uses: actions/cache@v4
+        with:
+          path: models
+          key: models-qwen3-a06e946b-nano-71ccd1d0-asr-3d3d5dee-v1
+      - name: Install pinned local script runtime
+        run: |
+          mkdir -p work/llama-cpu
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b11729/llama-b11729-bin-ubuntu-x64.tar.gz -o work/llama-cpu.tar.gz
+          echo 'ef0db60597825a63534a536bd60d3c290cf82631b2a48461278dc2c9eb436c25  work/llama-cpu.tar.gz' | sha256sum -c -
+          tar -xzf work/llama-cpu.tar.gz -C work/llama-cpu
+      - name: Download public models
+        run: PYTHONPATH=. .venv/bin/python ci/download_models.py
+      - name: Generate script, dialogue, and video
+        run: .venv/bin/python -m studio.actions_entry
+      - name: Upload finished episode only
+        uses: actions/upload-artifact@v4
+        with:
+          name: voiced-episode-${{ github.run_number }}
+          retention-days: 7
+          path: output/episode/deliverables/
+          if-no-files-found: error
+      - name: Remove decrypted voice state
+        if: always()
+        run: rm -rf private

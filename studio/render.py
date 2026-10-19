@@ -9,7 +9,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
 from .project import caption_chunks
 
 W, H = 1920, 1080
@@ -121,7 +121,7 @@ def background(location):
     return im
 
 
-def character(t, action="idle", color="#ea996b", secondary=False):
+def character(t, action="idle", color="#ea996b", secondary=False, speaking=False):
     im = Image.new("RGBA", (420, 650))
     d = ImageDraw.Draw(im)
     root = (205, 405)
@@ -171,7 +171,10 @@ def character(t, action="idle", color="#ea996b", secondary=False):
     for x in (headx-20, headx+20):
         if blink: d.line((x-6,heady-2,x+6,heady-2), fill=WHITE, width=4)
         else: circle(d,x,heady,5,WHITE)
-    if action == "worried":
+    if speaking:
+        opening = 3 + 8 * abs(math.sin(t * 12.7))
+        d.ellipse((headx-11, heady+20-opening/2, headx+11, heady+24+opening), fill=WHITE)
+    elif action == "worried":
         d.arc((headx-16,heady+20,headx+16,heady+48),180,360,fill=WHITE,width=4)
         d.line((headx-29,heady-17,headx-13,heady-24),fill=WHITE,width=4)
         d.line((headx+13,heady-24,headx+29,heady-17),fill=WHITE,width=4)
@@ -182,8 +185,12 @@ def character(t, action="idle", color="#ea996b", secondary=False):
     return im
 
 
-def put_character(image, x, floor, scale, t, action, secondary=False, levitate=False):
-    body = character(t, action, "#79baa9" if secondary else "#ea996b", secondary)
+def put_character(image, x, floor, scale, t, action, secondary=False, levitate=False, color=None, speaking=False, tilt=0, facing_left=False):
+    body = character(t, action, color or ("#79baa9" if secondary else "#ea996b"), secondary, speaking)
+    if facing_left:
+        body = ImageOps.mirror(body)
+    if tilt:
+        body = body.rotate(tilt, Image.Resampling.BICUBIC, center=(205, 575))
     w, h = round(body.width*scale), round(body.height*scale)
     body = body.resize((w,h),Image.Resampling.LANCZOS)
     lift = (95+math.sin(t*2)*18) if levitate else 0
@@ -215,7 +222,74 @@ def frame(scene, local_t, width, height, preview=True):
         d.rounded_rectangle((1110,650,1620,677),radius=8,fill="#b29288")
         d.rectangle((1140,676,1154,845),fill="#1a2132")
         d.rectangle((1580,676,1594,845),fill="#1a2132")
-    if scene["location"] == "diagram":
+    focus_x = W / 2
+    if scene.get("cast_members"):
+        members = scene["cast_members"]
+        positions = {1: [850], 2: [640, 1280], 3: [430, 960, 1490]}[len(members)]
+        colors = {"female": "#ea996b", "male1": "#79baa9", "male2": "#a795df"}
+        duration = max(scene["duration"], .01)
+        progress = min(1, t / duration)
+        entrance = min(1, t / min(1.6, duration*.35))
+        ease = entrance * entrance * (3 - 2 * entrance)
+        cinematic = scene.get("cinematic", False)
+        speaker_x = positions[0]
+        speaker_y = 850
+        for i, (member, base_x) in enumerate(zip(members, positions)):
+            speaking = member["id"] == scene["speaker"]
+            x = base_x
+            action = scene["action"] if speaking else "idle"
+            moving = False
+            if cinematic and speaking:
+                movement = scene.get("movement", "stay")
+                if movement == "enter":
+                    x += (-280 if base_x < 960 else 280) * (1-ease)
+                    moving = entrance < 1
+                elif movement == "cross":
+                    x += 140 * math.sin(progress * math.pi)
+                    moving = .05 < progress < .95
+                elif movement == "approach":
+                    x += (960-base_x) * .30 * ease
+                    moving = entrance < 1
+                if moving:
+                    action = "walk"
+                elif scene.get("prop", "none") != "none" and action == "idle":
+                    action = "point"
+            elif cinematic and .25 < progress < .45:
+                action = "think" if i % 2 else "worried"
+            floor = 850 + (abs(math.sin(t*7))*5 if moving else 0)
+            tilt = (math.sin(t*2+i)*1.5 if cinematic else 0)
+            put_character(im, x, floor, .83, t+i*.4, action,
+                          color=colors.get(member["voice"], ["#ea996b", "#79baa9", "#a795df"][i]),
+                          speaking=speaking and cinematic, tilt=tilt,
+                          levitate=action == "float", facing_left=cinematic and x > 1150)
+            d = ImageDraw.Draw(im)
+            if not cinematic:
+                fit_text(d, member["name"] + (" · speaking" if speaking else ""), x, 885, 24, 450,
+                         TEAL if speaking else WHITE)
+            if speaking:
+                speaker_x, speaker_y = x, floor
+        focus_x = speaker_x
+        if cinematic and scene.get("prop", "none") != "none":
+            # Prop motion is tied to the acting beat, with anticipation and settling.
+            drift = math.sin(t*1.7)*18
+            px = 1170 + math.sin(t*.65)*35
+            py = speaker_y - 235 - 55 * math.sin(progress*math.pi) + drift
+            kind = scene["prop"]
+            if kind == "cup":
+                prop(im, px, py, math.sin(t*1.2)*9)
+            elif kind == "orb":
+                glow(im, (px, py), 110, "#56e2d0", 100)
+                d = ImageDraw.Draw(im)
+                circle(d, px, py, 30, TEAL, WHITE, 3)
+                for j in range(7):
+                    a = t*1.3 + j*math.tau/7
+                    circle(d, px+62*math.cos(a), py+40*math.sin(a), 3, GOLD)
+            elif kind == "phone":
+                d = ImageDraw.Draw(im)
+                d.rounded_rectangle((px-27,py-46,px+27,py+46), radius=8, fill="#111827", outline=GOLD,width=3)
+                d.rectangle((px-20,py-33,px+20,py+29),fill="#467c9a")
+                circle(d,px,py+37,3,WHITE)
+    elif scene["location"] == "diagram":
         put_character(im,430,815,.79,t,"point")
         d=ImageDraw.Draw(im)
         d.ellipse((920,310,1430,790),outline="#3c6974",width=3)
@@ -241,16 +315,28 @@ def frame(scene, local_t, width, height, preview=True):
                 circle(d,px+math.cos(a)*r,py+math.sin(a)*r*.65,2+i%3,(112,236,220,130))
     # Subtle deterministic camera push; HUD and captions remain screen-space.
     zoom=1+(scene.get("camera_zoom",1)-1)*min(1,t/max(scene["duration"],.01))
+    if scene.get("cinematic"):
+        shot_zoom = {"wide": 1.0, "medium": 1.12, "close": 1.48}.get(scene.get("shot"), 1.0)
+        zoom *= shot_zoom
     if zoom>1:
         cw,ch=W/zoom,H/zoom
-        im=im.crop(((W-cw)/2,(H-ch)/2,(W+cw)/2,(H+ch)/2)).resize((W,H),Image.Resampling.LANCZOS)
+        cx = min(W-cw/2, max(cw/2, W/2 + (focus_x-W/2)*.65)) if scene.get("cinematic") else W/2
+        cy = H/2 + (30 if scene.get("shot") == "close" else 0)
+        cy = min(H-ch/2, max(ch/2, cy))
+        im=im.crop((cx-cw/2,cy-ch/2,cx+cw/2,cy+ch/2)).resize((W,H),Image.Resampling.LANCZOS)
     d=ImageDraw.Draw(im)
     d.rectangle((0,0,W,61),fill="#080e1b")
     d.rectangle((0,1018,W,H),fill="#080e1b")
-    d.rounded_rectangle((100,100,330,140),radius=20,fill="#20384a")
-    d.text((125,109),"A WHAT-IF STORY",font=font(17,True),fill=TEAL)
-    fit_text(d,scene.get("heading",""),100,192,42,1660,bold=True,anchor="lm")
-    fit_text(d,scene.get("label",""),100,245,25,1660,fill="#c9bfcd",anchor="lm")
+    if scene.get("cinematic"):
+        fit_text(d, scene.get("heading", ""), 100, 105, 28, 1660, bold=True, anchor="lm")
+        name = next((m["name"] for m in scene.get("cast_members", []) if m["id"] == scene.get("speaker")), "")
+        d.rounded_rectangle((100, 850, 360, 902), radius=14, fill="#101a2c")
+        fit_text(d, name, 230, 877, 24, 230, TEAL, True)
+    else:
+        d.rounded_rectangle((100,100,330,140),radius=20,fill="#20384a")
+        d.text((125,109),"A WHAT-IF STORY",font=font(17,True),fill=TEAL)
+        fit_text(d,scene.get("heading",""),100,192,42,1660,bold=True,anchor="lm")
+        fit_text(d,scene.get("label",""),100,245,25,1660,fill="#c9bfcd",anchor="lm")
     # Estimated phrase captions, deliberately not claimed as forced alignment.
     words=scene.get("narration","").split()
     chunks=caption_chunks(scene.get("narration",""))

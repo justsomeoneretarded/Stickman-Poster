@@ -117,3 +117,33 @@ def synthesize_scenes(project, profile, out, device="cpu", model_dir=None):
                 "engine": "chatterbox", "entries": entries}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2))
     return manifest
+
+
+def synthesize_cast(project, profiles, out, device="cpu", model_dir=None):
+    """Route each dialogue turn to its assigned private voice, never a fallback."""
+    from .project import validate
+    validate(project)
+    if not project.get("cast"):
+        raise ValueError("Cast synthesis requires a project cast")
+    if not isinstance(profiles, dict):
+        raise ValueError("Voice profiles must be a mapping")
+    by_id = {m["id"]: m for m in project["cast"]}
+    voices = list(dict.fromkeys(by_id[s["speaker"]]["voice"] for s in project["scenes"]))
+    for voice in voices:
+        if voice not in profiles:
+            raise ValueError(f"Missing profile for voice {voice}; no fallback voice was used")
+        folder = Path(profiles[voice])
+        if not (folder / "profile.json").is_file() or not (folder / "conditioning.pt").is_file():
+            raise ValueError(f"Incomplete profile for voice {voice}")
+    out = Path(out)
+    entries = {}
+    for i, voice in enumerate(voices):
+        scenes = [s for s in project["scenes"] if by_id[s["speaker"]]["voice"] == voice]
+        folder = f"voice-{i:02}"
+        manifest = synthesize_scenes({**project, "scenes": scenes}, profiles[voice], out / folder, device, model_dir)
+        for scene, entry in zip(scenes, manifest["entries"]):
+            entries[scene["id"]] = {**entry, "file": folder + "/" + entry["file"], "speaker": scene["speaker"], "voice": voice}
+    manifest = {"schema_version": 1, "engine": "chatterbox", "voice": "character cast; listening review required",
+                "entries": [entries[s["id"]] for s in project["scenes"]]}
+    (out / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    return manifest

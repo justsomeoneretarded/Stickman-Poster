@@ -26,6 +26,16 @@ def validate(project):
     scenes = project.get("scenes")
     if not isinstance(scenes, list) or not 1 <= len(scenes) <= 180:
         raise ValueError("Expected 1–180 scenes")
+    cast = project.get("cast", [])
+    if not isinstance(cast, list) or len(cast) > 3:
+        raise ValueError("cast must contain at most three characters")
+    cast_ids = set()
+    for member in cast:
+        if not isinstance(member, dict) or not all(isinstance(member.get(k), str) and member[k].strip() for k in ("id", "name", "voice")):
+            raise ValueError("Cast members require id, name, and voice")
+        if member["id"] in cast_ids or len(member["name"]) > 24:
+            raise ValueError("Cast IDs must be unique and names at most 24 characters")
+        cast_ids.add(member["id"])
     ids = set()
     for scene in scenes:
         if not isinstance(scene, dict):
@@ -34,6 +44,14 @@ def validate(project):
         if not isinstance(sid, str) or not sid or sid in ids:
             raise ValueError("Scene IDs must be unique nonempty strings")
         ids.add(sid)
+        if cast:
+            visible = scene.get("characters", [m["id"] for m in cast])
+            if not isinstance(visible, list) or not 1 <= len(visible) <= 3 or not all(isinstance(x, str) and x in cast_ids for x in visible) or len(set(visible)) != len(visible):
+                raise ValueError("Scene characters must reference one to three distinct cast IDs")
+            if scene.get("speaker") not in visible:
+                raise ValueError("Every cast scene needs a visible speaker")
+        elif "speaker" in scene or "characters" in scene:
+            raise ValueError("Speaker and characters require a cast")
         if scene.get("location") not in LOCATIONS:
             raise ValueError(f"Unknown location in {sid}")
         if scene.get("action") not in ACTIONS:
@@ -47,7 +65,12 @@ def validate(project):
             raise ValueError("Split long narration into shorter scenes")
         if len(scene.get("heading", "")) > 72 or len(scene.get("label", "")) > 90:
             raise ValueError("Headings and labels must fit the layout")
-        for flag in ("secondary", "levitate"):
+        for field, allowed in (("shot", {"wide", "medium", "close"}),
+                               ("prop", {"none", "cup", "phone", "orb"}),
+                               ("movement", {"stay", "enter", "cross", "approach"})):
+            if field in scene and scene[field] not in allowed:
+                raise ValueError(f"Unsupported {field} in {sid}")
+        for flag in ("secondary", "levitate", "cinematic"):
             if flag in scene and not isinstance(scene[flag], bool):
                 raise ValueError(f"{flag} must be boolean")
         if "camera_zoom" in scene and (not finite_number(scene["camera_zoom"]) or not 1 <= scene["camera_zoom"] <= 1.12):
@@ -67,7 +90,11 @@ def timeline(project, fps):
     result, cursor = [], 0
     for scene in project["scenes"]:
         frames = max(1, round(scene["duration"] * fps))
-        result.append({**scene, "start_frame": cursor, "frames": frames})
+        resolved = dict(scene)
+        if project.get("cast"):
+            visible = scene.get("characters", [m["id"] for m in project["cast"]])
+            resolved["cast_members"] = [m for m in project["cast"] if m["id"] in visible]
+        result.append({**resolved, "start_frame": cursor, "frames": frames})
         cursor += frames
     return result
 
@@ -116,7 +143,9 @@ def write_package(project, scenes, fps, out):
     srt = "\n\n".join(f"{i}\n{srt_time(a)} --> {srt_time(b)}\n{text}"
                           for i, (a, b, text) in enumerate(cues, 1))
     (out / "captions.srt").write_text(srt + "\n", encoding="utf-8")
-    (out / "script.txt").write_text("\n\n".join(s["narration"] for s in scenes), encoding="utf-8")
+    names = {m["id"]: m["name"] for m in project.get("cast", [])}
+    lines = [(names[s["speaker"]] + ": " if s.get("speaker") in names else "") + s["narration"] for s in scenes]
+    (out / "script.txt").write_text("\n\n".join(lines), encoding="utf-8")
     chapters = []
     for scene in scenes:
         sec = int(scene["start_frame"] / fps)

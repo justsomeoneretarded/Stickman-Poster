@@ -1,11 +1,18 @@
 # Stickman Studio — development prototype
 
+**New:** [Generate an episode with GitHub Actions](docs/ACTIONS.md): enter a title
+and short description, choose one to three voices, and download the generated
+script and voiced video artifact. Private voice-secret setup is required once.
+Local model scripting and character dialogue are now implemented; artistic and
+voice qualification remain ongoing.
+
 An original, CPU-only animation benchmark with measured audio/scene timing,
 captions, posting metadata and an optional private voice-cloning adapter.
 
 **Status:** early prototype, not a finished automatic YouTube channel. The renderer
 is implemented and locally tested. Voice enrollment/inference requires an accessible
-sample and downloaded model weights and has not yet been qualified in this environment.
+sample and downloaded model weights. Nano CPU inference passed a bundled-voice smoke
+test; user voice enrollment and similarity remain unqualified.
 The sample project is an original fictional fixture, not a generated result from
 an arbitrary title. No reference video art, scripts, voice recordings or models are
 included. The Pillow backend is a minimal portability benchmark; Motion Canvas
@@ -51,7 +58,7 @@ py -3.12 -m venv .venv
 No Node dependency is needed for this first backend. Company download policy and
 certificate verification still apply; no security bypass is part of this project.
 
-## Voice workflow (adapter prepared; inference qualification pending)
+## Voice workflow (Nano CPU smoke passed; clone qualification pending)
 
 Use a separate voice environment; the heavier model's dependencies should not
 destabilize the small rendering environment.
@@ -61,7 +68,8 @@ destabilize the small rendering environment.
    Chatterbox conditioning. More audio is not automatically better.
 2. Install `requirements-voice.txt` into the separate environment with Git available.
    This pins the inspected Chatterbox code revision; full transitive locking and
-   actual installation qualification remain to be done. Upstream documents Python
+   user clone qualification remain to be done. A Linux Python 3.12 CPU installation
+   snapshot is available in `requirements-voice-cpu.lock`. Upstream documents Python
    3.11 as tested; try that environment if 3.12 resolution fails.
 3. Model downloads need access to Hugging Face and its asset hosts. No paid API is
    necessary. No model download is attempted by the public CI workflow.
@@ -137,7 +145,8 @@ but cannot be claimed as run on GitHub until a repository and run result exist.
 - No automatic ASR verification, speaker similarity score, music/SFX composer,
   chapter eligibility check, independent fact checker or YouTube uploader yet.
 - Thumbnail is a scene preview, not an optimized final publishing thumbnail.
-- Voice profile caching API is source-reviewed; actual clone fidelity and speed
+- Nano CPU bundled-voice inference passed; profile caching is source-reviewed.
+  Actual clone fidelity and speed
   remain untested. See docs/VOICE_RESEARCH.md.
 - Renderer dependencies have bounded ranges, not a complete cross-platform lock.
   Pin/lock after qualifying the intended runner.
@@ -149,3 +158,49 @@ retain their own licenses. No upstream animation code has been copied. Direction
 research included kaomei/stickman-video-director and nispa/stickman-video; no skill
 was installed or used to generate this fixture. See docs/VOICE_RESEARCH.md for
 audio licensing and evidence boundaries.
+
+## Qualified Linux CPU voice setup
+
+```sh
+uv venv work/voice-venv --python 3.12
+uv pip install --python work/voice-venv/bin/python --index-strategy unsafe-best-match -r requirements-voice-cpu.lock
+uv pip check --python work/voice-venv/bin/python
+```
+
+Use `work/voice-venv/bin/python -m studio.cli` from the project root for the
+voice commands above, adding `--model-dir models/chatterbox-nano` to enroll
+and speak. The model directory is private/ignored. The qualified model revision
+is `71ccd1d0081b430592cea481f4307e764e07bc64`; the recorded CPU smoke used
+the upstream bundled voice, not a user clone. See `docs/VOICE_RESEARCH.md`.
+
+## Character voices: one, two, or three speakers
+
+Use a project `cast` with one to three members, each with `id`, `name`, and
+`voice`. Each scene is one dialogue turn: `speaker` selects the character and
+`characters` lists the visible cast (one to three IDs). A video can use any
+subset of the three voices. Characters keep their voice across turns; the
+renderer labels the active speaker. This is turn-taking, not overlapping speech
+or phoneme lip sync. `examples/three-friends.json` demonstrates all three.
+
+Keep profile paths in a private JSON mapping, for example `private/cast-profiles.json`:
+
+```json
+{
+  "female": "profiles/female",
+  "male1": "profiles/male1-kit-laser",
+  "male2": "profiles/male2-warguy"
+}
+```
+
+Paths resolve relative to that mapping file. Generate narration and render:
+
+```sh
+work/voice-venv/bin/python -m studio.cli speak examples/three-friends.json --cast-profiles private/cast-profiles.json --out private/three-friends/speech --model-dir models/chatterbox-nano
+.venv/bin/python -m studio.cli render examples/three-friends.json --audio-manifest private/three-friends/speech/manifest.json --out private/three-friends/render --width 960 --fps 24
+```
+
+The cast example uses fictional character names. Recordings, conditioning, and
+voiced output remain private. Missing voice profiles fail before synthesis.
+Legacy single-narrator projects continue using `--profile`. Automatic title-based
+planning/`produce` remains single-narrator; authored cast projects use `speak`
+and `render` above. Voice likeness still requires listening review.

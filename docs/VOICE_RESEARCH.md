@@ -3,8 +3,8 @@
 Goal: realistic English narration matching the supplied speaker, no paid inference
 API, reusable private voice state, and a CPU-capable development path. These are
 source-review judgments, not listening-test rankings. No clone has been generated:
-the uploaded MP3 exceeds this executor's 32 MiB transfer limit. The environment's
-outbound policy does not currently list Hugging Face for model downloads either.
+the uploaded MP3 exceeds this executor's 32 MiB transfer limit. The earlier environment blocked model-download preparation; see the current
+network preflight below.
 
 ## Candidate ranking for this deployment
 
@@ -84,3 +84,45 @@ information and acoustic features; deleting the MP3 does not remove those featur
 or guarantee the voice cannot be recreated. Profiles stay private. No audio or
 profile is placed in public GitHub artifacts. Chat attachment deletion is controlled
 by the chat product, not this program.
+
+## Network preflight — 19 October 2026
+
+The active executor's `/etc/codex/network-policy.json` reports version 1,
+unrestricted HTTP access through the inherited proxy, no configured VPN, and
+no explicit TCP destinations. Live environment status reports running/connected
+and unrestricted policy, but enforcement state is `unknown`; enforcement readiness
+is therefore not established by that status alone.
+
+Actual HTTPS requests with inherited proxy settings and TLS verification enabled:
+
+- `https://huggingface.co`: HEAD returned HTTP 200.
+- Nano model API: GET succeeded; repository is not gated, revision
+  `71ccd1d0081b430592cea481f4307e764e07bc64`.
+- `t3_nano_v1.safetensors` at that revision: HEAD followed asset redirects and
+  returned HTTP 200. This checks the asset route without downloading weights.
+
+No voice weights were downloaded by this preflight. Full model transfer and
+inference remain unqualified, and the earlier reference-audio transfer limitation
+is not resolved by network access. Existing project validation: 14 tests passed.
+
+## Nano CPU qualification — 19 October 2026
+
+The live environment now reports unrestricted HTTP policy as `enforced`.
+Installed the pinned Chatterbox source into `work/voice-venv` on Linux Python
+3.12.14, with CPU-only Torch/Torchaudio 2.6.0. `uv pip check` passes. The
+resolved dependency snapshot is `requirements-voice-cpu.lock`, including the
+resolved Perth commit rather than its moving master branch.
+
+Downloaded Nano revision `71ccd1d0081b430592cea481f4307e764e07bc64`
+into ignored `models/chatterbox-nano`. Downloaded only the weights needed by
+the inspected loader, tokenizer/configuration files, and bundled conditioning.
+A local CPU smoke test with HF Hub offline mode succeeded using upstream bundled
+conditioning. This is a stock technical test, not the user's clone.
+
+Measured one short run: 7.07 seconds model load, 28.37 seconds generation,
+5.2 seconds output at 24 kHz, real-time factor 5.46, peak process RSS 4275 MiB.
+These numbers are not a long-form throughput estimate. Audio is finite and
+nonempty; intelligibility and similarity have not been independently reviewed.
+All 14 project tests passed after setup. No accessible user reference sample
+was present, so enrollment, clone listening review, and saved-profile reload
+qualification remain pending.

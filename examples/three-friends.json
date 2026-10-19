@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "title": "Ten seconds, three friends",
+  "description": "An original fictional three-character voice-switching preview.",
+  "keywords": [
+    "fiction",
+    "gravity",
+    "dialogue"
+  ],
+  "cast": [
+    {
+      "id": "maya",
+      "name": "Maya",
+      "voice": "female"
+    },
+    {
+      "id": "leo",
+      "name": "Leo",
+      "voice": "male1"
+    },
+    {
+      "id": "max",
+      "name": "Max",
+      "voice": "male2"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "turn-1",
+      "duration": 6,
+      "location": "stage",
+      "action": "point",
+      "heading": "TEN SECONDS, THREE FRIENDS",
+      "label": "A fictional what-if conversation.",
+      "narration": "If gravity vanished for ten seconds, what would you grab first?",
+      "speaker": "maya",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ]
+    },
+    {
+      "id": "turn-2",
+      "duration": 6,
+      "location": "stage",
+      "action": "think",
+      "heading": "TEN SECONDS, THREE FRIENDS",
+      "label": "A fictional what-if conversation.",
+      "narration": "The table! I would rather stay put than chase my breakfast.",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ]
+    },
+    {
+      "id": "turn-3",
+      "duration": 6,
+      "location": "stage",
+      "action": "point",
+      "heading": "TEN SECONDS, THREE FRIENDS",
+      "label": "A fictional what-if conversation.",
+      "narration": "I would grab both of you. Breakfast can wait.",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ]
+    }
+  ]
+}
