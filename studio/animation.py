@@ -28,7 +28,7 @@ def blocking_for(cast, speaker, staging):
     for i,cid in enumerate(ids):
         result[cid]['phase_offset']=i*.85
     runner = next((m['id'] for m in cast if m['voice']=='male1'), ids[0])
-    officer = next((m['id'] for m in cast if m['voice']=='male2'), ids[-1])
+    officer = next((m['id'] for m in cast if m['voice']=='male2' and m['id']!=runner), next((cid for cid in ids if cid!=runner),runner))
     if staging == 'chase':
         result[runner].update(start=.20,end=1.04,motion='run',prop='bag')
         if officer != runner:

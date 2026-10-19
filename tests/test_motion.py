@@ -18,6 +18,11 @@ class MotionTests(unittest.TestCase):
             self.assertGreater(positions[-1]-positions[0],1500)
         for t in (0,2,5,8,10):
             self.assertGreater(actor_state(paths['leo'],t,10,'chase')['x']-actor_state(paths['max'],t,10,'chase')['x'],350)
+    def test_two_character_chase_uses_distinct_runner_and_pursuer(self):
+        tracks=blocking_for(CAST[:2],'maya','chase')
+        self.assertTrue(all(t['motion']=='run' and t['end']>t['start'] for t in tracks.values()))
+        self.assertNotEqual(tracks['maya']['start'],tracks['leo']['start'])
+
     def test_drink_lifts_to_mouth_and_returns_to_table(self):
         rest,_=drink_hand(0);mouth,amount=drink_hand(.5);returned,_=drink_hand(1)
         self.assertEqual(rest,returned)
