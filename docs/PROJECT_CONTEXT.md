@@ -227,3 +227,19 @@ CPU runners; larger episodes retain a larger context. Added motion metrics to
 artifacts and tests for actual displacement, cup contact poses, new locations,
 and paragraph continuity. Next step is hosted generation and inspection of
 the requested three-minute episode, with actual duration reported honestly.
+
+## Long-form qualification defects found and correction
+
+Run 39272182436 completed but its output was only 141.5 seconds (372 words),
+so it was not accepted as the requested three-minute delivery. Inspection also
+found third-person stage directions being read aloud and a premise cop-out
+claiming the theft never happened. The actor movement and new locations worked;
+these script/duration defects are being corrected before final delivery.
+
+Added dialogue-style validation, explicit required locations, a 160-word/minute
+writing budget calibrated against actual output, and an automatic revision mode
+that takes the previous machine-generated project as a seed. The rejected
+generated project is preserved as ci/bank-generated-seed.json for provenance;
+its dialogue was not manually rewritten. The new pass must produce spoken
+dialogue, maintain the fictional theft/uncatchable premise, show all five
+requested locations, and target a tighter word budget.

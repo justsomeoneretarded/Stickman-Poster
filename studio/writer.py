@@ -2,6 +2,8 @@
 import argparse
 import json
 import math
+import re
+import hashlib
 import sys
 import time
 from pathlib import Path
@@ -40,6 +42,14 @@ def parse_story(raw, voices):
     if set(b['speaker'] for b in story['beats']) != set(voices):
         raise ValueError('The script must use every selected voice')
     return story
+
+
+def validate_spoken_style(story):
+    direction=re.compile(r"^(?:Maya|Leo|(?:Officer\s+)?Max)\s+(?:stands?|strides?|darts?|walks?|runs?|sprints?|lifts?|takes?|sips?|looks?|smiles?|turns?|grins?|hands?|stops?|shakes?|steps?)\b",re.I)
+    for beat in story['beats']:
+        text=beat['text'].strip().strip("\"'“”‘’")
+        if direction.search(text) or re.match(r"^(?:Maya|Leo|(?:Officer\s+)?Max)\s*:",text,re.I):
+            raise ValueError('Text contains spoken stage directions. Rewrite every text field as dialogue only, without third-person actor descriptions.')
 
 
 def compile_project(story, title, description, voices):
@@ -93,14 +103,18 @@ def write(request, out, model_dir=None):
         raise ValueError('Target length must be .2–10 minutes')
     if not isinstance(voices, list) or not 1 <= len(voices) <= 3 or any(v not in VOICE_NAMES for v in voices) or len(set(voices)) != len(voices):
         raise ValueError('Choose distinct voices from female,male1,male2')
+    required_locations=request.get('required_locations',[])
+    if not isinstance(required_locations,list) or any(x not in LOCATIONS for x in required_locations):
+        raise ValueError('Required locations must use supported environments')
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     beats = max(len(voices), min(100, math.ceil(minutes * 6)))
-    words = max(8, round(minutes * 140 / beats))
+    words = max(8, round(minutes * 160 / beats))
     system = f'''You write original animated stories from a title and a short description.
-Return ONLY valid JSON: {{"beats":[{{"speaker":"VOICE_ID","text":"spoken dialogue","location":"room","action":"point","shot":"medium","prop":"none","movement":"stay","staging":"travel"}}]}}.
-Write exactly {beats} beats, about {words} words per beat. Use ALL and ONLY these speaker IDs: {', '.join(voices)}.
-One speaker per beat. Write real dialogue with a concrete opening, escalation, reactions, and a satisfying final payoff.
+Return ONLY valid JSON: {{"beats":[{{"speaker":"VOICE_ID","text":"spoken dialogue","location":"room","shot":"medium","prop":"none","staging":"travel"}}]}}.
+Write exactly {beats} beats, about {words} words per beat. Total spoken words must be close to {round(minutes*160)}. Required locations: {', '.join(required_locations) or 'choose appropriately'}. Use ALL and ONLY these speaker IDs: {', '.join(voices)}.
+One speaker per beat. The text field is ONLY words spoken aloud by that speaker. Use first-person speech or direct address. Do not write third-person stage directions such as 'Leo runs', 'Maya stands', 'Max looks', or speaker labels. Do not wrap dialogue in a description of the actor.
+Write real dialogue with a concrete opening, escalation, reactions, and a satisfying final payoff.
 For one voice use engaging narration. For multiple voices let characters respond to each other with distinct perspectives.
 Voice identities: female is Maya, male1 is Leo, male2 is Officer Max when the story involves police.
 Tell one continuous sequence of concrete events. Do not replace events with repetitive slogans about being seen, being real, warmth, shadows, or memories.
@@ -127,27 +141,42 @@ Do not include music, sound directions, speaker labels, or stage directions insi
         'items': {'type': 'object', 'properties': {
             'speaker': {'type': 'string', 'enum': voices}, 'text': {'type': 'string'},
             'location': {'type': 'string', 'enum': sorted(LOCATIONS)},
-            'action': {'type': 'string', 'enum': sorted(ACTIONS)},
             'shot': {'type': 'string', 'enum': sorted(SHOTS)},
             'prop': {'type': 'string', 'enum': sorted(PROPS)},
-            'movement': {'type': 'string', 'enum': sorted(MOVEMENTS)},
             'staging': {'type': 'string', 'enum': sorted(STAGINGS)}},
-            'required': ['speaker', 'text', 'location', 'action', 'shot', 'prop', 'movement', 'staging'], 'additionalProperties': False}}},
+            'required': ['speaker', 'text', 'location', 'shot', 'prop', 'staging'], 'additionalProperties': False}}},
         'required': ['beats'], 'additionalProperties': False}
+    seed=None
+    seed_hash=None
+    if request.get('revise_project'):
+        from .project import load
+        source=Path(request['revise_project'])
+        old=load(source)
+        by_id={m['id']:m['voice'] for m in old['cast']}
+        seed={'beats':[{'speaker':by_id[s['speaker']],'text':s['narration'],
+                        'location':s['location'],'shot':s.get('shot','wide'),
+                        'prop':s.get('prop','none'),'staging':s.get('staging','talk')} for s in old['scenes']]}
+        seed_hash=hashlib.sha256(source.read_bytes()).hexdigest()
     with LocalWriter(model_dir or 'models/script-qwen3', out, context=12288 if beats<=30 else 24576) as writer:
-        return finish_writing(writer, schema, system, title, description, voices, beats, words, minutes, out, started)
+        return finish_writing(writer, schema, system, title, description, voices, beats, words, minutes, out, started,seed,seed_hash,required_locations)
 
 
-def finish_writing(writer, schema, system, title, description, voices, beats, words, minutes, out, started):
+def finish_writing(writer, schema, system, title, description, voices, beats, words, minutes, out, started,seed=None,seed_hash=None,required_locations=()):
     def complete(messages):
         return writer.complete(messages, schema, min(14000, 320+beats*(words*2+100)))
 
     messages = [{'role': 'system', 'content': system}, {'role': 'user', 'content': f'Title: {title}\nDescription: {description}'}]
-    drafts = []
-    for stage in ('draft', 'revision'):
+    drafts = [seed] if seed else []
+    if seed:
+        (out/'draft.json').write_text(json.dumps(seed,indent=2),encoding='utf-8')
+    premise_instruction=("The theft must actually occur within the imagined story; never end by saying nothing happened or no crime occurred. "
+                         if 'bank' in title.lower() and 'caught' in title.lower()
+                         else "Preserve the title's central premise and the requested story direction. ")
+    stages=('revision',) if seed else ('draft','revision')
+    for stage in stages:
         if stage == 'revision':
             messages += [{'role': 'assistant', 'content': json.dumps(drafts[-1])},
-                         {'role': 'user', 'content': 'Revise the full story. Strengthen the opening and payoff, fix repetition, continuity, and awkward speech. Keep all selected speakers and the same number of beats. Preserve the requested tone and comic payoff if requested. Keep one coherent sequence and only the original impossible premise. Remove repeated abstract slogans and any extra powers. Make each action match its staging and actor identities exactly. Keep the requested word budget. Show travel, chase or object contact in at least half the beats when it fits the requested story, and keep location changes explicit. End with a specific action or joke grounded in the opening, not an abstract signal or mystery. Keep it fictional and fit supported visuals. Return the complete JSON object.'}]
+                         {'role': 'user', 'content': 'Revise the full story. This previous generated draft may contain spoken stage directions or dodge the requested premise. Replace those defects completely, and produce the requested spoken word budget with dialogue only. ' + premise_instruction + 'Strengthen the opening and payoff, fix repetition, continuity, and awkward speech. Keep all selected speakers and the same number of beats. Preserve the requested tone and comic payoff if requested. Keep one coherent sequence and only the original impossible premise. Remove repeated abstract slogans and any extra powers. Make each action match its staging and actor identities exactly. Keep the requested word budget. Show travel, chase or object contact in at least half the beats when it fits the requested story, and keep location changes explicit. End with a specific action or joke grounded in the opening, not an abstract signal or mystery. Keep it fictional and fit supported visuals. Return the complete JSON object.'}]
         attempt_messages=messages
         for attempt in range(3):
             raw = complete(attempt_messages)
@@ -158,12 +187,21 @@ def finish_writing(writer, schema, system, title, description, voices, beats, wo
                     raise ValueError(f'Expected exactly {beats} beats')
                 if minutes>=1:
                     total=sum(len(b['text'].split()) for b in story['beats'])
-                    target=round(minutes*140)
-                    if not target*.88<=total<=target*1.12:
+                    target=round(minutes*160)
+                    if not target*.96<=total<=target*1.04:
                         raise ValueError(f'Use approximately {target} spoken words in total; current script has {total}. Keep {beats} beats.')
                     moving=sum(b.get('staging') in {'travel','enter','chase','carry','handoff'} for b in story['beats'])
                     if moving<math.ceil(beats*.4) or len({b.get('location') for b in story['beats']})<3:
                         raise ValueError('Use at least three locations and real actor travel in at least 40 percent of the beats.')
+                missing=set(required_locations)-{b.get('location') for b in story['beats']}
+                if missing:
+                    raise ValueError(f'Include all required locations; missing {sorted(missing)}')
+                if len(voices)>1:
+                    validate_spoken_style(story)
+                if 'bank' in title.lower() and 'caught' in title.lower():
+                    dialogue=' '.join(b['text'] for b in story['beats'])
+                    if re.search(r"never (?:took|robbed|stole)|you didn.t take|never did anything|no crime|nothing happened|only imagined it|just a dream",dialogue,re.I):
+                        raise ValueError('Do not erase the premise: the fictional theft occurs, police cannot catch Leo, and he voluntarily returns the bag. Rewrite the story without denying that it happened.')
                 break
             except ValueError as exc:
                 if attempt == 2:
@@ -175,9 +213,9 @@ def finish_writing(writer, schema, system, title, description, voices, beats, wo
     project = compile_project(drafts[-1], title, description, voices)
     (out / 'project.json').write_text(json.dumps(project, indent=2), encoding='utf-8')
     count = sum(len(s['narration'].split()) for s in project['scenes'])
-    report = {'model': MODEL_ID, 'revision': MODEL_REVISION, 'quantization': 'Q4_K_M', 'runtime': 'llama.cpp b11729 CPU', 'passes': ['draft', 'editorial revision'],
+    report = {'model': MODEL_ID, 'revision': MODEL_REVISION, 'quantization': 'Q4_K_M', 'runtime': 'llama.cpp b11729 CPU', 'passes': ['revision of previous generated project'] if seed else ['draft', 'editorial revision'], 'seed_project_sha256': seed_hash,
               'seconds': time.perf_counter()-started, 'word_count': count, 'target_minutes': minutes,
-              'estimated_speech_minutes': count/140, 'selected_voices': voices,
+              'estimated_speech_minutes': count/160, 'selected_voices': voices,
               'factual_status': 'generated fiction; no external fact verification',
               'timing_note': 'word budget is approximate; final duration follows measured speech'}
     (out / 'writer-report.json').write_text(json.dumps(report, indent=2))

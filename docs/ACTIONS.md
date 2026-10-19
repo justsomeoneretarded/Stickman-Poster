@@ -113,3 +113,11 @@ The bank-story demo targets three minutes of generated dialogue, not an exact
 The crime premise is fictional and is not a practical robbery/evasion guide.
 Paragraph speech grouping was improved; the reported echo/robotic quality is
 still awaiting engine auditions and human listening review.
+
+Long-form word budgets now use 160 words/minute, calibrated against actual
+synthesis. Multi-character dialogue rejects leading stage directions and
+spoken character labels. `--revise-project` lets the model revise a previously
+generated project, recording its checksum rather than replacing it with a
+manually written script. `--required-locations` enforces chosen environments.
+Actions uploads the generated project early as `generated-script-<run number>`
+and JSON diagnostics on failure, before the final video artifact.

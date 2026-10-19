@@ -12,6 +12,12 @@ from studio.writer import parse_story, compile_project
 from studio import project, render
 
 class WriterTests(unittest.TestCase):
+    def test_spoken_text_rejects_stage_directions_but_accepts_dialogue(self):
+        from studio.writer import validate_spoken_style
+        for text in ("Leo runs forward, saying hello.","Maya: Hello everyone.","'Max looks at the bag.'"):
+            with self.assertRaises(ValueError):validate_spoken_style({'beats':[{'text':text}]})
+        validate_spoken_style({'beats':[{'text':"Maya, please take the bag. I am giving it back."}]})
+
     def test_asr_check_detects_dropped_words(self):
         from studio.speech_check import word_error_rate
         self.assertEqual(word_error_rate("The cup floats.", "the cup floats"), 0)

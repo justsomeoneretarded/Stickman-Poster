@@ -1,0 +1,877 @@
+{
+  "schema_version": 1,
+  "title": "What if you could rob a bank and never get caught",
+  "description": "A fictional animated thought experiment with three adults: Maya guides the class, Leo imagines taking a bank money bag, and Officer Max pursues him but can never close the gap. Everyone can see Leo; only getting caught is impossible, with no extra powers. Tell one continuous, concrete story: open in a classroom, walk across an outdoor field, imagine the bank lobby, sustain a visible street chase, pause at a cafe where the speaking character actually lifts and drinks a cup, then have Leo voluntarily hand the money bag to Maya and return to the classroom. End with a specific consequence and a small visual joke, not a moral lecture or abstract slogans. Use all three voices and moving shots in at least half the beats. Keep the bank event high-level and fictional, with no weapons, violence, practical robbery/security details, or evasion tactics.",
+  "keywords": [
+    "original story",
+    "animated",
+    "what if"
+  ],
+  "cast": [
+    {
+      "id": "maya",
+      "name": "Maya",
+      "voice": "female"
+    },
+    {
+      "id": "leo",
+      "name": "Leo",
+      "voice": "male1"
+    },
+    {
+      "id": "max",
+      "name": "Officer Max",
+      "voice": "male2",
+      "role": "police"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "beat-001",
+      "duration": 14.516666666666667,
+      "location": "classroom",
+      "action": "point",
+      "speaker": "maya",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Maya stands at the front. 'Leo, what if you went into a bank and took the money bag\u2014no alarms, no guards, just you and the bag. What do you see? What do you feel?'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "medium",
+      "prop": "none",
+      "staging": "talk",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-002",
+      "duration": 14.516666666666667,
+      "location": "classroom",
+      "action": "walk",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Leo strides forward, hands clenched, 'I see the glass doors, the cold light. I feel the weight of the bag in my hands. I know I can do it. I know I\u2019m already inside.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "wide",
+      "prop": "none",
+      "staging": "travel",
+      "blocking": {
+        "maya": {
+          "start": -0.12,
+          "end": 0.47,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.07,
+          "end": 0.6599999999999999,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.26,
+          "end": 0.85,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "cross",
+      "camera_zoom": 1,
+      "cinematic": true
+    },
+    {
+      "id": "beat-003",
+      "duration": 9.933333333333334,
+      "location": "field",
+      "action": "walk",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Officer Max strides in, 'Leo, I see you. I see your shadow. I see your every step. You\u2019re not invisible\u2014I\u2019m right behind you.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "wide",
+      "prop": "none",
+      "staging": "enter",
+      "blocking": {
+        "maya": {
+          "start": 0.64,
+          "end": 0.64,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.85,
+          "end": 0.85,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": -0.1,
+          "end": 0.42,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "enter",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-004",
+      "duration": 7.433333333333334,
+      "location": "field",
+      "action": "run",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Leo darts into the field, running toward the bank, 'I\u2019m in! I\u2019m taking it! I\u2019m already gone!'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "wide",
+      "prop": "none",
+      "staging": "chase",
+      "blocking": {
+        "maya": {
+          "start": 0.07,
+          "end": 0.07,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 800,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.2,
+          "end": 1.04,
+          "motion": "run",
+          "prop": "bag",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": -0.05,
+          "end": 0.79,
+          "motion": "run",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1,
+      "cinematic": true
+    },
+    {
+      "id": "beat-005",
+      "duration": 7.433333333333334,
+      "location": "field",
+      "action": "run",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Max sprints after him, shouting, 'Stop! You\u2019re not safe! I see your face, I see your breath!'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "wide",
+      "prop": "none",
+      "staging": "chase",
+      "blocking": {
+        "maya": {
+          "start": 0.07,
+          "end": 0.07,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 800,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.2,
+          "end": 1.04,
+          "motion": "run",
+          "prop": "bag",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": -0.05,
+          "end": 0.79,
+          "motion": "run",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1,
+      "cinematic": true
+    },
+    {
+      "id": "beat-006",
+      "duration": 9.516666666666667,
+      "location": "bank",
+      "action": "idle",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Leo stops at the bank doors, panting, 'I\u2019ve got it. I\u2019ve got the bag. Now I just have to carry it out.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "medium",
+      "prop": "none",
+      "staging": "react",
+      "blocking": {
+        "maya": {
+          "start": 0.14,
+          "end": 0.2,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.44,
+          "end": 0.5,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.74,
+          "end": 0.8,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-007",
+      "duration": 8.266666666666667,
+      "location": "bank",
+      "action": "point",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Max stands ten feet away, 'You\u2019re fast. But I see you. I see your hands. I see you breathing.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "medium",
+      "prop": "none",
+      "staging": "react",
+      "blocking": {
+        "maya": {
+          "start": 0.14,
+          "end": 0.2,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.44,
+          "end": 0.5,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.74,
+          "end": 0.8,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-008",
+      "duration": 8.266666666666667,
+      "location": "bank",
+      "action": "walk",
+      "speaker": "maya",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Maya steps forward, 'Leo, come back. What if you never took it? What if you just gave it back?'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "medium",
+      "prop": "none",
+      "staging": "enter",
+      "blocking": {
+        "maya": {
+          "start": -0.1,
+          "end": 0.42,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.64,
+          "end": 0.64,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.85,
+          "end": 0.85,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "approach",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-009",
+      "duration": 6.183333333333334,
+      "location": "bank",
+      "action": "think",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Leo looks down. 'I didn\u2019t touch it. I only imagined it. I was scared.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "close",
+      "prop": "none",
+      "staging": "react",
+      "blocking": {
+        "maya": {
+          "start": 0.14,
+          "end": 0.2,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.44,
+          "end": 0.5,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.74,
+          "end": 0.8,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-010",
+      "duration": 6.183333333333334,
+      "location": "bank",
+      "action": "walk",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Max shakes his head, 'You didn\u2019t take it. But you ran like you did.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "medium",
+      "prop": "none",
+      "staging": "travel",
+      "blocking": {
+        "maya": {
+          "start": -0.12,
+          "end": 0.47,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.07,
+          "end": 0.6599999999999999,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.26,
+          "end": 0.85,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "cross",
+      "camera_zoom": 1,
+      "cinematic": true
+    },
+    {
+      "id": "beat-011",
+      "duration": 6.6,
+      "location": "cafe",
+      "action": "walk",
+      "speaker": "maya",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Maya walks to the cafe, 'Let\u2019s have a real drink\u2014after all this running and imagining.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "wide",
+      "prop": "none",
+      "staging": "travel",
+      "blocking": {
+        "maya": {
+          "start": -0.12,
+          "end": 0.47,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.07,
+          "end": 0.6599999999999999,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.26,
+          "end": 0.85,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "enter",
+      "camera_zoom": 1,
+      "cinematic": true
+    },
+    {
+      "id": "beat-012",
+      "duration": 7.85,
+      "location": "cafe",
+      "action": "drink",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Leo lifts a cup, drinks slowly, 'I never took the money. I just thought I could. That\u2019s all.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "medium",
+      "prop": "cup",
+      "staging": "drink",
+      "blocking": {
+        "maya": {
+          "start": 0.17,
+          "end": 0.17,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.62,
+          "end": 0.62,
+          "motion": "drink",
+          "prop": "cup",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.39,
+          "end": 0.39,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-013",
+      "duration": 8.266666666666667,
+      "location": "cafe",
+      "action": "drink",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Max sips his coffee, eyes fixed on the table, 'You never got caught because you never did anything real.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "medium",
+      "prop": "cup",
+      "staging": "drink",
+      "blocking": {
+        "maya": {
+          "start": 0.17,
+          "end": 0.17,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.39,
+          "end": 0.39,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.62,
+          "end": 0.62,
+          "motion": "drink",
+          "prop": "cup",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-014",
+      "duration": 8.683333333333334,
+      "location": "cafe",
+      "action": "carry",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Leo hands the money bag to Maya, 'I give it back. I never needed it. I just needed to believe.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "medium",
+      "prop": "bag",
+      "staging": "handoff",
+      "blocking": {
+        "maya": {
+          "start": 0.83,
+          "end": 0.57,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.22,
+          "end": 0.43,
+          "motion": "walk",
+          "prop": "bag",
+          "floor": 850,
+          "phase_offset": 0.85,
+          "handoff_to": "maya"
+        },
+        "max": {
+          "start": 0.12,
+          "end": 0.12,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 790,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "enter",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-015",
+      "duration": 8.266666666666667,
+      "location": "cafe",
+      "action": "point",
+      "speaker": "maya",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Maya smiles, 'Now we know\u2014no one runs from the real world. The bag is gone. The run is over.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "medium",
+      "prop": "bag",
+      "staging": "talk",
+      "blocking": {
+        "maya": {
+          "start": 0.2,
+          "end": 0.2,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.5,
+          "end": 0.5,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.8,
+          "end": 0.8,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-016",
+      "duration": 6.6,
+      "location": "cafe",
+      "action": "idle",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Leo grins, 'And I didn\u2019t need the money\u2014just the thought of it made me run.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "close",
+      "prop": "bag",
+      "staging": "react",
+      "blocking": {
+        "maya": {
+          "start": 0.14,
+          "end": 0.2,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.44,
+          "end": 0.5,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.74,
+          "end": 0.8,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-017",
+      "duration": 9.1,
+      "location": "cafe",
+      "action": "idle",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Max looks down at his coffee, then at the empty bag, 'I see it. I always see it. And that\u2019s enough.'",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "close",
+      "prop": "bag",
+      "staging": "react",
+      "blocking": {
+        "maya": {
+          "start": 0.14,
+          "end": 0.2,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.44,
+          "end": 0.5,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.74,
+          "end": 0.8,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-018",
+      "duration": 13.683333333333334,
+      "location": "classroom",
+      "action": "walk",
+      "speaker": "maya",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Maya turns and walks back to the classroom. The cup is full. The bag is gone. Leo just smiled. And Max still sees it\u2014on the table, in the air, in every move.",
+      "heading": "What if you could rob a bank and never get caught",
+      "label": "",
+      "shot": "wide",
+      "prop": "none",
+      "staging": "enter",
+      "blocking": {
+        "maya": {
+          "start": -0.1,
+          "end": 0.42,
+          "motion": "walk",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.0
+        },
+        "leo": {
+          "start": 0.64,
+          "end": 0.64,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 0.85
+        },
+        "max": {
+          "start": 0.85,
+          "end": 0.85,
+          "motion": "idle",
+          "prop": "none",
+          "floor": 850,
+          "phase_offset": 1.7
+        }
+      },
+      "movement": "enter",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    }
+  ]
+}

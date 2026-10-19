@@ -21,6 +21,10 @@ def main():
             '--voices', request['voices'], '--width', str(request.get('width', 960)), '--fps', '24',
             '--cast-profiles', 'voices/cast-profiles.json', '--writer-model-dir', 'models/script-qwen3',
             '--model-dir', 'models/chatterbox-nano', '--out', 'output/episode', '--stage',stage]
+    if request.get('required_locations'):
+        args += ['--required-locations',','.join(request['required_locations'])]
+    if request.get('revision_project'):
+        args += ['--revise-project',request['revision_project']]
     subprocess.run(args, check=True)
     if stage not in ('all','render'):
         return

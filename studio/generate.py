@@ -35,6 +35,10 @@ def generate(args):
         if not (folder/'profile.json').is_file() or not (folder/'conditioning.pt').is_file():
             raise ValueError(f'Missing private profile for {v}')
     request = {'title': args.title, 'description': args.description, 'minutes': args.minutes, 'voices': voices}
+    if args.required_locations:
+        request['required_locations']=args.required_locations.split(',')
+    if args.revise_project:
+        request['revise_project']=str(Path(args.revise_project).resolve())
     resume_writing = False
     if args.resume and (out/'request.json').is_file() and (out/'writing/writer-report.json').is_file():
         previous = json.loads((out/'writing/writer-report.json').read_text())

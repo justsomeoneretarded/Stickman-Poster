@@ -1,7 +1,15 @@
 {
   "title": "What if you could rob a bank and never get caught",
-  "description": "A fictional animated thought experiment with three adults: Maya guides the class, Leo imagines taking a bank money bag, and Officer Max pursues him but can never close the gap. Everyone can see Leo; only getting caught is impossible, with no extra powers. Tell one continuous, concrete story: open in a classroom, walk across an outdoor field, imagine the bank lobby, sustain a visible street chase, pause at a cafe where the speaking character actually lifts and drinks a cup, then have Leo voluntarily hand the money bag to Maya and return to the classroom. End with a specific consequence and a small visual joke, not a moral lecture or abstract slogans. Use all three voices and moving shots in at least half the beats. Keep the bank event high-level and fictional, with no weapons, violence, practical robbery/security details, or evasion tactics.",
+  "description": "A three-minute fictional story with spoken dialogue only: Maya leads an adult class, Leo imagines actually taking a bank money bag, and Officer Max pursues him but cannot catch him. Everyone sees Leo; only capture is impossible. Preserve the premise: the theft occurs inside the imagined story. Do not conclude that he never took it, never did anything, or that all events were erased. Show classroom, outdoor field, bank lobby, a sustained street chase, a cafe sip, and Leo handing the bag to Maya voluntarily before returning to the classroom. Give concrete reactions and consequences, with a small final joke rather than abstract slogans. Match each beat to its exact visible actors and staging. No spoken character labels or stage directions, weapons, violence, practical robbery methods, security details, or evasion tactics.",
   "minutes": 3,
   "voices": "female,male1,male2",
-  "width": 1280
+  "width": 1280,
+  "revision_project": "ci/bank-generated-seed.json",
+  "required_locations": [
+    "classroom",
+    "field",
+    "bank",
+    "street",
+    "cafe"
+  ]
 }

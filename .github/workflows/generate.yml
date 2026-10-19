@@ -86,6 +86,15 @@ jobs:
         run: PYTHONPATH=. .venv/bin/python ci/download_models.py
       - name: Generate and revise the story from title and description
         run: .venv/bin/python -m studio.actions_entry --stage write
+      - name: Upload generated script for early review
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-script-${{ github.run_number }}
+          retention-days: 7
+          path: |
+            output/episode/writing/project.json
+            output/episode/writing/writer-report.json
+          if-no-files-found: error
       - name: Synthesize character voices and verify spoken words
         run: .venv/bin/python -m studio.actions_entry --stage speech
       - name: Render moving actors, environments, and captions
@@ -97,3 +106,14 @@ jobs:
           retention-days: 7
           path: output/episode/deliverables/
           if-no-files-found: error
+      - name: Upload generation diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generation-diagnostics-${{ github.run_number }}
+          retention-days: 7
+          path: |
+            output/episode/writing/*.json
+            output/episode/speech/speech-check.json
+            output/episode/render/report.json
+          if-no-files-found: ignore
