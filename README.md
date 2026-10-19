@@ -21,7 +21,7 @@ remains a possible richer renderer behind the same scene specification.
 
 ## What works
 
-- Four illustrated location templates; articulated characters; face changes;
+- Eight illustrated location templates; articulated characters; face changes;
   floating props; glow/particles; camera pushes; cuts/fades; captions.
 - Declarative validated JSON, not executable LLM-written code.
 - Measured audio duration drives scene lengths when narration is supplied.
@@ -137,13 +137,13 @@ but cannot be claimed as run on GitHub until a repository and run result exist.
 
 ## Known limits / next milestones
 
-- Only four locations, seven action types and one principal prop: insufficient
-  visual vocabulary for arbitrary high-quality ten-minute episodes today.
+- Eight location templates, per-actor walking/running, and basic hand-attached
+  object interactions remain a limited visual vocabulary for arbitrary episodes.
 - No promise of parity with the IFOLOGY reference. Lighting, acting, contact and
   composition need iterative art review.
 - Phrase captions are estimated, not forced word alignment. Scene boundaries do
   follow measured narration. Add/qualify a forced-alignment adapter next.
-- No automatic ASR verification, speaker similarity score, music/SFX composer,
+- Automatic ASR text checks are implemented; no speaker similarity score, music/SFX composer,
   chapter eligibility check, independent fact checker or YouTube uploader yet.
 - Thumbnail is a scene preview, not an optimized final publishing thumbnail.
 - Nano CPU bundled-voice inference passed; profile caching is source-reviewed.

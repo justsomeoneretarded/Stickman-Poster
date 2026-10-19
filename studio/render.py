@@ -57,8 +57,11 @@ def glow(image, xy, radius, color, opacity=100):
     image.alpha_composite(small.resize((W, H), Image.Resampling.BILINEAR))
 
 
-@lru_cache(maxsize=4)
+@lru_cache(maxsize=8)
 def background(location):
+    if location in {"classroom", "field", "bank", "cafe"}:
+        from .locations import environment
+        return environment(location)
     y = np.linspace(0, 1, H)[:, None, None]
     top = np.array([16, 24, 45])[None, None, :]
     bottom = np.array([50, 38, 64])[None, None, :]
@@ -121,18 +124,31 @@ def background(location):
     return im
 
 
-def character(t, action="idle", color="#ea996b", secondary=False, speaking=False):
+def character(t, action="idle", color="#ea996b", secondary=False, speaking=False, gait_phase=None, hand_target=None, held_prop="none", role=""):
     im = Image.new("RGBA", (420, 650))
     d = ImageDraw.Draw(im)
     root = (205, 405)
-    sway = math.sin(t*2.2)*2
+    sway = math.sin(t*2.2)*2 + (12 if action=="run" else 0)
     neck = (205+sway, 265)
     shoulder_l, shoulder_r = (169+sway, 285), (241+sway, 285)
     hip_l, hip_r = (185, 405), (225, 405)
-    if action == "walk":
-        step = math.sin(t*7)
-        legs = [[hip_l, (175+step*28, 485), (180+step*53, 573)],
-                [hip_r, (235-step*28, 485), (235-step*53, 573)]]
+    if action in {"walk", "run"}:
+        phase = gait_phase if gait_phase is not None else t*(10 if action=="run" else 7)
+        legs=[]
+        for hip,offset,base in ((hip_l,0,180),(hip_r,.5,235)):
+            cycle=(phase/math.tau+offset)%1
+            stance=.48 if action=="run" else .62
+            span=160*stance
+            if cycle<stance:
+                footx=base+span/2-span*cycle/stance
+                footy=575
+            else:
+                swing=(cycle-stance)/(1-stance)
+                footx=base-span/2+span*(swing*swing*(3-2*swing))
+                footy=575-(60 if action=="run" else 35)*math.sin(swing*math.pi)
+            ankle=(footx,footy)
+            knee=joint(hip,ankle,100,100,-1)
+            legs.append([hip,knee,ankle])
     elif action == "float":
         legs = [[hip_l, (150, 465), (170+math.sin(t*4)*22, 530)],
                 [hip_r, (260, 470), (285+math.cos(t*4)*20, 530)]]
@@ -154,10 +170,13 @@ def character(t, action="idle", color="#ea996b", secondary=False, speaking=False
         arms = [[shoulder_l, (120, 245), (110, 185+math.sin(t*4)*12)],
                 [shoulder_r, (291, 239), (314, 181-math.sin(t*4)*12)]]
     elif action == "worried": arms[1] = [shoulder_r, (290, 245), (259, 180)]
-    elif action == "walk":
-        k = math.sin(t*7)*24
+    elif action in {"walk", "run"}:
+        k = math.sin(gait_phase if gait_phase is not None else t*7)*(42 if action=="run" else 24)
         arms[0] = [shoulder_l, (140-k, 340), (145-k, 392)]
         arms[1] = [shoulder_r, (274+k, 340), (280+k, 392)]
+    if hand_target is not None:
+        elbow=joint(shoulder_r,hand_target,90,95,1)
+        arms[1]=[shoulder_r,elbow,hand_target]
     for arm in arms:
         line(d, arm[:2], color, 19)
         line(d, arm[1:], GOLD, 11)
@@ -182,11 +201,46 @@ def character(t, action="idle", color="#ea996b", secondary=False, speaking=False
         d.arc((headx-18,heady+4,headx+18,heady+33),0,180,fill=WHITE,width=4)
     else:
         d.line((headx-9,heady+25,headx+9,heady+25),fill=WHITE,width=4)
+    if role=="police":
+        d.rounded_rectangle((headx-48,heady-86,headx+48,heady-55),radius=7,fill="#28557f",outline=GOLD,width=2)
+        d.rectangle((headx-64,heady-57,headx+65,heady-48),fill="#1d3654")
+        d.regular_polygon((headx,heady-68,10),5,fill=GOLD)
+        d.regular_polygon((224+sway,320,11),5,fill=GOLD)
+    if held_prop!="none":
+        hand=hand_target or arms[1][-1]
+        held_object(d,hand,held_prop)
+        circle(d,*hand,9,"#161b2b")
     return im
 
 
-def put_character(image, x, floor, scale, t, action, secondary=False, levitate=False, color=None, speaking=False, tilt=0, facing_left=False):
-    body = character(t, action, color or ("#79baa9" if secondary else "#ea996b"), secondary, speaking)
+def joint(start,end,upper,lower,bend=1):
+    dx,dy=end[0]-start[0],end[1]-start[1]
+    distance=max(.001,math.hypot(dx,dy))
+    reach=min(distance,upper+lower-.01)
+    along=(upper*upper-lower*lower+reach*reach)/(2*reach)
+    height=math.sqrt(max(0,upper*upper-along*along))
+    ux,uy=dx/distance,dy/distance
+    return (start[0]+along*ux-bend*height*uy,start[1]+along*uy+bend*height*ux)
+
+
+def held_object(d,hand,kind):
+    x,y=hand
+    if kind=="cup":
+        d.arc((x-15,y-11,x+4,y+11),250,110,fill=GOLD,width=5)
+        d.rounded_rectangle((x-48,y-19,x-11,y+21),radius=4,fill="#e6c3a0",outline=WHITE,width=2)
+        d.ellipse((x-48,y-24,x-11,y-13),fill="#f5e2c5")
+        d.ellipse((x-44,y-22,x-15,y-16),fill="#593e36")
+    elif kind=="bag":
+        d.arc((x-18,y-2,x+18,y+36),180,360,fill="#dfc584",width=6)
+        d.rounded_rectangle((x-37,y+19,x+37,y+92),radius=12,fill="#bb935d",outline="#f5dfab",width=3)
+        d.text((x,y+55),"$",font=font(35,True),fill="#573e2a",anchor="mm")
+    elif kind=="phone":
+        d.rounded_rectangle((x-33,y-53,x-2,y+2),radius=5,fill="#172332",outline=GOLD,width=2)
+        d.rectangle((x-29,y-46,x-6,y-8),fill="#5f9ab5")
+
+
+def put_character(image, x, floor, scale, t, action, secondary=False, levitate=False, color=None, speaking=False, tilt=0, facing_left=False, gait_phase=None, hand_target=None, held_prop="none", role=""):
+    body = character(t, action, color or ("#79baa9" if secondary else "#ea996b"), secondary, speaking, gait_phase, hand_target, held_prop, role)
     if facing_left:
         body = ImageOps.mirror(body)
     if tilt:
@@ -219,11 +273,15 @@ def frame(scene, local_t, width, height, preview=True):
     t=local_t
     d=ImageDraw.Draw(im)
     if scene["location"] == "room":
-        d.rounded_rectangle((1110,650,1620,677),radius=8,fill="#b29288")
+        table_y=710 if scene.get("staging")=="drink" else 650
+        d.rounded_rectangle((1110,table_y,1620,table_y+27),radius=8,fill="#b29288")
         d.rectangle((1140,676,1154,845),fill="#1a2132")
         d.rectangle((1580,676,1594,845),fill="#1a2132")
     focus_x = W / 2
-    if scene.get("cast_members"):
+    if scene.get("blocking") and scene.get("cast_members"):
+        from .animation import draw_cast
+        focus_x=draw_cast(im,scene,t)
+    elif scene.get("cast_members"):
         members = scene["cast_members"]
         positions = {1: [850], 2: [640, 1280], 3: [430, 960, 1490]}[len(members)]
         colors = {"female": "#ea996b", "male1": "#79baa9", "male2": "#a795df"}
@@ -316,7 +374,7 @@ def frame(scene, local_t, width, height, preview=True):
     # Subtle deterministic camera push; HUD and captions remain screen-space.
     zoom=1+(scene.get("camera_zoom",1)-1)*min(1,t/max(scene["duration"],.01))
     if scene.get("cinematic"):
-        shot_zoom = {"wide": 1.0, "medium": 1.12, "close": 1.48}.get(scene.get("shot"), 1.0)
+        shot_zoom = 1.0 if scene.get("staging") in {"chase","travel"} else {"wide": 1.0, "medium": 1.12, "close": 1.48}.get(scene.get("shot"), 1.0)
         zoom *= shot_zoom
     if zoom>1:
         cw,ch=W/zoom,H/zoom

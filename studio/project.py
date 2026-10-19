@@ -3,8 +3,8 @@ import json
 import math
 from pathlib import Path
 
-LOCATIONS = {"room", "street", "diagram", "stage"}
-ACTIONS = {"idle", "point", "walk", "float", "think", "worried", "celebrate"}
+LOCATIONS = {"room", "street", "diagram", "stage", "classroom", "field", "bank", "cafe"}
+ACTIONS = {"idle", "point", "walk", "float", "think", "worried", "celebrate", "run", "drink", "carry"}
 
 
 def finite_number(value):
@@ -50,7 +50,7 @@ def validate(project):
                 raise ValueError("Scene characters must reference one to three distinct cast IDs")
             if scene.get("speaker") not in visible:
                 raise ValueError("Every cast scene needs a visible speaker")
-        elif "speaker" in scene or "characters" in scene:
+        elif "speaker" in scene or "characters" in scene or "blocking" in scene:
             raise ValueError("Speaker and characters require a cast")
         if scene.get("location") not in LOCATIONS:
             raise ValueError(f"Unknown location in {sid}")
@@ -66,10 +66,25 @@ def validate(project):
         if len(scene.get("heading", "")) > 72 or len(scene.get("label", "")) > 90:
             raise ValueError("Headings and labels must fit the layout")
         for field, allowed in (("shot", {"wide", "medium", "close"}),
-                               ("prop", {"none", "cup", "phone", "orb"}),
+                               ("prop", {"none", "cup", "phone", "orb", "bag"}),
                                ("movement", {"stay", "enter", "cross", "approach"})):
             if field in scene and scene[field] not in allowed:
                 raise ValueError(f"Unsupported {field} in {sid}")
+        if "blocking" in scene:
+            from .animation import STAGINGS
+            if scene.get("staging") not in STAGINGS or not isinstance(scene["blocking"], dict) or set(scene["blocking"]) != set(visible):
+                raise ValueError("Blocking must match visible characters and use a supported staging")
+            for track in scene["blocking"].values():
+                if not isinstance(track, dict) or any(not finite_number(track.get(k)) or not -0.3 <= track[k] <= 1.3 for k in ("start", "end")):
+                    raise ValueError("Actor paths must have bounded numeric endpoints")
+                if track.get("motion") not in {"idle", "walk", "run", "drink"} or track.get("prop") not in {"none", "bag", "cup", "phone"}:
+                    raise ValueError("Unsupported actor motion or held object")
+                if not finite_number(track.get("floor", 850)) or not 650 <= track.get("floor",850) <= 900:
+                    raise ValueError("Actor floor must remain inside the stage")
+                if "phase_offset" in track and (not finite_number(track['phase_offset']) or not 0 <= track['phase_offset'] <= 6.3):
+                    raise ValueError("Invalid gait phase")
+                if "handoff_to" in track and track["handoff_to"] not in visible:
+                    raise ValueError("Unknown handoff recipient")
         for flag in ("secondary", "levitate", "cinematic"):
             if flag in scene and not isinstance(scene[flag], bool):
                 raise ValueError(f"{flag} must be boolean")

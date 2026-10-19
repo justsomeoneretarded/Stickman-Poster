@@ -84,8 +84,12 @@ jobs:
           tar -xzf work/llama-cpu.tar.gz -C work/llama-cpu
       - name: Download public models
         run: PYTHONPATH=. .venv/bin/python ci/download_models.py
-      - name: Generate script, dialogue, and video
-        run: .venv/bin/python -m studio.actions_entry
+      - name: Generate and revise the story from title and description
+        run: .venv/bin/python -m studio.actions_entry --stage write
+      - name: Synthesize character voices and verify spoken words
+        run: .venv/bin/python -m studio.actions_entry --stage speech
+      - name: Render moving actors, environments, and captions
+        run: .venv/bin/python -m studio.actions_entry --stage render
       - name: Upload finished episode only
         uses: actions/upload-artifact@v4
         with:

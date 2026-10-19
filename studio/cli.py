@@ -196,6 +196,7 @@ def main():
     p.add_argument("--model-dir")
     p.add_argument("--writer-model-dir")
     p.add_argument("--asr-model-dir", default="models/asr-base-en")
+    p.add_argument("--stage", choices=["all","write","speech","render"], default="all")
     p.add_argument("--resume", action="store_true", help="Reuse completed writing only when request and model revision match")
     p.add_argument("--width", type=int, default=1280)
     p.add_argument("--fps", type=int, default=24)

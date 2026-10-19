@@ -14,9 +14,10 @@ MODEL_FILE = 'Qwen3-4B-Instruct-2507-Q4_K_M.gguf'
 
 
 class LocalWriter:
-    def __init__(self, model_dir, out):
+    def __init__(self, model_dir, out, context=12288):
         self.model = Path(model_dir) / MODEL_FILE
         self.out = Path(out)
+        self.context = context
         self.proc = None
         self.log = None
         # These requests address only the loopback server, not Internet egress.
@@ -32,7 +33,7 @@ class LocalWriter:
         self.url = f'http://127.0.0.1:{port}'
         self.log = (self.out/'llama-server.log').open('wb')
         self.proc = subprocess.Popen([binary, '-m', str(self.model), '--host', '127.0.0.1', '--port', str(port),
-                                      '-c', '32768', '-t', '4', '-tb', '4', '-np', '1', '-ngl', '0', '--no-webui'],
+                                      '-c', str(self.context), '-b', '512', '-ub', '128', '-t', '4', '-tb', '4', '-np', '1', '-ngl', '0', '--no-webui'],
                                      stdout=self.log, stderr=subprocess.STDOUT)
         started = time.monotonic()
         try:

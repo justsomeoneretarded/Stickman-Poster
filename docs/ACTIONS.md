@@ -97,3 +97,19 @@ The development-check workflow also uploads the committed local qualification
 sample as `local-title-to-video-qualification`. This artifact is explicitly a
 locally generated sample, not a successful run of Actions-hosted synthesis.
 The separate Generate voiced episode workflow now loads public profiles directly.
+
+## Actor blocking and physical interaction
+
+Generated scenes now include `staging` and validated per-character `blocking`.
+Travel and chase use full-shot paths and distance-driven walk/run cycles;
+police and runner both move through the frame. Carry/drink/handoff attach
+objects to the rig's hand positions instead of floating props near presenters.
+Classroom, field, bank lobby, and cafe join the existing environments.
+`motion-check.json` reports locations, staging, and actor travel distances.
+The workflow exposes writing, speech, and rendering as separate steps.
+
+The bank-story demo targets three minutes of generated dialogue, not an exact
+180-second padding target. Final duration is measured from synthesized speech.
+The crime premise is fictional and is not a practical robbery/evasion guide.
+Paragraph speech grouping was improved; the reported echo/robotic quality is
+still awaiting engine auditions and human listening review.

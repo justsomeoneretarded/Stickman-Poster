@@ -1,4 +1,5 @@
 """Translate Actions inputs to argv without executing user-provided shell text."""
+import argparse
 import json
 import os
 import subprocess
@@ -7,6 +8,9 @@ from pathlib import Path
 
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--stage',choices=['all','write','speech','render'],default='all')
+    stage=parser.parse_args().stage
     request = json.loads(Path('ci/demo-request.json').read_text())
     for field in ('title', 'description', 'minutes', 'voices', 'width'):
         value = os.environ.get('EPISODE_'+field.upper())
@@ -16,8 +20,10 @@ def main():
             '--description', request['description'], '--minutes', str(request['minutes']),
             '--voices', request['voices'], '--width', str(request.get('width', 960)), '--fps', '24',
             '--cast-profiles', 'voices/cast-profiles.json', '--writer-model-dir', 'models/script-qwen3',
-            '--model-dir', 'models/chatterbox-nano', '--out', 'output/episode']
+            '--model-dir', 'models/chatterbox-nano', '--out', 'output/episode', '--stage',stage]
     subprocess.run(args, check=True)
+    if stage not in ('all','render'):
+        return
     summary = Path(os.environ.get('GITHUB_STEP_SUMMARY', 'work/actions-summary.md'))
     summary.parent.mkdir(parents=True, exist_ok=True)
     with summary.open('a') as f:

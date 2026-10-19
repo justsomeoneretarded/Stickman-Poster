@@ -201,3 +201,29 @@ The artifact was downloaded and its files, reports, and contact sheet inspected;
 video decoded locally as well. Human listening and artistic approval remain
 pending. Development checks also passed on the public-profile commit 8e463e9.
 VOICE_PROFILE_KEY is no longer required.
+
+## Movement feedback and three-minute bank story request
+
+User rejected stationary cast staging, asked for moving chases and physical
+character/environment interaction (for example lifting a cup to drink), and
+reported echo-like, unnatural/robotic audio. Audio engine quality remains an
+open issue; ASR alone does not qualify naturalness. The user asked to work
+through improvements step by step and requested an approximately three-minute
+generated video titled "What if you could rob a bank and never get caught".
+
+Implemented per-actor full-shot blocking, monotonic running/chasing paths,
+distance-driven alternating leg cycles, explicit police costume, hand-attached
+carried bags, cup lift/sip/replace poses, and a bag handoff. Added original
+classroom, outdoor field, bank lobby, and cafe environments. New writer scenes
+include a staging directive compiled into validated blocking tracks. The
+requested brief is a fictional magical thought experiment with non-operational
+crime content, moving through classroom/field/bank/street/cafe and back.
+Short sentences now share voice context up to the model's chunk limit; this
+reduces resets but does not establish that echo or robotic delivery is fixed.
+
+Long-form Actions now has separate writing, speech verification, and rendering
+steps. Reduced writer context allocation for typical episodes to fit standard
+CPU runners; larger episodes retain a larger context. Added motion metrics to
+artifacts and tests for actual displacement, cup contact poses, new locations,
+and paragraph continuity. Next step is hosted generation and inspection of
+the requested three-minute episode, with actual duration reported honestly.

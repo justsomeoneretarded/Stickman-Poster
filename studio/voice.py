@@ -21,19 +21,27 @@ def sha256(path):
 
 
 def speech_chunks(text, limit=220):
-    """Bound inference length while preserving sentence boundaries where possible."""
-    result, current = [], ""
-    for sentence in re.split(r"(?<=[.!?])\s+", text.strip()):
-        for word in sentence.split():
-            proposed = f"{current} {word}".strip()
-            if len(proposed) > limit and current:
-                result.append(current)
-                current = word
-            else:
-                current = proposed
+    """Keep short paragraphs together; split only when model length requires it."""
+    result,current=[],""
+    for sentence in re.split(r"(?<=[.!?])\s+",text.strip()):
+        words=sentence.split()
+        sentence=" ".join(words)
+        if not sentence:
+            continue
+        proposed=f"{current} {sentence}".strip()
+        if len(proposed)<=limit:
+            current=proposed
+            continue
         if current:
-            result.append(current)
-            current = ""
+            result.append(current);current=""
+        for word in words:
+            proposed=f"{current} {word}".strip()
+            if len(proposed)>limit and current:
+                result.append(current);current=word
+            else:
+                current=proposed
+    if current:
+        result.append(current)
     return result
 
 
@@ -93,7 +101,7 @@ def synthesize_scenes(project, profile, out, device="cpu", model_dir=None):
         if not scene["narration"].strip():
             raise ValueError("Voice scenes need nonempty narration")
         digest = hashlib.sha256((scene["narration"] + metadata["conditioning_sha256"] +
-                                 metadata["variant"] + SOURCE_COMMIT).encode()).hexdigest()
+                                 metadata["variant"] + SOURCE_COMMIT + "paragraph-v2").encode()).hexdigest()
         path = out / f"{index:03}.wav"
         cache = out / f"{index:03}.json"
         hit = cache.exists() and path.exists() and json.loads(cache.read_text()).get("key") == digest
