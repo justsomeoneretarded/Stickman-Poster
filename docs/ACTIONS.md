@@ -7,7 +7,7 @@ Every run asks for:
 - **description**: the funny situations, tone and payoff you want.
 - **minutes**: approximate long-video length. Longer dialogue is allowed.
 - **short_seconds**: approximate vertical-short length, normally 30–60 seconds.
-- **voices**: one character, any pair, or all three.
+- **voices**: choose a labeled cast: **1 speaker** (Maya/female, Leo/Kit Laser, or Max/Warguy), **2 speakers** (any pair), or **3 speakers** (all three). The same selection applies to both videos.
 - **width**: landscape output width.
 
 Production is manual only. Pushing code does not regenerate the bank story, and

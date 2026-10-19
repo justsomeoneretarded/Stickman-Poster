@@ -80,3 +80,14 @@ class ComedyWorkflowTests(unittest.TestCase):
             self.assertTrue(all('text' not in slot for slot in plan))
             self.assertFalse(any(s['location'] in ('classroom','bank') for s in plan))
             self.assertEqual(plan[-1]['comic_role'],'payoff')
+
+    def test_voice_menu_supports_every_single_pair_and_full_cast(self):
+        from studio.actions_entry import VOICE_CHOICES
+        seen=set()
+        for label,ids in VOICE_CHOICES.items():
+            request=read_request({'EPISODE_TITLE':'Flying','EPISODE_DESCRIPTION':'Funny commute.',
+                                  'EPISODE_MINUTES':'3','EPISODE_VOICES':label})
+            self.assertEqual(request['voices'],ids)
+            self.assertEqual(int(label[0]),len(ids.split(',')))
+            seen.add(tuple(ids.split(',')))
+        self.assertEqual(len(seen),7)

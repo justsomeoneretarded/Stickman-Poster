@@ -352,3 +352,13 @@ speech synthesis. Production remains manual; this code push did not start an
 episode. Review links expire after 7 days; the voiced qualification files are
 also preserved in the public repository. Full-length production with the revised
 visual/comedy approach still requires a new manual run and artistic review.
+
+## Explicit speaker-count menu
+
+User asked to confirm duration is flexible and to choose one/two/three voices.
+Confirmed actual duration/word overrun is not a rejection condition. Improved
+Actions cast menu labels to show speaker count plus voice names for all seven
+combinations. Backend normalizes labels to stable voice IDs and retains support
+for old raw-ID API inputs. Same cast is used in long and short versions. All
+41 tests pass, including every menu selection; workflow YAML/default/options
+were checked against the backend mapping. No production episode was started.

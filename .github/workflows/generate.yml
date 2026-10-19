@@ -22,18 +22,18 @@ on:
         default: '60'
         type: string
       voices:
-        description: Character cast
+        description: Number of speakers and voices (single narrator, pair, or all three)
         required: true
-        default: female,male1,male2
+        default: 3 speakers — Maya + Leo + Max
         type: choice
         options:
-          - female
-          - male1
-          - male2
-          - female,male1
-          - female,male2
-          - male1,male2
-          - female,male1,male2
+          - 1 speaker — Maya (female)
+          - 1 speaker — Leo (Kit Laser)
+          - 1 speaker — Max (Warguy)
+          - 2 speakers — Maya + Leo
+          - 2 speakers — Maya + Max
+          - 2 speakers — Leo + Max
+          - 3 speakers — Maya + Leo + Max
       width:
         description: Video width
         type: choice

@@ -6,6 +6,17 @@ import sys
 from pathlib import Path
 
 
+VOICE_CHOICES = {
+    '1 speaker — Maya (female)': 'female',
+    '1 speaker — Leo (Kit Laser)': 'male1',
+    '1 speaker — Max (Warguy)': 'male2',
+    '2 speakers — Maya + Leo': 'female,male1',
+    '2 speakers — Maya + Max': 'female,male2',
+    '2 speakers — Leo + Max': 'male1,male2',
+    '3 speakers — Maya + Leo + Max': 'female,male1,male2',
+}
+
+
 def read_request(environ):
     """Every production run must supply its own idea; never inherit the demo."""
     request={field:environ.get('EPISODE_'+field.upper(),'').strip()
@@ -14,6 +25,10 @@ def read_request(environ):
     if missing:raise ValueError('Enter these fields in Run workflow: '+', '.join(missing))
     for key,default in {'voices':'female,male1,male2','width':'1280','short_seconds':'60'}.items():
         request[key]=request[key] or default
+    request['voices']=VOICE_CHOICES.get(request['voices'],request['voices'])
+    selected=request['voices'].split(',')
+    if len(set(selected))!=len(selected) or not 1<=len(selected)<=3 or any(v not in {'female','male1','male2'} for v in selected):
+        raise ValueError('Choose one, two, or three voices from the workflow cast menu')
     return request
 
 
