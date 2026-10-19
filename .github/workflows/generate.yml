@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       description:
-        description: Describe the ability, funny situations, tone, and ending you want
+        description: Describe the idea, events, tone, and ending you want (humor only if requested)
         required: true
         type: string
       minutes:

@@ -35,14 +35,14 @@ limit. Artifacts expire after seven days. Download videos you want to keep.
 
 ## Writing and animation
 
-For benching and flying, curated comic beat blueprints keep the jokes within
-what the renderer can show. They contain ideas and actions, not prerecorded
-dialogue. Other topics use a model-proposed pitch and outline, with a more limited
-quality guarantee. The pinned local Qwen3-4B model writes all dialogue per scene,
+The title and your per-run description guide the model-generated story pitch,
+visual outline and dialogue. Your description controls tone and ending. Comedy,
+jokes and moral lessons are not imposed. No preset benching/flying gag story is
+used. The pinned local Qwen3-4B model writes dialogue per scene,
 checkpointing completed turns. Selected cast voices stay consistent. A benching
 premise opens on a visible bench press; a flying premise opens in the air.
-The default tone is funny, playful, feel-good hypothetical entertainment, with
-no imposed classroom framing, ethical lecture or guilt ending.
+There is no forced comedy or moral framing. Ask for the tone and ending you
+want in the workflow description; the same direction is preserved in the short.
 
 The expressive vector renderer adds original rim-lit faces, hoodie silhouettes,
 layered settings, shot changes, gestures, running, attached cups, bench-press

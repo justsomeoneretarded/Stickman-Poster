@@ -38,13 +38,13 @@ def write_short(project_path,request_path,out,model_dir):
     target=request.get('short_seconds',60)
     plan=highlight_plan(project,target)
     for i,voice in enumerate(request['voices']):plan[i]['speaker']=voice
-    request={**request,'minutes':target/60,'tone':'playful-comedy','required_locations':[],
+    request={**request,'minutes':target/60,'tone':'description-driven','required_locations':[],
              'description':request['description']+' Create a STANDALONE punchy vertical short from the selected source beats. '
-             'Rewrite dialogue to connect the chosen gags naturally; do not assume viewers saw the long version. '
-             'Hook in the first sentence. Keep the funniest visual payoff. Avoid references to omitted scenes.'}
+             'Rewrite dialogue to connect the selected scenes naturally; do not assume viewers saw the long version. '
+             'Hook in the first sentence. Preserve the requested tone and ending; do not add jokes unless the description explicitly requests them. Avoid references to omitted scenes.'}
     out=Path(out);out.mkdir(parents=True,exist_ok=True)
     (out/'highlight-selection.json').write_text(json.dumps({'target_seconds':target,
-        'method':'outline comic scores plus visible gags, preserving opening and payoff; dialogue rewritten for standalone continuity',
+        'method':'outline highlight scores plus visual interest, preserving opening and payoff; dialogue rewritten for standalone continuity',
         'source_scene_ids':[s['source_scene_id'] for s in plan]},indent=2))
     write_planned(request,out,model_dir,time.perf_counter(),plan)
 

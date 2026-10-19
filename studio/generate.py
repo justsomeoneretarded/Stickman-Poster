@@ -110,7 +110,7 @@ def generate(args):
     (delivery/'motion-check.json').write_text(json.dumps(motion,indent=2))
     summary = {'status': 'generated and decoded; editorial, voice, and artistic review required',
                'title': args.title, 'voices': voices, 'engine': 'chatterbox-nano CPU baseline, not audition winner',
-               'video': 'final.mp4', 'script_source': 'local language model; comic outline and per-scene dialogue', 'reused_validated_writing': resume_writing,
+               'video': 'final.mp4', 'script_source': 'local language model; description-driven outline and per-scene dialogue', 'reused_validated_writing': resume_writing,
                'unqualified': ['voice similarity', 'human listening review', 'factual claims', 'reference visual parity']}
     (delivery/'generation.json').write_text(json.dumps(summary, indent=2))
     short=out/'short'

@@ -69,18 +69,6 @@ class ComedyWorkflowTests(unittest.TestCase):
         self.assertEqual(result[0]['location'],'gym')
         self.assertEqual(result[0]['prop'],'barbell')
 
-    def test_benching_and_flying_blueprints_show_the_ability_without_canned_speech(self):
-        from studio.blueprints import comic_blueprint
-        for title,stage,prop in [('What if you could bench a car?','lift','car'),
-                                 ('What if you could bench 400 pounds?','lift','barbell'),
-                                 ('What if you could fly?','fly','none')]:
-            plan=comic_blueprint(title,['female','male1','male2'],3)
-            self.assertEqual(plan[0]['staging'],stage)
-            self.assertEqual(plan[0]['prop'],prop)
-            self.assertTrue(all('text' not in slot for slot in plan))
-            self.assertFalse(any(s['location'] in ('classroom','bank') for s in plan))
-            self.assertEqual(plan[-1]['comic_role'],'payoff')
-
     def test_voice_menu_supports_every_single_pair_and_full_cast(self):
         from studio.actions_entry import VOICE_CHOICES
         seen=set()
@@ -91,3 +79,28 @@ class ComedyWorkflowTests(unittest.TestCase):
             self.assertEqual(int(label[0]),len(ids.split(',')))
             seen.add(tuple(ids.split(',')))
         self.assertEqual(len(seen),7)
+
+    def test_description_drives_tone_without_forced_gags_for_known_titles(self):
+        from studio.writer import write_creative
+        class Writer:
+            messages=[]
+            def __init__(self,*a,**kw):pass
+            def __enter__(self):return self
+            def __exit__(self,*a):pass
+            def complete(self,messages,schema,max_tokens):
+                Writer.messages.extend(m['content'] for m in messages)
+                fields=schema['properties']
+                if 'pitch' in fields:return json.dumps({'pitch':'A calm, serious exploration of extraordinary strength.'})
+                if 'beats' in fields:return json.dumps({'beats':[{'speaker':'male1','location':'gym',
+                    'staging':'talk','shot':'medium','prop':'none','purpose':'Explore the physical experience of lifting a heavy object calmly.',
+                    'comic_role':'setup','short_score':5} for _ in range(6)]})
+                return json.dumps({'speech':'You can lift the car and examine its weight calmly.'})
+        request={'title':'What if you could bench a car?','description':'A serious, calm exploration. No comedy.',
+                 'voices':['male1'],'minutes':.3}
+        with tempfile.TemporaryDirectory() as directory,patch('studio.local_llm.LocalWriter',Writer):
+            write_creative(request,Path(directory),None,0)
+            self.assertTrue((Path(directory)/'project.json').exists())
+        prompts=' '.join(Writer.messages)
+        self.assertIn(request['description'],prompts)
+        for forced in ('final callback joke','pigeon rush hour','parking space easier','Make this funny'):
+            self.assertNotIn(forced,prompts)

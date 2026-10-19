@@ -362,3 +362,16 @@ combinations. Backend normalizes labels to stable voice IDs and retains support
 for old raw-ID API inputs. Same cast is used in long and short versions. All
 41 tests pass, including every menu selection; workflow YAML/default/options
 were checked against the backend mapping. No production episode was started.
+
+## Explicit override: description controls tone, no forced humor
+
+User instructed not to hardcode jokes/comedy unless explicitly requested in the
+manual workflow description. Removed the active bench/fly gag library and its
+module, removed automatic playful-comedy mode, and replaced imposed jokes/morals
+in both long and short prompts with description-driven direction. The outline
+cache version changed so old comic outlines are not silently reused. Visual
+rendering stays expressive-v2 independently of genre. The form description now
+asks for idea/events/tone/ending and makes humor optional. All 41 tests pass,
+including a serious bench-car prompt regression that checks preset parking,
+pigeon and callback-joke instructions are absent. This supersedes earlier
+notes recommending automatic comedy blueprints. No production episode started.

@@ -123,7 +123,7 @@ python -m studio.cli produce --title "Your title" --minutes 10 --endpoint http:/
 When required locations are supplied, the app assigns every location, speaker, and
 movement before generating dialogue one scene at a time. Each spoken turn is
 validated and checkpointed; retries repair that turn instead of restarting the story.
-Without required locations, the writer uses renderable comic blueprints for benching/flying, or a model pitch/outline for other topics, then generates every spoken line. These are model
+Without required locations, the writer generates a pitch, outline and dialogue from the title and description. Tone and ending follow the description, without preset jokes or moral lessons. These are model
 instructions, not a guarantee of better writing or verified factual accuracy.
 
 ## GitHub Actions
