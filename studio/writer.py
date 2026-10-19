@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .project import ACTIONS, LOCATIONS, validate
 from .animation import STAGINGS, blocking_for
+from .text_policy import safe_label
 
 MODEL_ID = 'unsloth/Qwen3-4B-Instruct-2507-GGUF'
 MODEL_REVISION = 'a06e946bb6b655725eafa393f4a9745d460374c9'
@@ -88,6 +89,8 @@ def compile_project(story, title, description, voices):
             'action': choice('action', ACTIONS, 'point'),
             'speaker': VOICE_NAMES[beat['speaker']][0], 'characters': [m['id'] for m in cast],
             'narration': beat['text'].strip(), 'heading': title[:72], 'label': '',
+            'screen_text':story.get('screen_text','minimal'),
+            'on_screen_text': safe_label(beat.get('on_screen_text',''),cast),
             'shot': choice('shot', SHOTS, 'medium'),
             'prop': visible_prop, 'staging': staging,
             'blocking': blocking_for(cast,VOICE_NAMES[beat['speaker']][0],staging),
@@ -196,6 +199,7 @@ def write_planned(request, out, model_dir, started, plan=None):
             print(f'Dialogue scene {index+1}/{len(plan)} validated',file=sys.stderr,flush=True)
     story=parse_story(json.dumps({'beats':completed}),voices)
     if request.get('tone')=='description-driven':story['visual_style']='expressive-v2'
+    story['screen_text']=request.get('screen_text','minimal')
     (out/'story.json').write_text(json.dumps(story,indent=2))
     project=compile_project(story,title,description,voices)
     missing=set(request.get('required_locations',[]))-{b['location'] for b in project['scenes']}
@@ -234,7 +238,7 @@ def write_creative(request,out,model_dir,started):
     request={**request,'tone':'description-driven'}
     cache=out/'creative-outline.json'
     count=min(90,max(6,math.ceil(request['minutes']*10)))
-    signature=hashlib.sha256(json.dumps([request,MODEL_REVISION,'description-driven-v3'],sort_keys=True).encode()).hexdigest()
+    signature=hashlib.sha256(json.dumps([request,MODEL_REVISION,'description-driven-v4-minimal-text'],sort_keys=True).encode()).hexdigest()
     saved=json.loads(cache.read_text()) if cache.exists() else {}
     if saved.get('signature')==signature:
         plan=validate_outline(saved['beats'],request['voices'])
@@ -247,8 +251,9 @@ def write_creative(request,out,model_dir,started):
             'prop':{'type':'string','enum':['none','cup','car','barbell','phone']},
             'purpose':{'type':'string','minLength':60,'maxLength':180},
             'comic_role':{'type':'string','enum':['hook','setup','escalation','payoff']},
-            'short_score':{'type':'integer','minimum':0,'maximum':10}},
-            'required':['speaker','location','staging','shot','prop','purpose','comic_role','short_score'],
+            'short_score':{'type':'integer','minimum':0,'maximum':10},
+            'on_screen_text':{'type':'string','maxLength':64}},
+            'required':['speaker','location','staging','shot','prop','purpose','comic_role','short_score','on_screen_text'],
             'additionalProperties':False}
         schema={'type':'object','properties':{'beats':{'type':'array','minItems':count,'maxItems':count,'items':item}},'required':['beats'],'additionalProperties':False}
         messages=[{'role':'system','content':
@@ -256,6 +261,9 @@ def write_creative(request,out,model_dir,started):
             'The description controls tone, genre and ending. Do not impose humor, jokes, moral lessons, '
             'or a comic ending unless explicitly requested in the description. '
             'Use a clear opening, connected developments, and an ending suited to the requested direction. '
+            'Do not put character names, speaker badges or repeated titles on screen. '
+            'on_screen_text must be empty unless a brief essential label genuinely helps explain the scene, such as a requested measurement. '
+            'Do not use overlay text to describe an action that should be animated. '
             'Use ONE coherent ability; do not invent unrelated powers. Vary shots and expressions, and avoid repeated talking scenes. '
             'Each purpose is a concise visual story beat, not dialogue. Give the strongest self-contained scenes high short_score. '
             'Supported actions: lift means lying on a gym bench pressing prop=car or prop=barbell; use car only if the premise is benching a car. '

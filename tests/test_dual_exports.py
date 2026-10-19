@@ -17,7 +17,7 @@ class DualExportTests(unittest.TestCase):
     def test_render_stage_delivers_two_native_aspects_with_independent_scripts(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
-            request={'short_seconds':30,'title':'Flying test','description':'A synthetic integration fixture.',
+            request={'screen_text':'minimal','short_seconds':30,'title':'Flying test','description':'A synthetic integration fixture.',
                      'minutes':1,'voices':['female']}
             (root/'request.json').write_text(json.dumps(request))
             for folder,text in ((root,'I can fly over the city.'),(root/'short','Look, no traffic today.')):

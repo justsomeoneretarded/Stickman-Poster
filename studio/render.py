@@ -324,9 +324,6 @@ def frame(scene, local_t, width, height, preview=True):
                           speaking=speaking and cinematic, tilt=tilt,
                           levitate=action == "float", facing_left=cinematic and x > 1150)
             d = ImageDraw.Draw(im)
-            if not cinematic:
-                fit_text(d, member["name"] + (" · speaking" if speaking else ""), x, 885, 24, 450,
-                         TEAL if speaking else WHITE)
             if speaking:
                 speaker_x, speaker_y = x, floor
         focus_x = speaker_x
@@ -388,21 +385,14 @@ def frame(scene, local_t, width, height, preview=True):
     d=ImageDraw.Draw(im)
     d.rectangle((0,0,W,61),fill="#080e1b")
     d.rectangle((0,1018,W,H),fill="#080e1b")
-    if scene.get("cinematic"):
-        fit_text(d, scene.get("heading", ""), 100, 105, 28, 1660, bold=True, anchor="lm")
-        name = next((m["name"] for m in scene.get("cast_members", []) if m["id"] == scene.get("speaker")), "")
-        d.rounded_rectangle((100, 850, 360, 902), radius=14, fill="#101a2c")
-        fit_text(d, name, 230, 877, 24, 230, TEAL, True)
-    else:
-        d.rounded_rectangle((100,100,330,140),radius=20,fill="#20384a")
-        d.text((125,109),"A WHAT-IF STORY",font=font(17,True),fill=TEAL)
-        fit_text(d,scene.get("heading",""),100,192,42,1660,bold=True,anchor="lm")
-        fit_text(d,scene.get("label",""),100,245,25,1660,fill="#c9bfcd",anchor="lm")
+    from .text_policy import label_for
+    label=label_for(scene)
+    if label:fit_text(d,label,W/2,150,35,1600,bold=True)
     # Estimated phrase captions, deliberately not claimed as forced alignment.
     words=scene.get("narration","").split()
     chunks=caption_chunks(scene.get("narration",""))
     position=min(len(words)-1,int(t/max(scene["duration"],.01)*len(words)))
-    if chunks:
+    if chunks and scene.get("screen_text","minimal")=="captions":
         cursor=0
         chosen=chunks[-1]
         for chunk in chunks:

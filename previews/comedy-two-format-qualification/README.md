@@ -15,3 +15,10 @@ The files are uploaded by Generator development checks as a clearly labeled
 local qualification artifact. The production workflow takes a fresh idea each
 run and generates both formats. All spoken lines in these files were written
 by the local language model, from renderable comic-beat prompts.
+
+Updated qualification: automatic titles, nameplates and burned-in captions are
+absent. Both versions include decoded-frame motion evidence and audio/script
+review reports. The same-model text reviewer reported no issues; this is not
+independent creative approval. Audio RMS spread exceeded the advisory threshold
+in both mixes (28.3 dB landscape, 26.3 dB portrait). Motion was measurable; no
+animation-quality or natural-speech approval is implied.

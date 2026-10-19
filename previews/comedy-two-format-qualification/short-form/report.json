@@ -5,7 +5,7 @@
   "fps": 24,
   "expected_seconds": 29.75,
   "actual_seconds": 29.8,
-  "wall_seconds": 34.427,
+  "wall_seconds": 59.647,
   "voice_status": "external narration supplied",
   "caption_alignment": "estimated phrase timing within audio-sized scenes",
   "scenes": [
@@ -13,19 +13,19 @@
       "id": "beat-001",
       "frames": 214,
       "cache_hit": false,
-      "render_seconds": 10.29
+      "render_seconds": 13.773
     },
     {
       "id": "beat-002",
       "frames": 183,
       "cache_hit": false,
-      "render_seconds": 8.479
+      "render_seconds": 12.324
     },
     {
       "id": "beat-003",
       "frames": 317,
       "cache_hit": false,
-      "render_seconds": 14.49
+      "render_seconds": 30.599
     }
   ],
   "checks": [

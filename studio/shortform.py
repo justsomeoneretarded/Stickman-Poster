@@ -27,6 +27,7 @@ def highlight_plan(project,target_seconds):
         s=scenes[i]
         result.append({'speaker':by_id[s['speaker']],'location':s['location'],
                        'staging':s['staging'],'shot':s.get('shot','medium'),'prop':s.get('prop','none'),
+                       'on_screen_text':s.get('on_screen_text',''),
                        'purpose':s.get('purpose','')+' Source line: '+s['narration'],
                        'comic_role':'hook' if i==0 else 'payoff' if i==len(scenes)-1 else 'escalation',
                        'short_score':s.get('short_score',0),'source_scene_id':s['id']})

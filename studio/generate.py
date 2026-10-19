@@ -37,7 +37,7 @@ def generate(args):
     short_seconds=getattr(args,'short_seconds',60)
     if not isinstance(short_seconds,(int,float)) or not math.isfinite(short_seconds) or not 10<=short_seconds<=180:
         raise ValueError('Short target seconds must be between 10 and 180')
-    request = {'short_seconds':short_seconds,'title': args.title, 'description': args.description, 'minutes': args.minutes, 'voices': voices}
+    request = {'screen_text':getattr(args,'screen_text','minimal'),'short_seconds':short_seconds,'title': args.title, 'description': args.description, 'minutes': args.minutes, 'voices': voices}
     if args.required_locations:
         request['required_locations']=args.required_locations.split(',')
     if args.revise_project:
@@ -63,11 +63,15 @@ def generate(args):
             source=out/'writing/story.json'
             if not source.is_file():source=out/'writing/revision.json'
             story = parse_story(source.read_text(), voices)
+            story['screen_text']=request['screen_text']
             compiled = compile_project(story, args.title, args.description, voices)
             (out/'writing/project.json').write_text(json.dumps(compiled, indent=2))
     if args.stage in ('all','write'):
         subprocess.run([sys.executable,'-m','studio.shortform',str(out/'writing/project.json'),
                         str(out/'request.json'),str(out/'short/writing'),args.writer_model_dir or 'models/script-qwen3'],check=True)
+    if args.stage in ('all','write'):
+        subprocess.run([sys.executable,'-m','studio.quality','script','--root',str(out),
+                        '--model-dir',args.writer_model_dir or 'models/script-qwen3'],check=True)
     if args.stage=='write':
         return
     # Writer process exits before the speech model is loaded, keeping peak RAM bounded.
@@ -125,4 +129,9 @@ def generate(args):
     for name in ('writer-report.json','project.json','highlight-selection.json'):
         shutil.copy2(short/'writing'/name,short_delivery/name)
     shutil.copy2(short/'speech/speech-check.json',short_delivery/'speech-check.json')
+    from .quality import review_media
+    for production,dest in ((out,delivery),(short,short_delivery)):
+        script_report=production/'writing/script-review.json'
+        if script_report.exists():shutil.copy2(script_report,dest/'script-review.json')
+        review_media(dest/'final.mp4',dest/'resolved-project.json',dest/'report.json',dest,script_report)
     print(f'Deliverables: {out/"deliverables"} (long-form + short-form)', flush=True)

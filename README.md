@@ -137,6 +137,27 @@ publishes videos. GitHub terms and account availability still apply.
 Production starts manually through **Generate voiced episode → Run workflow**, with a fresh title and description every time. There is no daily cron job. Deployment
 to a channel-production host is a separate step. The previous single-format workflow has produced a complete episode; the revised two-format path has separate verification evidence in the project context.
 
+Production text defaults to **Essential labels only**: no character nameplates,
+repeated title bars or burned-in dialogue. The writer may request a short label
+when needed to understand the action (for example, “400 lb”); character names are
+filtered from those labels. Choose **Captions** to burn dialogue into the video,
+or **No overlays** to suppress labels too. A separate SRT file remains available.
+
+Each delivery includes `quality-review.json` and `motion-review.jpg`. The script
+review checks the description, continuity, repetition, dialogue and staging. It
+uses the same Qwen model as the writer and accepts only findings quoting actual
+scene dialogue; it is advisory, not independent creative approval. Animation
+checks decode the finished video, measure actor/load movement, flag possible
+edge cropping and supply a frame sheet. Audio checks decode the finished mix for
+clipping, long silence and level variation. These checks do not reject a video
+for missing a word count or target duration.
+
+Review flags need judgment: quiet pauses and edge exits may be intentional.
+The checks do not establish that writing is funny, motion has believable weight,
+or a voice sounds natural. Echo, acting and voice similarity still need listening;
+no perceptual audio or vision critic has been qualified. Reports explicitly mark
+unavailable reviews, and never convert missing reviews into quality approval.
+
 ## Known limits / next milestones
 
 - Eight location templates, per-actor walking/running, and basic hand-attached

@@ -34,6 +34,11 @@ on:
           - 2 speakers — Maya + Max
           - 2 speakers — Leo + Max
           - 3 speakers — Maya + Leo + Max
+      screen_text:
+        description: On-screen text (no character-name labels)
+        type: choice
+        default: Essential labels only
+        options: [Essential labels only, Captions, No overlays]
       width:
         description: Video width
         type: choice
@@ -57,6 +62,7 @@ jobs:
       EPISODE_DESCRIPTION: ${{ inputs.description }}
       EPISODE_MINUTES: ${{ inputs.minutes }}
       EPISODE_VOICES: ${{ inputs.voices }}
+      EPISODE_SCREEN_TEXT: ${{ inputs.screen_text }}
       EPISODE_WIDTH: ${{ inputs.width }}
       EPISODE_SHORT_SECONDS: ${{ inputs.short_seconds }}
     steps:
@@ -86,7 +92,7 @@ jobs:
           tar -xzf work/llama-cpu.tar.gz -C work/llama-cpu
       - name: Download public models
         run: PYTHONPATH=. .venv/bin/python ci/download_models.py
-      - name: Generate scene plan and natural dialogue
+      - name: Generate and review both scripts against your description
         run: .venv/bin/python -m studio.actions_entry --stage write
       - name: Upload generated script for early review
         uses: actions/upload-artifact@v4
@@ -99,11 +105,12 @@ jobs:
             output/episode/writing/scene-plan.json
             output/episode/writing/planned-scenes.json
             output/episode/writing/creative-outline.json
+            output/episode/writing/script-review.json
             output/episode/short/writing/*.json
           if-no-files-found: error
       - name: Synthesize character voices and verify spoken words
         run: .venv/bin/python -m studio.actions_entry --stage speech
-      - name: Render landscape story and native portrait short
+      - name: Render both formats and review animation and audio
         run: .venv/bin/python -m studio.actions_entry --stage render
       - name: Upload long-form 16:9 video
         uses: actions/upload-artifact@v4
@@ -130,6 +137,8 @@ jobs:
             output/episode/writing/*.txt
             output/episode/speech/speech-check.json
             output/episode/render/report.json
+            output/episode/deliverables/*/quality-review.json
+            output/episode/deliverables/*/motion-review.jpg
             output/episode/short/writing/*.json
             output/episode/short/writing/*.txt
             output/episode/short/speech/speech-check.json

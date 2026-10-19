@@ -1,0 +1,105 @@
+{
+  "version": "review-v1",
+  "status": "human_review_required",
+  "duration_is_not_a_rejection_rule": true,
+  "audio": {
+    "status": "review_required",
+    "issues": [
+      {
+        "category": "uneven_level",
+        "concern": "Voiced RMS spread is 28.3 dB; review whether this dynamic range is intentional."
+      }
+    ],
+    "metrics": {
+      "sample_peak_dbfs": -1.3,
+      "full_scale_sample_fraction": 0.0,
+      "quiet_fraction": 0.1965,
+      "longest_quiet_gap_seconds": 0.69,
+      "voiced_level_spread_db": 28.26
+    },
+    "unassessed": [
+      "Echo/reverberation, natural prosody, acting, timbre and voice similarity require listening or a validated perceptual model.",
+      "These waveform measurements are not a MOS or naturalness score."
+    ]
+  },
+  "animation": {
+    "status": "no_measured_fault_detected",
+    "issues": [],
+    "scenes": [
+      {
+        "scene_id": "beat-001",
+        "staging": "lift",
+        "sampled_frames": 7,
+        "mean_frame_change": 6.09,
+        "tracked_color_span_pixels": 14.89,
+        "status": "measured"
+      },
+      {
+        "scene_id": "beat-002",
+        "staging": "lift",
+        "sampled_frames": 7,
+        "mean_frame_change": 6.049,
+        "tracked_color_span_pixels": 15.18,
+        "status": "measured"
+      },
+      {
+        "scene_id": "beat-003",
+        "staging": "reveal",
+        "sampled_frames": 5,
+        "mean_frame_change": 0.207,
+        "tracked_color_span_pixels": 0.62,
+        "status": "measured"
+      },
+      {
+        "scene_id": "beat-004",
+        "staging": "talk",
+        "sampled_frames": 6,
+        "mean_frame_change": 0.365,
+        "tracked_color_span_pixels": 0.68,
+        "status": "measured"
+      },
+      {
+        "scene_id": "beat-005",
+        "staging": "lift",
+        "sampled_frames": 6,
+        "mean_frame_change": 5.616,
+        "tracked_color_span_pixels": 13.7,
+        "status": "measured"
+      },
+      {
+        "scene_id": "beat-006",
+        "staging": "lift",
+        "sampled_frames": 4,
+        "mean_frame_change": 6.889,
+        "tracked_color_span_pixels": 17.13,
+        "status": "measured"
+      }
+    ],
+    "sample_fps": 2,
+    "evidence": "motion-review.jpg",
+    "unassessed": [
+      "Color tracking is a heuristic and may confuse props, lighting or similar clothing.",
+      "Does not certify animation appeal, believable weight/contact, complex occlusion, lip sync or reference-quality polish.",
+      "Inspect the decoded motion sheet and watch the full video with sound."
+    ]
+  },
+  "script": {
+    "status": "no_issue_reported",
+    "signature": "04650bfe114ffd43a017f24e2f410901858b18cfeb60359b70bccbd68cc4ab17",
+    "model": "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+    "revision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+    "same_model_family_as_writer": true,
+    "issues": [],
+    "reviewer_notes": [
+      "The script adheres closely to the requested tone and structure: a funny, feel-good superstrength mini-adventure with an immediate visual hook, absurdity, and a clean payoff. The narrative flows naturally from the initial absurdity of bench-pressing a full-sized car through to a grounded, humorous conclusion involving parking and gym membership jokes. There is no lesson, guilt, or fake-car twist as specified."
+    ],
+    "unsupported_model_findings_discarded": 0,
+    "review_error": null,
+    "limits": [
+      "Text-only advisory; cannot judge actual rendered acting or sound.",
+      "The writer and reviewer use the same model; this is not independent expert approval.",
+      "No word-count or duration target is used as a rejection rule."
+    ]
+  },
+  "automatic_flags": 1
+}

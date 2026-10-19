@@ -209,14 +209,12 @@ def frame(scene,t,width,height,preview=False):
         if shot=='wide' and len(members)>1 and not portrait:
             other=next((m for m in members if m['id']!=speaker['id']),hero)
             actor(d,w*.80,floor,.86,t,COLORS.get(other['voice'],'#ee7295'),expression='surprised' if staging=='react' else 'happy')
-    if scene.get('comic_role')=='hook' and portrait:
-        title=scene.get('heading','').replace('What if you could ','').replace('What if ','').upper()
-        words=title.split();lines=[' '.join(words[i:i+4]) for i in range(0,len(words),4)]
-        for i,text in enumerate(lines[:3]):
-            fit_text(d,text,w/2,h*.20+i*85,72,w*.87,CREAM,True)
+    from .text_policy import label_for
+    label=label_for(scene)
+    if label:fit_text(d,label,w/2,h*.15,52 if portrait else 40,w*.85,CREAM,True)
     # Short emphatic captions, without title bars, actor badges, or repeated headings.
     words=scene.get('narration','').split();count=5 if portrait else 7
-    if words:
+    if words and scene.get('screen_text','minimal')=='captions':
         from .project import caption_chunks
         chunks=caption_chunks(scene.get('narration',''),count)
         idx=min(len(words)-1,int(progress*len(words)));cursor=0;text=' '.join(chunks[-1])

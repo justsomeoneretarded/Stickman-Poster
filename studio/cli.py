@@ -69,7 +69,7 @@ def render_project(args):
     video_dir, audio_dir = out / "video", out / "audio-normalized"
     video_dir.mkdir(exist_ok=True)
     audio_dir.mkdir(exist_ok=True)
-    implementation = b"".join(Path(__file__).with_name(n).read_bytes() for n in ("render.py", "project.py", "cli.py", "cinematic.py", "animation.py", "locations.py"))
+    implementation = b"".join(Path(__file__).with_name(n).read_bytes() for n in ("render.py", "project.py", "cli.py", "cinematic.py", "animation.py", "locations.py", "text_policy.py"))
     implementation_hash = hashlib.sha256(implementation).hexdigest()
     scene_times, contacts = [], []
     for i, scene in enumerate(scenes):
@@ -199,6 +199,7 @@ def main():
     p.add_argument("--out", required=True)
     p.add_argument("--model-dir")
     p.add_argument("--writer-model-dir")
+    p.add_argument("--screen-text",choices=["minimal","captions","none"],default="minimal")
     p.add_argument("--short-seconds", type=float, default=60, help="Soft target for a standalone 9:16 highlight short")
     p.add_argument("--required-locations", default="", help="Comma-separated story locations that must appear")
     p.add_argument("--revise-project", help="Revise a previously generated project instead of starting from an empty draft")
