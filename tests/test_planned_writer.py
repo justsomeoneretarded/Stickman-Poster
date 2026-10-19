@@ -40,7 +40,7 @@ class PlannedWriterTests(unittest.TestCase):
                 FakeWriter.calls+=1
                 if FakeWriter.fail and FakeWriter.calls==3:raise RuntimeError('interrupted')
                 count=int(re.search(r'Write approximately (\d+) words',messages[-1]['content'])[1])
-                if FakeWriter.calls==4:count=31  # original scene-3 failure: accept and rebalance
+                if FakeWriter.calls==4:count=31  # original scene-3 failure: accept without retry
                 if FakeWriter.calls==19:count+=5  # final turn may also finish naturally
                 return json.dumps({'speech':' '.join(['I']+['really']*(count-3)+['like','coffee.'])})
         with tempfile.TemporaryDirectory() as d,patch('studio.local_llm.LocalWriter',FakeWriter):
@@ -54,6 +54,22 @@ class PlannedWriterTests(unittest.TestCase):
             self.assertEqual(len(project['scenes']),18)
             self.assertEqual({s['location'] for s in project['scenes']},set(request['required_locations']))
             self.assertEqual(FakeWriter.calls,19)  # 18 turns plus the interrupted call, no replay
-            self.assertEqual(json.loads((out/'writer-report.json').read_text())['word_count'],485)
+            self.assertEqual(json.loads((out/'writer-report.json').read_text())['word_count'],495)
             self.assertEqual(len(json.loads((out/'story.json').read_text())['beats'][2]['text'].split()),31)
-            self.assertEqual(json.loads((out/'writer-report.json').read_text())['word_count_deviation'],5)
+            self.assertEqual(json.loads((out/'writer-report.json').read_text())['word_count_deviation'],15)
+
+    def test_longer_script_is_not_rejected_for_exceeding_target_minutes(self):
+        request={'title':'Coffee conversation','description':'Friends talk over coffee.',
+                 'minutes':3,'voices':['female','male1','male2'],
+                 'required_locations':['classroom','field','bank','street','cafe']}
+        class LongerWriter:
+            def __init__(self,*args,**kwargs):pass
+            def __enter__(self):return self
+            def __exit__(self,*args):pass
+            def complete(self,*args):
+                return json.dumps({'speech':'I '+('enjoy coffee with you. '*18).strip()})
+        with tempfile.TemporaryDirectory() as d,patch('studio.local_llm.LocalWriter',LongerWriter):
+            write_planned(request,Path(d),None,0)
+            report=json.loads((Path(d)/'writer-report.json').read_text())
+            self.assertGreater(report['word_count']/160,5)
+            self.assertTrue((Path(d)/'project.json').exists())

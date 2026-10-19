@@ -283,3 +283,16 @@ with targets bounded to avoid asking for an excessively long or negative turn.
 The report records the total word-count deviation; no exact-duration claim is
 made. The regression reproduces the 31-word scene, verifies no extra retry, and
 allows a slightly longer final sentence. All 33 tests pass.
+
+## User duration preference: story before runtime
+
+User explicitly accepts roughly five minutes and requests no exceptions caused
+by exceeding the requested minutes. Removed per-turn word-count rejection,
+whole-story duration-derived word rejection in the legacy path, and automatic
+shortening of later planned turns to squeeze the story into the time target.
+Duration is prompt guidance and reporting only. The shared parser now accepts
+longer dialogue within the renderer's existing per-scene character capacity.
+Regression test accepts over five minutes of dialogue for a three-minute target;
+all 34 tests pass. Technical validation and malformed-output errors still apply;
+this does not claim every possible pipeline failure is fixed. The active brief
+now explicitly allows a longer complete story.

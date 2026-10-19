@@ -44,8 +44,8 @@ def parse_story(raw, voices):
             if beat['text'][-1] not in '.!?':
                 beat['text']+='.'
         text = beat.get('text')
-        if not isinstance(text, str) or not 3 <= len(text.split()) <= 65 or len(text) > 500:
-            raise ValueError('Each beat must contain 3–65 spoken words, at most 500 characters')
+        if not isinstance(text, str) or not text.strip() or len(text) > 1500:
+            raise ValueError('Each beat needs nonempty speech, at most 1500 characters per scene')
     if set(b['speaker'] for b in story['beats']) != set(voices):
         raise ValueError('The script must use every selected voice')
     return story
@@ -129,11 +129,11 @@ def write_planned(request, out, model_dir, started):
     title,description,minutes,voices=(request[k] for k in ('title','description','minutes','voices'))
     plan=scene_plan(max(len(voices),math.ceil(minutes*6)),voices,request['required_locations'],title)
     words=max(8,round(minutes*160/len(plan)))
-    schema={'type':'object','properties':{'speech':{'type':'string','minLength':40,'maxLength':480}},
+    schema={'type':'object','properties':{'speech':{'type':'string','minLength':1,'maxLength':1500}},
             'required':['speech'],'additionalProperties':False}
     system=(f'Write ONLY words spoken aloud in an animated fictional conversation. '
             'Return JSON with one speech string containing natural English with normal spaces. '
-            'Finish a complete thought with sentence punctuation. '
+            'Finish a complete thought with sentence punctuation. Duration is approximate; prioritize a complete story over the suggested word count. '
             'Speak as the assigned character using I, we, or you. Never start with a character name or write '
             'stage directions, speaker labels, descriptions of speaking, or third-person actor actions. '
             'Maya=female, Leo=male1, Officer Max=male2. The app animates the scene plan; speech must match it. '
@@ -155,8 +155,6 @@ def write_planned(request, out, model_dir, started):
     with LocalWriter(model_dir or 'models/script-qwen3',out,context=4096) as writer:
         for index,slot in enumerate(plan):
             if index<len(completed):continue
-            remaining=round(minutes*160)-sum(len(b['text'].split()) for b in completed)
-            words=min(55,max(8,round(remaining/(len(plan)-index))))
             history=[{'speaker':b['speaker'],'speech':b['text']} for b in completed[-4:]]
             prompt=(f'Write scene {index+1}/{len(plan)}. Assigned scene: {json.dumps(slot)}. '
                     f'Previous spoken dialogue: {json.dumps(history)}. '
@@ -171,9 +169,7 @@ def write_planned(request, out, model_dir, started):
                     content=json.loads(raw)
                     text=content['speech'].strip()
                     tokens=text.split()
-                    if not 8<=len(tokens)<=65:
-                        raise ValueError('Write a complete spoken turn of 8 to 65 words. The requested word count is a guide, not an exact limit.')
-                    if len(text)>480 or any(len(w)>30 for w in tokens):
+                    if not tokens or any(len(w)>30 for w in tokens):
                         raise ValueError('Use normal English with spaces between words, not joined phrases.')
                     beat={**slot,'text':text}
                     validate_spoken_style({'beats':[beat]})
@@ -200,7 +196,7 @@ def write_planned(request, out, model_dir, started):
             'passes':['app scene plan','per-scene dialogue generation and validation'],
             'seconds':time.perf_counter()-started,'word_count':sum(len(b['text'].split()) for b in completed),
             'target_minutes':minutes,'selected_voices':voices,'required_locations':request['required_locations'],
-            'word_budget':'adaptive per-scene guidance; natural turns of 8 to 65 words',
+            'word_budget':'duration and word targets are guidance only; no word-count rejection',
             'target_word_count':round(minutes*160),
             'word_count_deviation':sum(len(b['text'].split()) for b in completed)-round(minutes*160),'timing_note':'Final duration follows measured speech',
             'factual_status':'generated fiction; no external fact verification'}
@@ -231,8 +227,8 @@ def write(request, out, model_dir=None):
     words = max(8, round(minutes * 160 / beats))
     system = f'''You write original animated stories from a title and a short description.
 Return ONLY valid JSON: {{"beats":[{{"speaker":"VOICE_ID","words":["Only","spoken","dialogue."],"location":"room","shot":"medium","prop":"none","staging":"travel"}}]}}.
-Write exactly {beats} beats, about {words} words per beat. Total spoken words must be close to {round(minutes*160)}. Required locations: {', '.join(required_locations) or 'choose appropriately'}. Use ALL and ONLY these speaker IDs: {', '.join(voices)}.
-One speaker per beat. Each beat must have a words array containing exactly {words} items. Each item is ONE spoken word with punctuation attached, never a phrase. Joining the array with spaces must form natural dialogue. Do not output a text field. The words array contains ONLY words spoken aloud by that speaker. Use first-person speech or direct address. Do not write third-person stage directions such as 'Leo runs', 'Maya stands', 'Max looks', or speaker labels. Do not wrap dialogue in a description of the actor.
+Write exactly {beats} beats, about {words} words per beat. Suggested total is {round(minutes*160)} words; longer dialogue is fine when the story needs it. Required locations: {', '.join(required_locations) or 'choose appropriately'}. Use ALL and ONLY these speaker IDs: {', '.join(voices)}.
+One speaker per beat. Each beat has a words array with around {words} items, with flexibility for natural speech. Each item is ONE spoken word with punctuation attached, never a phrase. Joining the array with spaces must form natural dialogue. Do not output a text field. The words array contains ONLY words spoken aloud by that speaker. Use first-person speech or direct address. Do not write third-person stage directions such as 'Leo runs', 'Maya stands', 'Max looks', or speaker labels. Do not wrap dialogue in a description of the actor.
 Write real dialogue with a concrete opening, escalation, reactions, and a satisfying final payoff. Every turn must finish a complete thought; use sentence punctuation, and never stop mid-sentence to meet the word limit.
 For one voice use engaging narration. For multiple voices let characters respond to each other with distinct perspectives.
 Voice identities: female is Maya, male1 is Leo, male2 is Officer Max when the story involves police.
@@ -259,7 +255,7 @@ Do not include music, sound directions, speaker labels, or stage directions insi
         'type': 'object', 'properties': {'beats': {'type': 'array', 'minItems': beats, 'maxItems': beats,
         'items': {'type': 'object', 'properties': {
             'speaker': {'type': 'string', 'enum': voices},
-            'words': {'type': 'array', 'minItems': words, 'maxItems': words, 'items': {'type': 'string', 'pattern': "^[A-Za-z0-9][A-Za-z0-9',.!?;:]*$", 'minLength': 1, 'maxLength': 24}},
+            'words': {'type': 'array', 'minItems': 3, 'maxItems': 200, 'items': {'type': 'string', 'pattern': "^[A-Za-z0-9][A-Za-z0-9',.!?;:]*$", 'minLength': 1, 'maxLength': 24}},
             'location': {'type': 'string', 'enum': sorted(LOCATIONS)},
             'shot': {'type': 'string', 'enum': sorted(SHOTS)},
             'prop': {'type': 'string', 'enum': sorted(PROPS)},
@@ -296,7 +292,7 @@ def finish_writing(writer, schema, system, title, description, voices, beats, wo
     for stage in stages:
         if stage == 'revision':
             messages += [{'role': 'assistant', 'content': json.dumps(drafts[-1])},
-                         {'role': 'user', 'content': 'Revise the full story. This previous generated draft may contain spoken stage directions or dodge the requested premise. Replace those defects completely, and produce the requested spoken word budget with dialogue only. ' + premise_instruction + 'Strengthen the opening and payoff, fix repetition, continuity, and awkward speech. Keep all selected speakers and the same number of beats. Preserve the requested tone and comic payoff if requested. Keep one coherent sequence and only the original impossible premise. Remove repeated abstract slogans and any extra powers. Make each action match its staging and actor identities exactly. Keep the requested word budget. Show travel, chase or object contact in at least half the beats when it fits the requested story, and keep location changes explicit. End with a specific action or joke grounded in the opening, not an abstract signal or mystery. Keep it fictional and fit supported visuals. Return the complete JSON object.'}]
+                         {'role': 'user', 'content': 'Revise the full story. This previous generated draft may contain spoken stage directions or dodge the requested premise. Replace those defects completely, and produce the requested spoken word budget with dialogue only. ' + premise_instruction + 'Strengthen the opening and payoff, fix repetition, continuity, and awkward speech. Keep all selected speakers and the same number of beats. Preserve the requested tone and comic payoff if requested. Keep one coherent sequence and only the original impossible premise. Remove repeated abstract slogans and any extra powers. Make each action match its staging and actor identities exactly. Treat the word budget as guidance; prioritize natural complete speech. Show travel, chase or object contact in at least half the beats when it fits the requested story, and keep location changes explicit. End with a specific action or joke grounded in the opening, not an abstract signal or mystery. Keep it fictional and fit supported visuals. Return the complete JSON object.'}]
         attempt_messages=messages
         for attempt in range(3):
             raw = complete(attempt_messages)
@@ -306,10 +302,6 @@ def finish_writing(writer, schema, system, title, description, voices, beats, wo
                 if len(story['beats']) != beats:
                     raise ValueError(f'Expected exactly {beats} beats')
                 if minutes>=1:
-                    total=sum(len(b['text'].split()) for b in story['beats'])
-                    target=round(minutes*160)
-                    if not target*.96<=total<=target*1.04:
-                        raise ValueError(f'Use approximately {target} spoken words in total; current script has {total}. Keep {beats} beats.')
                     moving=sum(b.get('staging') in {'travel','enter','chase','carry','handoff'} for b in story['beats'])
                     if moving<math.ceil(beats*.4) or len({b.get('location') for b in story['beats']})<3:
                         raise ValueError('Use at least three locations and real actor travel in at least 40 percent of the beats.')
