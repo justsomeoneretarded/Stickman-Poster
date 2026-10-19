@@ -171,7 +171,7 @@ def main():
     p.add_argument("--start", type=float, default=0); p.add_argument("--seconds", type=float, default=12)
     p = sub.add_parser("enroll")
     p.add_argument("reference"); p.add_argument("--profile", required=True)
-    p.add_argument("--variant", choices=["nano", "turbo"], default="nano")
+    p.add_argument("--variant", choices=["nano", "turbo"], default="turbo")
     p.add_argument("--device", default="cpu"); p.add_argument("--model-dir")
     p = sub.add_parser("speak")
     p.add_argument("project")

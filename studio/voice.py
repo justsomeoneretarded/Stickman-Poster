@@ -1,8 +1,4 @@
-"""Optional Chatterbox adapter. Never silently substitutes a stock voice.
-
-Verified against source commit 5de7a54aa4e5e2baadb0182dde554908b48b85c2.
-Model inference is NOT validated until a real sample and weights are available.
-"""
+"""Pinned Chatterbox Turbo adapter; no automatic stock voice or Nano fallback."""
 import hashlib
 import json
 import os
@@ -10,6 +6,10 @@ import re
 from pathlib import Path
 
 SOURCE_COMMIT = "5de7a54aa4e5e2baadb0182dde554908b48b85c2"
+MODEL_REVISIONS = {
+    "turbo": "749d1c1a46eb10492095d68fbcf55691ccf137cd",
+    "nano": "71ccd1d0081b430592cea481f4307e764e07bc64",
+}
 
 
 def sha256(path):
@@ -45,7 +45,7 @@ def speech_chunks(text, limit=220):
     return result
 
 
-def load_model(variant="nano", device="cpu", model_dir=None):
+def load_model(variant="turbo", device="cpu", model_dir=None):
     if variant not in {"nano", "turbo"}:
         raise ValueError("Voice variant must be nano or turbo")
     try:
@@ -54,12 +54,17 @@ def load_model(variant="nano", device="cpu", model_dir=None):
     except ImportError as exc:
         raise RuntimeError("Install the separate voice requirements first; no fallback voice was used") from exc
     torch.set_num_threads(max(1, min(4, os.cpu_count() or 1)))
-    if model_dir:
-        return ChatterboxTurboTTS.from_local(model_dir, device=device, nano=variant == "nano")
-    return ChatterboxTurboTTS.from_pretrained(device=device, nano=variant == "nano")
+    if not model_dir:
+        from huggingface_hub import snapshot_download
+        model_dir = snapshot_download(f"ResembleAI/chatterbox-{variant}", revision=MODEL_REVISIONS[variant],
+            allow_patterns=["ve.safetensors", "s3gen_meanflow.safetensors", f"t3_{variant}_v1.safetensors",
+                            "*.json", "*.txt", "*.yaml"])
+    if not (Path(model_dir)/f"t3_{variant}_v1.safetensors").is_file():
+        raise ValueError(f"Missing {variant} checkpoint in {model_dir}; no fallback model was used")
+    return ChatterboxTurboTTS.from_local(model_dir, device=device, nano=variant == "nano")
 
 
-def enroll(reference, directory, variant="nano", device="cpu", model_dir=None):
+def enroll(reference, directory, variant="turbo", device="cpu", model_dir=None):
     from .media import audio_duration
     if not 6 <= audio_duration(reference) <= 30:
         raise ValueError("Enrollment expects a clean 6–30 second WAV excerpt")
@@ -74,7 +79,7 @@ def enroll(reference, directory, variant="nano", device="cpu", model_dir=None):
     model.conds.to("cpu").save(tmp)
     tmp.replace(directory / "conditioning.pt")
     metadata = {"schema_version": 1, "engine": "chatterbox", "variant": variant,
-                "source_commit": SOURCE_COMMIT, "reference_sha256": sha256(reference),
+                "source_commit": SOURCE_COMMIT, "model_revision": MODEL_REVISIONS[variant], "reference_sha256": sha256(reference),
                 "conditioning_sha256": sha256(directory / "conditioning.pt"),
                 "sample_rate": model.sr, "status": "enrolled; listening validation pending",
                 "privacy": "Contains speaker conditioning; keep private even after deleting the source"}
@@ -101,7 +106,7 @@ def synthesize_scenes(project, profile, out, device="cpu", model_dir=None):
         if not scene["narration"].strip():
             raise ValueError("Voice scenes need nonempty narration")
         digest = hashlib.sha256((scene["narration"] + metadata["conditioning_sha256"] +
-                                 metadata["variant"] + SOURCE_COMMIT + "paragraph-v2").encode()).hexdigest()
+                                 metadata["variant"] + MODEL_REVISIONS[metadata["variant"]] + SOURCE_COMMIT + "paragraph-v2").encode()).hexdigest()
         path = out / f"{index:03}.wav"
         cache = out / f"{index:03}.json"
         hit = cache.exists() and path.exists() and json.loads(cache.read_text()).get("key") == digest
@@ -119,10 +124,11 @@ def synthesize_scenes(project, profile, out, device="cpu", model_dir=None):
             if not np.isfinite(samples).all() or len(samples) < model.sr*.15:
                 raise RuntimeError("Voice generation returned invalid or empty audio")
             sf.write(str(path), samples, model.sr, subtype="PCM_16")
-            cache.write_text(json.dumps({"key": digest, "engine": "chatterbox", "variant": metadata["variant"]}))
+            cache.write_text(json.dumps({"key": digest, "engine": "chatterbox", "variant": metadata["variant"], "model_revision": MODEL_REVISIONS[metadata["variant"]]}))
         entries.append({"scene_id": scene["id"], "file": path.name})
     manifest = {"schema_version": 1, "voice": "cloned voice; listening review required",
-                "engine": "chatterbox", "entries": entries}
+                "engine": "chatterbox", "variant": metadata["variant"],
+                "model_revision": MODEL_REVISIONS[metadata["variant"]], "entries": entries}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2))
     return manifest
 
@@ -150,7 +156,8 @@ def synthesize_cast(project, profiles, out, device="cpu", model_dir=None):
         folder = f"voice-{i:02}"
         manifest = synthesize_scenes({**project, "scenes": scenes}, profiles[voice], out / folder, device, model_dir)
         for scene, entry in zip(scenes, manifest["entries"]):
-            entries[scene["id"]] = {**entry, "file": folder + "/" + entry["file"], "speaker": scene["speaker"], "voice": voice}
+            entries[scene["id"]] = {**entry, "file": folder + "/" + entry["file"], "speaker": scene["speaker"], "voice": voice,
+                                             "variant": manifest.get("variant"), "model_revision": manifest.get("model_revision")}
     manifest = {"schema_version": 1, "engine": "chatterbox", "voice": "character cast; listening review required",
                 "entries": [entries[s["id"]] for s in project["scenes"]]}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2))

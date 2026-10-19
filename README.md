@@ -77,14 +77,16 @@ destabilize the small rendering environment.
 
 ```sh
 python -m studio.cli prepare-reference private/source.mp3 private/reference.wav --start 0 --seconds 12
-python -m studio.cli enroll private/reference.wav --profile private/voice-nano --variant nano --device cpu
-python -m studio.cli speak examples/gravity.json --profile private/voice-nano --out private/narration
+python -m studio.cli enroll private/reference.wav --profile private/voice-turbo --variant turbo --device cpu
+python -m studio.cli speak examples/gravity.json --profile private/voice-turbo --out private/narration
 python -m studio.cli render examples/gravity.json --out private/render --audio-manifest private/narration/manifest.json
 ```
 
-`--model-dir models/chatterbox-nano` can load previously downloaded local weights
-for enrollment and speaking. Compare Turbo by enrolling a separate `--variant turbo`
-profile. Do not reuse Nano conditioning blindly with a different model variant.
+`--model-dir models/chatterbox-turbo` can load previously downloaded local weights
+for enrollment and speaking. Turbo is the production default. Published cast
+conditioning was checked against identical encoder/decoder weights, tokenizer
+files and the shared conditioning API of these pinned Nano and Turbo versions.
+This does not establish compatibility with arbitrary models.
 
 Enrollment saves Chatterbox conditioning tensors. Future synthesis reads those
 tensors, not the source WAV. **Those tensors still contain speaker information.**
@@ -117,7 +119,7 @@ Once the endpoint and voice adapter are qualified, the same stages can be called
 with one command (this full model-backed path has not yet been run end to end):
 
 ```sh
-python -m studio.cli produce --title "Your title" --minutes 10 --endpoint http://localhost:8080/v1 --model YOUR_MODEL --notes sources.txt --profile private/voice-nano --out private/episode
+python -m studio.cli produce --title "Your title" --minutes 10 --endpoint http://localhost:8080/v1 --model YOUR_MODEL --notes sources.txt --profile private/voice-turbo --out private/episode
 ```
 
 When required locations are supplied, the app assigns every location, speaker, and
@@ -169,9 +171,9 @@ unavailable reviews, and never convert missing reviews into quality approval.
 - Automatic ASR text checks are implemented; no speaker similarity score, music/SFX composer,
   chapter eligibility check, independent fact checker or YouTube uploader yet.
 - Thumbnail is a scene preview, not an optimized final publishing thumbnail.
-- Nano CPU bundled-voice inference passed; profile caching is source-reviewed.
-  Actual clone fidelity and speed
-  remain untested. See docs/VOICE_RESEARCH.md.
+- Turbo is the production TTS engine on GitHub Actions CPU runners.
+  Clone fidelity and naturalness need listening review; changing models does not
+  guarantee that every echo or robotic inflection disappears. See docs/VOICE_RESEARCH.md.
 - Renderer dependencies have bounded ranges, not a complete cross-platform lock.
   Pin/lock after qualifying the intended runner.
 
@@ -192,10 +194,10 @@ uv pip check --python work/voice-venv/bin/python
 ```
 
 Use `work/voice-venv/bin/python -m studio.cli` from the project root for the
-voice commands above, adding `--model-dir models/chatterbox-nano` to enroll
+voice commands above, adding `--model-dir models/chatterbox-turbo` to enroll
 and speak. The model directory is private/ignored. The qualified model revision
-is `71ccd1d0081b430592cea481f4307e764e07bc64`; the recorded CPU smoke used
-the upstream bundled voice, not a user clone. See `docs/VOICE_RESEARCH.md`.
+is `749d1c1a46eb10492095d68fbcf55691ccf137cd` (Turbo). Historical Nano
+benchmarks are not Turbo benchmarks. See `docs/VOICE_RESEARCH.md`.
 
 ## Character voices: one, two, or three speakers
 
@@ -203,7 +205,7 @@ Use a project `cast` with one to three members, each with `id`, `name`, and
 `voice`. Each scene is one dialogue turn: `speaker` selects the character and
 `characters` lists the visible cast (one to three IDs). A video can use any
 subset of the three voices. Characters keep their voice across turns; the
-renderer labels the active speaker. This is turn-taking, not overlapping speech
+renderer does not add character-name labels. This is turn-taking, not overlapping speech
 or phoneme lip sync. `examples/three-friends.json` demonstrates all three.
 
 Keep profile paths in a private JSON mapping, for example `private/cast-profiles.json`:
@@ -219,7 +221,7 @@ Keep profile paths in a private JSON mapping, for example `private/cast-profiles
 Paths resolve relative to that mapping file. Generate narration and render:
 
 ```sh
-work/voice-venv/bin/python -m studio.cli speak examples/three-friends.json --cast-profiles private/cast-profiles.json --out private/three-friends/speech --model-dir models/chatterbox-nano
+work/voice-venv/bin/python -m studio.cli speak examples/three-friends.json --cast-profiles private/cast-profiles.json --out private/three-friends/speech --model-dir models/chatterbox-turbo
 .venv/bin/python -m studio.cli render examples/three-friends.json --audio-manifest private/three-friends/speech/manifest.json --out private/three-friends/render --width 960 --fps 24
 ```
 

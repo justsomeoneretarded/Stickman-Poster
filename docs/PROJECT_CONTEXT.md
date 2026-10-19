@@ -3,6 +3,16 @@
 Updated 19 October 2026 from the current thread, repository, and the readable
 conversation section of the user-provided previous-chat paste.
 
+## Latest TTS change
+
+The user requested replacing Nano with Turbo. Production model directory is now
+`models/chatterbox-turbo`, pinned at `749d1c1a46eb10492095d68fbcf55691ccf137cd`.
+Three saved profiles are configured for Turbo after shared encoder/decoder,
+tokenizer and conditioning-API compatibility checks. Nano audio caches invalidate.
+The older Nano observations below are historical. Turbo still needs listening
+review for voice similarity, echo and naturalness; a full-length CPU run is not
+qualified by short clips.
+
 ## Recovered previous-chat context
 
 - The old conversation was attached to a restricted cloud environment. Hugging

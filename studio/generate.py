@@ -85,7 +85,7 @@ def generate(args):
             subprocess.run(command, check=True)
             subprocess.run([sys.executable, '-m', 'studio.speech_check', '--project', str(project),
                             '--manifest', str(production/'speech/manifest.json'), '--cast-profiles', str(mapping),
-                            '--model-dir', args.model_dir or 'models/chatterbox-nano',
+                            '--model-dir', args.model_dir or 'models/chatterbox-turbo',
                             '--asr-model-dir', args.asr_model_dir], check=True)
     if args.stage=='speech':
         return
@@ -113,7 +113,7 @@ def generate(args):
                       for s in compiled['scenes']]}
     (delivery/'motion-check.json').write_text(json.dumps(motion,indent=2))
     summary = {'status': 'generated and decoded; editorial, voice, and artistic review required',
-               'title': args.title, 'voices': voices, 'engine': 'chatterbox-nano CPU baseline, not audition winner',
+               'title': args.title, 'voices': voices, 'engine': 'chatterbox-turbo CPU; listening review required',
                'video': 'final.mp4', 'script_source': 'local language model; description-driven outline and per-scene dialogue', 'reused_validated_writing': resume_writing,
                'unqualified': ['voice similarity', 'human listening review', 'factual claims', 'reference visual parity']}
     (delivery/'generation.json').write_text(json.dumps(summary, indent=2))

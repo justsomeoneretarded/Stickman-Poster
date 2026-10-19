@@ -1,3 +1,25 @@
+## Current production selection: Chatterbox Turbo
+
+The user selected Turbo to replace Nano. Production uses
+`ResembleAI/chatterbox-turbo` revision
+`749d1c1a46eb10492095d68fbcf55691ccf137cd` with the existing Chatterbox source
+pin `5de7a54aa4e5e2baadb0182dde554908b48b85c2`, on GitHub Actions CPU runners.
+GPU speed claims are not CPU benchmarks, and a listening comparison winner has
+not been established.
+
+All three public profiles keep their authorized conditioning tensors. Checked
+Hub hashes and downloaded files show identical encoder, audio decoder and all
+tokenizer files between the pinned Nano and Turbo versions. Encoder SHA-256:
+`f0921cab452fa278bc25cd23ffd59d36f816d7dc5181dd1bef9751a7fb61f63c`;
+audio decoder SHA-256:
+`d65cb687a2ed581ee6cc297e919ffefa63386944f42364ae13b78a594945514f`.
+The pinned source shares conditioning extraction and speech-token vocabulary.
+Turbo loads its separate larger T3 checkpoint. Metadata records the Nano origin;
+variant/revision-aware cache keys prevent reuse of Nano audio as Turbo output.
+Missing Turbo weights cause an error rather than automatic Nano fallback.
+
+The research and Nano evidence below are historical, not the current selection.
+
 # Voice-model research — 18 October 2026
 
 Goal: realistic English narration matching the supplied speaker, no paid inference

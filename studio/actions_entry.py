@@ -45,7 +45,7 @@ def main():
             '--description', request['description'], '--minutes', str(request['minutes']),
             '--screen-text',request['screen_text'],'--voices', request['voices'], '--short-seconds',str(request['short_seconds']), '--width', str(request.get('width', 960)), '--fps', '24',
             '--cast-profiles', 'voices/cast-profiles.json', '--writer-model-dir', 'models/script-qwen3',
-            '--model-dir', 'models/chatterbox-nano', '--out', 'output/episode', '--stage',stage]
+            '--model-dir', 'models/chatterbox-turbo', '--out', 'output/episode', '--stage',stage]
     subprocess.run(args, check=True)
     if stage not in ('all','render'):
         return

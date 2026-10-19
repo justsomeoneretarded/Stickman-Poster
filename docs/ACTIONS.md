@@ -54,8 +54,9 @@ no frames or characters are copied from the supplied reference.
 
 The three reusable profiles are public with the user's authorization:
 `female` → Maya, `male1` → Leo, `male2` → Max. No `VOICE_PROFILE_KEY` is needed.
-Original recordings remain outside the repository. The engine is Chatterbox Nano
-on CPU; VoiceStudio/OmniVoice, Turbo and Qwen TTS auditions are still pending.
+Original recordings remain outside the repository. The engine is Chatterbox Turbo
+on CPU, pinned to `749d1c1a46eb10492095d68fbcf55691ccf137cd`. VoiceStudio/OmniVoice
+and Qwen TTS are not integrated. A comparative listening winner is not established.
 Whisper screens spoken text, but does not prove naturalness or speaker similarity.
 Audio echo/robotic quality is not claimed fixed by the visual redesign.
 
@@ -88,7 +89,7 @@ python -m studio.cli generate \
   --description 'Funny feel-good superstrength, a shocked friend, and a parking joke.' \
   --minutes 3 --short-seconds 45 --voices female,male1,male2 \
   --cast-profiles voices/cast-profiles.json \
-  --writer-model-dir models/script-qwen3 --model-dir models/chatterbox-nano \
+  --writer-model-dir models/script-qwen3 --model-dir models/chatterbox-turbo \
   --out output/episode --width 1280 --fps 24
 ```
 

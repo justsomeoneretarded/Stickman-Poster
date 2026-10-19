@@ -83,7 +83,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: models
-          key: models-qwen3-a06e946b-nano-71ccd1d0-asr-3d3d5dee-v1
+          key: models-qwen3-a06e946b-turbo-749d1c1a-asr-3d3d5dee-v1
       - name: Install pinned local script runtime
         run: |
           mkdir -p work/llama-cpu

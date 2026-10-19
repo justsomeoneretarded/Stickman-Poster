@@ -1,12 +1,15 @@
 {
   "schema_version": 1,
   "engine": "chatterbox",
-  "variant": "nano",
+  "variant": "turbo",
   "source_commit": "5de7a54aa4e5e2baadb0182dde554908b48b85c2",
   "reference_sha256": "206e5f47f0ddc60d57116092bf00db4abb3e89f7b75ba17a81699dda2f8abfeb",
   "conditioning_sha256": "6c589ff569aa213ece4c16ee33dec6e7679545243a00ad0141a2a0dc6095b15c",
   "sample_rate": 24000,
-  "status": "enrolled; listening validation pending",
+  "status": "Turbo migration; synthesis qualification pending",
   "privacy": "Reusable speaker conditioning; intentionally published with user authorization on 19 October 2026",
-  "visibility": "public"
+  "visibility": "public",
+  "model_revision": "749d1c1a46eb10492095d68fbcf55691ccf137cd",
+  "conditioning_origin_variant": "nano",
+  "conditioning_compatibility": "Shared encoder/decoder weights, tokenizer files and conditioning API verified against pinned Turbo and Nano versions; tensors unchanged."
 }
