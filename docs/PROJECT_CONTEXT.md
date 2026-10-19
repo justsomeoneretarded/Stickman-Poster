@@ -187,3 +187,17 @@ preflight, decryption helper, and workflow dependency on VOICE_PROFILE_KEY.
 Earlier private-profile and missing-secret notes above are historical and are
 superseded by this decision. Next verification is the full generation workflow
 on the hosted Actions runner with public profiles.
+
+## First full hosted generation succeeded with public profiles
+
+Run 39265452782 completed successfully after publishing public profiles:
+https://github.com/justsomeoneretarded/Stickman-Poster/actions/runs/39265452782
+Artifact: voiced-episode-2, ID 12192952488. This was a fresh Actions-hosted
+script draft + revision, not reuse of the committed local sample. The writer
+produced 43 words in 53.03 seconds. All three speaker profiles synthesized
+dialogue; ASR WERs were 0.0, 0.0, and 0.0455. Final video is 18.0 seconds,
+960×540, 24fps. Rendering, audio presence, timing, and full decode passed.
+The artifact was downloaded and its files, reports, and contact sheet inspected;
+video decoded locally as well. Human listening and artistic approval remain
+pending. Development checks also passed on the public-profile commit 8e463e9.
+VOICE_PROFILE_KEY is no longer required.
