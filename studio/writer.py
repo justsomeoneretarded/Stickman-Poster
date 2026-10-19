@@ -121,7 +121,7 @@ def write(request, out, model_dir=None):
 Return ONLY valid JSON: {{"beats":[{{"speaker":"VOICE_ID","words":["Only","spoken","dialogue."],"location":"room","shot":"medium","prop":"none","staging":"travel"}}]}}.
 Write exactly {beats} beats, about {words} words per beat. Total spoken words must be close to {round(minutes*160)}. Required locations: {', '.join(required_locations) or 'choose appropriately'}. Use ALL and ONLY these speaker IDs: {', '.join(voices)}.
 One speaker per beat. Each beat must have a words array containing exactly {words} items. Each item is ONE spoken word with punctuation attached, never a phrase. Joining the array with spaces must form natural dialogue. Do not output a text field. The words array contains ONLY words spoken aloud by that speaker. Use first-person speech or direct address. Do not write third-person stage directions such as 'Leo runs', 'Maya stands', 'Max looks', or speaker labels. Do not wrap dialogue in a description of the actor.
-Write real dialogue with a concrete opening, escalation, reactions, and a satisfying final payoff.
+Write real dialogue with a concrete opening, escalation, reactions, and a satisfying final payoff. Every turn must finish a complete thought; use sentence punctuation, and never stop mid-sentence to meet the word limit.
 For one voice use engaging narration. For multiple voices let characters respond to each other with distinct perspectives.
 Voice identities: female is Maya, male1 is Leo, male2 is Officer Max when the story involves police.
 Tell one continuous sequence of concrete events. Do not replace events with repetitive slogans about being seen, being real, warmth, shadows, or memories.
@@ -147,7 +147,7 @@ Do not include music, sound directions, speaker labels, or stage directions insi
         'type': 'object', 'properties': {'beats': {'type': 'array', 'minItems': beats, 'maxItems': beats,
         'items': {'type': 'object', 'properties': {
             'speaker': {'type': 'string', 'enum': voices},
-            'words': {'type': 'array', 'minItems': words, 'maxItems': words, 'items': {'type': 'string', 'pattern': "^[A-Za-z0-9',.!?;:]+$", 'minLength': 1, 'maxLength': 24}},
+            'words': {'type': 'array', 'minItems': words, 'maxItems': words, 'items': {'type': 'string', 'pattern': "^[A-Za-z0-9][A-Za-z0-9',.!?;:]*$", 'minLength': 1, 'maxLength': 24}},
             'location': {'type': 'string', 'enum': sorted(LOCATIONS)},
             'shot': {'type': 'string', 'enum': sorted(SHOTS)},
             'prop': {'type': 'string', 'enum': sorted(PROPS)},

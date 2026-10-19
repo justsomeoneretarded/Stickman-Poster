@@ -4,7 +4,6 @@
   "minutes": 3,
   "voices": "female,male1,male2",
   "width": 1280,
-  "revision_project": "ci/bank-generated-seed.json",
   "required_locations": [
     "classroom",
     "field",

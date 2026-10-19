@@ -249,3 +249,11 @@ model returned only 334 words after three revision attempts. This was not
 accepted or silently padded. The writer now generates a fixed-size array of
 single spoken words per turn, compiled into dialogue, so the JSON grammar
 enforces the word budget instead of relying on the model counting words.
+
+The seed-revision approach also failed local review: it copied the rejected
+stage directions and premise denial, with truncated sentences. Removed that
+seed from the active request and restart from title/description. Require
+complete spoken thoughts and prohibit punctuation-only word tokens. Workflow
+concurrency now supersedes stale queued versions of the same request.
+As of this update the corrected episode is not complete; GitHub runner
+assignment is queued, and no corrected three-minute artifact is verified.
