@@ -1,0 +1,21 @@
+{
+  "model": "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+  "revision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+  "quantization": "Q4_K_M",
+  "runtime": "llama.cpp b11729 CPU",
+  "passes": [
+    "draft",
+    "editorial revision"
+  ],
+  "seconds": 94.39402925000104,
+  "word_count": 62,
+  "target_minutes": 0.3,
+  "estimated_speech_minutes": 0.44285714285714284,
+  "selected_voices": [
+    "female",
+    "male1",
+    "male2"
+  ],
+  "factual_status": "generated fiction; no external fact verification",
+  "timing_note": "word budget is approximate; final duration follows measured speech"
+}

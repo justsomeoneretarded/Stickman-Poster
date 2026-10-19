@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "title": "What if your coffee could float?",
+  "description": "A fictional morning where three friends discover one floating coffee cup. Start with surprise, let each friend react, and end with a small comic payoff.",
+  "keywords": [
+    "original story",
+    "animated",
+    "what if"
+  ],
+  "cast": [
+    {
+      "id": "maya",
+      "name": "Maya",
+      "voice": "female"
+    },
+    {
+      "id": "leo",
+      "name": "Leo",
+      "voice": "male1"
+    },
+    {
+      "id": "max",
+      "name": "Max",
+      "voice": "male2"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "beat-001",
+      "duration": 6.31,
+      "location": "room",
+      "action": "point",
+      "speaker": "maya",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "My coffee just lifted off the table! It\u2019s floating, spinning, like it\u2019s not supposed to be here.",
+      "heading": "What if your coffee could float?",
+      "label": "",
+      "shot": "medium",
+      "prop": "cup",
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-002",
+      "duration": 9.35,
+      "location": "room",
+      "action": "walk",
+      "speaker": "leo",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "I saw it too. It rose like a leaf, then stopped mid-air\u2014no wind, no push. It\u2019s not magic. It\u2019s physics, or something new.",
+      "heading": "What if your coffee could float?",
+      "label": "",
+      "shot": "wide",
+      "prop": "cup",
+      "movement": "approach",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    },
+    {
+      "id": "beat-003",
+      "duration": 7.1899999999999995,
+      "location": "room",
+      "action": "think",
+      "speaker": "max",
+      "characters": [
+        "maya",
+        "leo",
+        "max"
+      ],
+      "narration": "Then it\u2019s not a trick. It\u2019s a signal. I\u2019ll pour a second cup and watch it float back\u2014this time, with a smile.",
+      "heading": "What if your coffee could float?",
+      "label": "",
+      "shot": "close",
+      "prop": "cup",
+      "movement": "stay",
+      "camera_zoom": 1.045,
+      "cinematic": true
+    }
+  ]
+}

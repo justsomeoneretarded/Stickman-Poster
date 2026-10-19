@@ -1,0 +1,17 @@
+{
+  "title": "What if your coffee could float?",
+  "description": "A fictional morning where three friends discover one floating coffee cup. Start with surprise, let each friend react, and end with a small comic payoff.",
+  "keywords": [
+    "original story",
+    "animated",
+    "what if"
+  ],
+  "chapter_candidates": [
+    "00:00 What if your coffee could float?",
+    "00:06 What if your coffee could float?",
+    "00:15 What if your coffee could float?"
+  ],
+  "status": "development preview; review before publishing",
+  "caption_timing": "estimated phrases, not forced alignment",
+  "chapters_note": "Candidates may be too short for YouTube chapters; review platform requirements."
+}

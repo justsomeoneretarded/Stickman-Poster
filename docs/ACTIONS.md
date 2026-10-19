@@ -100,3 +100,16 @@ length, and writer model revision match; speech verification still runs.
 Changing `ci/demo-request.json` runs the short original generated demo on push.
 Normal episodes are started through Run workflow. Development checks remain a
 separate small test workflow.
+
+## Qualification evidence
+
+The first original three-character script and revision were generated locally
+from the title/description, then synthesized and screened with Whisper. All
+three turns matched at word-error rate 0.0 after punctuation normalization.
+The final mix is about 23 seconds. This is a short functional qualification,
+not evidence of ten-minute throughput, artistic parity, or speaker likeness.
+
+The development-check workflow also uploads the committed local qualification
+sample as `local-title-to-video-qualification`. This artifact is explicitly a
+locally generated sample, not a successful run of Actions-hosted synthesis.
+The separate Generate voiced episode workflow still requires VOICE_PROFILE_KEY.

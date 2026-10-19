@@ -1,0 +1,43 @@
+{
+  "status": "passed technical checks; artistic and voice review still required",
+  "width": 960,
+  "height": 540,
+  "fps": 24,
+  "expected_seconds": 22.833333333333332,
+  "actual_seconds": 22.9,
+  "wall_seconds": 103.064,
+  "voice_status": "external narration supplied",
+  "caption_alignment": "estimated phrase timing within audio-sized scenes",
+  "scenes": [
+    {
+      "id": "beat-001",
+      "frames": 151,
+      "cache_hit": false,
+      "render_seconds": 29.279
+    },
+    {
+      "id": "beat-002",
+      "frames": 224,
+      "cache_hit": false,
+      "render_seconds": 42.048
+    },
+    {
+      "id": "beat-003",
+      "frames": 173,
+      "cache_hit": false,
+      "render_seconds": 30.704
+    }
+  ],
+  "checks": [
+    "decode metadata",
+    "duration",
+    "audio stream presence"
+  ],
+  "not_checked": [
+    "speaker similarity",
+    "ASR text fidelity",
+    "word alignment",
+    "factual accuracy",
+    "reference quality parity"
+  ]
+}

@@ -12,7 +12,8 @@ captions, posting metadata and an optional private voice-cloning adapter.
 **Status:** early prototype, not a finished automatic YouTube channel. The renderer
 is implemented and locally tested. Voice enrollment/inference requires an accessible
 sample and downloaded model weights. Nano CPU inference passed a bundled-voice smoke
-test; user voice enrollment and similarity remain unqualified.
+test; three saved voice profiles passed reload and text-fidelity checks.
+Human voice-similarity and listening approval remain pending.
 The sample project is an original fictional fixture, not a generated result from
 an arbitrary title. No reference video art, scripts, voice recordings or models are
 included. The Pillow backend is a minimal portability benchmark; Motion Canvas
@@ -96,7 +97,7 @@ Do not commit source audio, model files, conditioning profiles, or private rende
 to a public repository. `.gitignore` helps but is not a complete data-leak check.
 The public CI artifact contains only the silent original test fixture.
 
-## Original title to scene plan
+## Legacy endpoint-based title planner (optional)
 
 The planner is an optional OpenAI-compatible HTTP adapter, with **no default paid
 provider**. Supply your own permitted endpoint/model. A local or cloud `llama.cpp`

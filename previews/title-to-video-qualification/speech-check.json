@@ -1,0 +1,35 @@
+[
+  {
+    "scene_id": "beat-001",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "My coffee just lifted off the table. It's floating, spinning, like it's not supposed to be here.",
+        "word_error_rate": 0.0
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-002",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "I saw it too. It rose like a leaf, then stopped mid-air, no wind, no push. It's not magic. It's physics or something new.",
+        "word_error_rate": 0.0
+      }
+    ]
+  },
+  {
+    "scene_id": "beat-003",
+    "status": "passed ASR threshold; listening review still required",
+    "attempts": [
+      {
+        "attempt": 1,
+        "transcript": "Then it's not a trick. It's a signal. I'll pour a second cup and watch it float back this time with a smile.",
+        "word_error_rate": 0.0
+      }
+    ]
+  }
+]

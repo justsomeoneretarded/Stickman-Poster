@@ -46,3 +46,12 @@ jobs:
             output/ci/captions.srt
             output/ci/posting.json
           if-no-files-found: error
+
+      - name: Upload locally generated end-to-end qualification sample
+        if: hashFiles('previews/title-to-video-qualification/final.mp4') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-title-to-video-qualification
+          retention-days: 7
+          path: previews/title-to-video-qualification/
+          if-no-files-found: error
