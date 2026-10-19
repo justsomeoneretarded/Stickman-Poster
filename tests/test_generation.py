@@ -18,6 +18,12 @@ class WriterTests(unittest.TestCase):
             with self.assertRaises(ValueError):validate_spoken_style({'beats':[{'text':text}]})
         validate_spoken_style({'beats':[{'text':"Maya, please take the bag. I am giving it back."}]})
 
+    def test_structured_word_arrays_form_spoken_dialogue(self):
+        story=parse_story('{"beats":[{"speaker":"female","words":["Please,","take","the","bag."]}]}',['female'])
+        self.assertEqual(story['beats'][0]['text'],'Please, take the bag.')
+        with self.assertRaises(ValueError):
+            parse_story('{"beats":[{"speaker":"female","words":["two words","in","one"]}]}',['female'])
+
     def test_asr_check_detects_dropped_words(self):
         from studio.speech_check import word_error_rate
         self.assertEqual(word_error_rate("The cup floats.", "the cup floats"), 0)

@@ -36,6 +36,13 @@ def parse_story(raw, voices):
     for beat in story['beats']:
         if not isinstance(beat, dict) or beat.get('speaker') not in voices:
             raise ValueError('Every beat needs a selected speaker')
+        if 'words' in beat:
+            words=beat['words']
+            if not isinstance(words,list) or not words or any(not isinstance(w,str) or len(w.split())!=1 for w in words):
+                raise ValueError('Each spoken word array item must contain exactly one whitespace-separated word')
+            beat['text']=' '.join(words)
+            if beat['text'][-1] not in '.!?':
+                beat['text']+='.'
         text = beat.get('text')
         if not isinstance(text, str) or not 3 <= len(text.split()) <= 65 or len(text) > 500:
             raise ValueError('Each beat must contain 3–65 spoken words, at most 500 characters')
@@ -49,7 +56,7 @@ def validate_spoken_style(story):
     for beat in story['beats']:
         text=beat['text'].strip().strip("\"'“”‘’")
         if direction.search(text) or re.match(r"^(?:Maya|Leo|(?:Officer\s+)?Max)\s*:",text,re.I):
-            raise ValueError('Text contains spoken stage directions. Rewrite every text field as dialogue only, without third-person actor descriptions.')
+            raise ValueError('Spoken dialogue contains stage directions. Rewrite it as speech only, without third-person actor descriptions.')
 
 
 def compile_project(story, title, description, voices):
@@ -111,9 +118,9 @@ def write(request, out, model_dir=None):
     beats = max(len(voices), min(100, math.ceil(minutes * 6)))
     words = max(8, round(minutes * 160 / beats))
     system = f'''You write original animated stories from a title and a short description.
-Return ONLY valid JSON: {{"beats":[{{"speaker":"VOICE_ID","text":"spoken dialogue","location":"room","shot":"medium","prop":"none","staging":"travel"}}]}}.
+Return ONLY valid JSON: {{"beats":[{{"speaker":"VOICE_ID","words":["Only","spoken","dialogue."],"location":"room","shot":"medium","prop":"none","staging":"travel"}}]}}.
 Write exactly {beats} beats, about {words} words per beat. Total spoken words must be close to {round(minutes*160)}. Required locations: {', '.join(required_locations) or 'choose appropriately'}. Use ALL and ONLY these speaker IDs: {', '.join(voices)}.
-One speaker per beat. The text field is ONLY words spoken aloud by that speaker. Use first-person speech or direct address. Do not write third-person stage directions such as 'Leo runs', 'Maya stands', 'Max looks', or speaker labels. Do not wrap dialogue in a description of the actor.
+One speaker per beat. Each beat must have a words array containing exactly {words} items. Each item is ONE spoken word with punctuation attached, never a phrase. Joining the array with spaces must form natural dialogue. Do not output a text field. The words array contains ONLY words spoken aloud by that speaker. Use first-person speech or direct address. Do not write third-person stage directions such as 'Leo runs', 'Maya stands', 'Max looks', or speaker labels. Do not wrap dialogue in a description of the actor.
 Write real dialogue with a concrete opening, escalation, reactions, and a satisfying final payoff.
 For one voice use engaging narration. For multiple voices let characters respond to each other with distinct perspectives.
 Voice identities: female is Maya, male1 is Leo, male2 is Officer Max when the story involves police.
@@ -139,12 +146,13 @@ Do not include music, sound directions, speaker labels, or stage directions insi
     schema = {
         'type': 'object', 'properties': {'beats': {'type': 'array', 'minItems': beats, 'maxItems': beats,
         'items': {'type': 'object', 'properties': {
-            'speaker': {'type': 'string', 'enum': voices}, 'text': {'type': 'string'},
+            'speaker': {'type': 'string', 'enum': voices},
+            'words': {'type': 'array', 'minItems': words, 'maxItems': words, 'items': {'type': 'string', 'pattern': "^[A-Za-z0-9',.!?;:]+$", 'minLength': 1, 'maxLength': 24}},
             'location': {'type': 'string', 'enum': sorted(LOCATIONS)},
             'shot': {'type': 'string', 'enum': sorted(SHOTS)},
             'prop': {'type': 'string', 'enum': sorted(PROPS)},
             'staging': {'type': 'string', 'enum': sorted(STAGINGS)}},
-            'required': ['speaker', 'text', 'location', 'shot', 'prop', 'staging'], 'additionalProperties': False}}},
+            'required': ['speaker', 'words', 'location', 'shot', 'prop', 'staging'], 'additionalProperties': False}}},
         'required': ['beats'], 'additionalProperties': False}
     seed=None
     seed_hash=None
@@ -163,7 +171,7 @@ Do not include music, sound directions, speaker labels, or stage directions insi
 
 def finish_writing(writer, schema, system, title, description, voices, beats, words, minutes, out, started,seed=None,seed_hash=None,required_locations=()):
     def complete(messages):
-        return writer.complete(messages, schema, min(14000, 320+beats*(words*2+100)))
+        return writer.complete(messages, schema, min(24000, 600+beats*(words*5+70)))
 
     messages = [{'role': 'system', 'content': system}, {'role': 'user', 'content': f'Title: {title}\nDescription: {description}'}]
     drafts = [seed] if seed else []
@@ -217,7 +225,7 @@ def finish_writing(writer, schema, system, title, description, voices, beats, wo
               'seconds': time.perf_counter()-started, 'word_count': count, 'target_minutes': minutes,
               'estimated_speech_minutes': count/160, 'selected_voices': voices,
               'factual_status': 'generated fiction; no external fact verification',
-              'timing_note': 'word budget is approximate; final duration follows measured speech'}
+              'timing_note': 'fixed word count per turn; final duration follows measured speech', 'words_per_turn': words}
     (out / 'writer-report.json').write_text(json.dumps(report, indent=2))
     print(json.dumps(report), flush=True)
 

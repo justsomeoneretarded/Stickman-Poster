@@ -243,3 +243,9 @@ generated project is preserved as ci/bank-generated-seed.json for provenance;
 its dialogue was not manually rewritten. The new pass must produce spoken
 dialogue, maintain the fictional theft/uncatchable premise, show all five
 requested locations, and target a tighter word budget.
+
+The first length-correction run (39276969090) was stopped by validation: the
+model returned only 334 words after three revision attempts. This was not
+accepted or silently padded. The writer now generates a fixed-size array of
+single spoken words per turn, compiled into dialogue, so the JSON grammar
+enforces the word budget instead of relying on the model counting words.
