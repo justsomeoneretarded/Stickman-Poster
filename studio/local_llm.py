@@ -61,6 +61,7 @@ class LocalWriter:
             result = json.load(response)
         choice = result['choices'][0]
         if choice.get('finish_reason') == 'length':
+            (self.out/'last-truncated-output.txt').write_text(choice['message'].get('content') or '')
             raise ValueError('Writer output hit the token budget; reduce episode length')
         return choice['message']['content']
 

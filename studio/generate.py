@@ -57,7 +57,9 @@ def generate(args):
             subprocess.run(command, check=True)
         else:
             from .writer import compile_project, parse_story
-            story = parse_story((out/'writing/revision.json').read_text(), voices)
+            source=out/'writing/story.json'
+            if not source.is_file():source=out/'writing/revision.json'
+            story = parse_story(source.read_text(), voices)
             compiled = compile_project(story, args.title, args.description, voices)
             (out/'writing/project.json').write_text(json.dumps(compiled, indent=2))
     if args.stage=='write':
@@ -99,7 +101,7 @@ def generate(args):
     (delivery/'motion-check.json').write_text(json.dumps(motion,indent=2))
     summary = {'status': 'generated and decoded; editorial, voice, and artistic review required',
                'title': args.title, 'voices': voices, 'engine': 'chatterbox-nano CPU baseline, not audition winner',
-               'video': 'final.mp4', 'script_source': 'local language model, draft plus revision', 'reused_validated_writing': resume_writing,
+               'video': 'final.mp4', 'script_source': ('local language model; app scene plan and per-scene dialogue' if args.required_locations else 'local language model, draft plus revision'), 'reused_validated_writing': resume_writing,
                'unqualified': ['voice similarity', 'human listening review', 'factual claims', 'reference visual parity']}
     (delivery/'generation.json').write_text(json.dumps(summary, indent=2))
     print(f'Deliverables: {delivery}', flush=True)

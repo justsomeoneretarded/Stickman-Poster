@@ -84,7 +84,7 @@ jobs:
           tar -xzf work/llama-cpu.tar.gz -C work/llama-cpu
       - name: Download public models
         run: PYTHONPATH=. .venv/bin/python ci/download_models.py
-      - name: Generate and revise the story from title and description
+      - name: Generate planned scenes and dialogue from title and description
         run: .venv/bin/python -m studio.actions_entry --stage write
       - name: Upload generated script for early review
         uses: actions/upload-artifact@v4
@@ -94,6 +94,8 @@ jobs:
           path: |
             output/episode/writing/project.json
             output/episode/writing/writer-report.json
+            output/episode/writing/scene-plan.json
+            output/episode/writing/planned-scenes.json
           if-no-files-found: error
       - name: Synthesize character voices and verify spoken words
         run: .venv/bin/python -m studio.actions_entry --stage speech

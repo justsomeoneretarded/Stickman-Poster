@@ -257,3 +257,18 @@ complete spoken thoughts and prohibit punctuation-only word tokens. Workflow
 concurrency now supersedes stale queued versions of the same request.
 As of this update the corrected episode is not complete; GitHub runner
 assignment is queued, and no corrected three-minute artifact is verified.
+
+## Required-location writer failure and repair
+
+User reported hosted writing failed after 13m54s because cafe and street were
+missing after three whole-story retries. Required-location requests now use an
+app-owned ordered scene plan, assigning location/speaker/staging before model
+speech. Dialogue is generated and repaired per scene, checkpointing validated
+turns. Model output cannot omit or rename locations. Compilation checks coverage
+again. Normal speech strings replace fixed word arrays in this mode: actual
+local inspection found the arrays encouraged fused phrases and malformed tokens.
+An adaptive remaining-word budget targets 480 words for the 3-minute request;
+actual video duration must still be measured. Normal speech and punctuation were
+confirmed in the local model's first turn. All 33 tests pass, including setting
+coverage, chase/contact staging, and interrupted generation resume. Full hosted
+episode and voice/artistic qualification are still pending; no final video claim.

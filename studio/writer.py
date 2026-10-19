@@ -98,6 +98,114 @@ def compile_project(story, title, description, voices):
                      'keywords': ['original story', 'animated', 'what if'], 'cast': cast, 'scenes': scenes})
 
 
+
+def scene_plan(count, voices, locations, title):
+    """Allocate every requested setting before asking a model for speech."""
+    locations=list(dict.fromkeys(locations))
+    itinerary=locations+locations[:1] if count>=2*len(locations) else locations
+    count=max(count,len(itinerary),len(voices))
+    cast=set(voices)
+    chase={'male1','male2'}<=cast and 'bank' in title.lower() and 'caught' in title.lower()
+    result=[]
+    for group,location in enumerate(itinerary):
+        size=count//len(itinerary)+(group<count%len(itinerary))
+        patterns={'classroom':['talk','enter','react'], 'field':['travel','travel','react'],
+                  'bank':['enter','carry','react'], 'street':['chase' if chase else 'travel']*3,
+                  'cafe':['travel','drink','handoff' if {'female','male1'}<=cast else 'react']}
+        for offset in range(size):
+            stage=patterns.get(location,['enter','travel','react'])[offset%3]
+            if stage=='carry' and 'male1' not in cast:stage='travel'
+            speaker=voices[len(result)%len(voices)]
+            if stage in {'carry','handoff'}:speaker='male1'
+            result.append({'speaker':speaker,'location':location,'staging':stage,
+                           'shot':'wide' if stage in {'travel','enter','chase','carry'} else 'medium',
+                           'prop':'cup' if stage=='drink' else 'bag' if stage in {'carry','handoff','chase'} else 'none'})
+    return result
+
+
+def write_planned(request, out, model_dir, started):
+    """Generate and repair individual dialogue turns; metadata is app-owned."""
+    from .local_llm import LocalWriter
+    title,description,minutes,voices=(request[k] for k in ('title','description','minutes','voices'))
+    plan=scene_plan(max(len(voices),math.ceil(minutes*6)),voices,request['required_locations'],title)
+    words=max(8,round(minutes*160/len(plan)))
+    schema={'type':'object','properties':{'speech':{'type':'string','minLength':40,'maxLength':480}},
+            'required':['speech'],'additionalProperties':False}
+    system=(f'Write ONLY words spoken aloud in an animated fictional conversation. '
+            'Return JSON with one speech string containing natural English with normal spaces. '
+            'Finish a complete thought with sentence punctuation. '
+            'Speak as the assigned character using I, we, or you. Never start with a character name or write '
+            'stage directions, speaker labels, descriptions of speaking, or third-person actor actions. '
+            'Maya=female, Leo=male1, Officer Max=male2. The app animates the scene plan; speech must match it. '
+            'Use natural conversational phrasing, varied sentences, and concrete reactions. '
+            'Do not repeat earlier lines. Stay within the title and brief. This is fictional; '
+            'do not give practical crime methods, security details, weapons, or evasion advice.')
+    premise=('Theft and chase occur within the story. Only capture is impossible; people can see Leo. '
+             if 'bank' in title.lower() and 'caught' in title.lower() else 'Preserve the title and brief throughout the story. ')
+    common=[{'role':'system','content':system},{'role':'user','content':
+            f'Title: {title}\nBrief: {description}\nComplete scene plan (not spoken): {json.dumps(plan)}\n'
+            +premise+'Carry: Leo holds bag. Chase: Leo runs, Max follows. Drink: assigned speaker sips coffee. '
+            f'Handoff: Leo gives bag to Maya voluntarily. Final scene: a small concrete payoff in {plan[-1]["location"]}.'}]
+    signature=hashlib.sha256(json.dumps([request,plan,common,schema,MODEL_REVISION],sort_keys=True).encode()).hexdigest()
+    checkpoint=out/'planned-scenes.json'
+    saved=json.loads(checkpoint.read_text()) if checkpoint.exists() else {}
+    completed=saved.get('beats',[]) if saved.get('signature')==signature else []
+    if completed:
+        parse_story(json.dumps({'beats':completed}),list(dict.fromkeys(b['speaker'] for b in completed)))
+    with LocalWriter(model_dir or 'models/script-qwen3',out,context=4096) as writer:
+        for index,slot in enumerate(plan):
+            if index<len(completed):continue
+            remaining=round(minutes*160)-sum(len(b['text'].split()) for b in completed)
+            words=max(8,round(remaining/(len(plan)-index)))
+            history=[{'speaker':b['speaker'],'speech':b['text']} for b in completed[-4:]]
+            prompt=(f'Write scene {index+1}/{len(plan)}. Assigned scene: {json.dumps(slot)}. '
+                    f'Previous spoken dialogue: {json.dumps(history)}. '
+                    f'Write exactly {words} words of speech by {VOICE_NAMES[slot["speaker"]][1]}, '
+                    'responding to the previous dialogue and progressing the story. '
+                    'No character names at the start. End with a complete sentence.')
+            error=''
+            for attempt in range(3):
+                try:
+                    raw=writer.complete(common+[{'role':'user','content':prompt+error}],schema,max(512,words*12+80))
+                    (out/f'scene-{index+1:03}-{attempt}.txt').write_text(raw)
+                    content=json.loads(raw)
+                    text=content['speech'].strip()
+                    tokens=text.split()
+                    if abs(len(tokens)-words)>3:
+                        raise ValueError(f'Your line has {len(tokens)} words; write {words-3} to {words+3} words of natural dialogue.')
+                    if len(text)>480 or any(len(w)>30 for w in tokens):
+                        raise ValueError('Use normal English with spaces between words, not joined phrases.')
+                    beat={**slot,'text':text}
+                    validate_spoken_style({'beats':[beat]})
+                    if re.match(r'^(?:Maya|Leo|(?:Officer\s+)?Max)\b',beat['text'],re.I):
+                        raise ValueError('Speak directly in first person; do not begin with a character name.')
+                    if tokens[-1][-1] not in '.!?':raise ValueError('Finish the sentence with punctuation.')
+                    if re.search(r"never (?:took|robbed|stole)|you didn.t take|never did anything|no crime|nothing happened|only imagined it|just a dream",beat['text'],re.I) and 'bank' in title.lower():
+                        raise ValueError('The fictional theft actually occurs. Do not deny or erase it.')
+                    break
+                except (ValueError,KeyError,TypeError) as exc:
+                    if attempt==2:raise ValueError(f'Scene {index+1} failed: {exc}') from exc
+                    error=f' Previous attempt rejected: {exc}. Write a fresh natural line.'
+            completed.append(beat)
+            checkpoint.write_text(json.dumps({'signature':signature,'beats':completed},indent=2))
+            print(f'Dialogue scene {index+1}/{len(plan)} validated',file=sys.stderr,flush=True)
+    story=parse_story(json.dumps({'beats':completed}),voices)
+    (out/'story.json').write_text(json.dumps(story,indent=2))
+    project=compile_project(story,title,description,voices)
+    missing=set(request['required_locations'])-{b['location'] for b in project['scenes']}
+    if missing:raise ValueError(f'Compiled scene plan lost required locations: {sorted(missing)}')
+    (out/'project.json').write_text(json.dumps(project,indent=2))
+    (out/'scene-plan.json').write_text(json.dumps(plan,indent=2))
+    report={'model':MODEL_ID,'revision':MODEL_REVISION,'runtime':'llama.cpp b11729 CPU',
+            'passes':['app scene plan','per-scene dialogue generation and validation'],
+            'seconds':time.perf_counter()-started,'word_count':sum(len(b['text'].split()) for b in completed),
+            'target_minutes':minutes,'selected_voices':voices,'required_locations':request['required_locations'],
+            'word_budget':'adaptive per-scene target; final line within three words of total target','timing_note':'Final duration follows measured speech',
+            'factual_status':'generated fiction; no external fact verification'}
+    (out/'writer-report.json').write_text(json.dumps(report,indent=2))
+    return report
+
+
 def write(request, out, model_dir=None):
     from .local_llm import LocalWriter
 
@@ -115,6 +223,8 @@ def write(request, out, model_dir=None):
         raise ValueError('Required locations must use supported environments')
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
+    if required_locations:
+        return write_planned(request,out,model_dir,time.perf_counter())
     beats = max(len(voices), min(100, math.ceil(minutes * 6)))
     words = max(8, round(minutes * 160 / beats))
     system = f'''You write original animated stories from a title and a short description.

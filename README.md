@@ -120,7 +120,10 @@ with one command (this full model-backed path has not yet been run end to end):
 python -m studio.cli produce --title "Your title" --minutes 10 --endpoint http://localhost:8080/v1 --model YOUR_MODEL --notes sources.txt --profile private/voice-nano --out private/episode
 ```
 
-The planner requests a draft and a separate editorial revision. These are model
+When required locations are supplied, the app assigns every location, speaker, and
+movement before generating dialogue one scene at a time. Each spoken turn is
+validated and checkpointed; retries repair that turn instead of restarting the story.
+Without required locations, the planner requests a draft and a separate editorial revision. These are model
 instructions, not a guarantee of better writing or verified factual accuracy.
 
 ## GitHub Actions
