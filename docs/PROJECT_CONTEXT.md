@@ -16,7 +16,7 @@ current default; 24 remains selectable. Frame count equals duration × FPS,
 with no minimum-frame padding. The concept workflow also accepts either rate.
 The target duration remains soft guidance (±25%), never a script rejection rule.
 
-See [opening study](../../previews/layered-opening/README.md). Full-film shot coverage,
+See [opening study](../previews/layered-opening/README.md). Full-film shot coverage,
 other interactions, final dialogue, music and a standalone short remain unfinished.
 The portrait study is a separately staged version of the same scene, not that
 finished standalone short. Technical tests do not establish artistic quality.

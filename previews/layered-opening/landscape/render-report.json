@@ -1,0 +1,87 @@
+{
+  "renderer": "original layered SVG/Cairo 2D animation",
+  "fps": 12,
+  "decoded_frames": 168,
+  "seconds": 14,
+  "width": 1920,
+  "height": 1080,
+  "stage": "first opening acting study, not the whole film",
+  "audio": "original synthetic motif, room tone and timed step/bell sketch; not final soundtrack",
+  "thumbnail_modified": false,
+  "acting_beats": [
+    {
+      "at": 0,
+      "hope": 0,
+      "hurt": 0,
+      "openness": 0.66,
+      "head_y": 0,
+      "head_angle": 0.0,
+      "gaze_x": 0,
+      "gaze_y": 2,
+      "hand_raise": 0,
+      "camera_zoom": 1.0,
+      "passer_x": 2430,
+      "phase": "waiting"
+    },
+    {
+      "at": 3.5,
+      "hope": 1.0,
+      "hurt": 0,
+      "openness": 0.96,
+      "head_y": -12.0,
+      "head_angle": -2.0,
+      "gaze_x": 5.0,
+      "gaze_y": 2,
+      "hand_raise": 22.0,
+      "camera_zoom": 1.0,
+      "passer_x": 1345.0,
+      "phase": "hope"
+    },
+    {
+      "at": 6.5,
+      "hope": 1,
+      "hurt": 0,
+      "openness": 0.96,
+      "head_y": -12,
+      "head_angle": -2.0,
+      "gaze_x": 5,
+      "gaze_y": 2,
+      "hand_raise": 22,
+      "camera_zoom": 1.0,
+      "passer_x": 415.0,
+      "phase": "hope"
+    },
+    {
+      "at": 9,
+      "hope": 0,
+      "hurt": 0.93925,
+      "openness": 0.4439725,
+      "head_y": 6.57475,
+      "head_angle": 3.287375,
+      "gaze_x": -1.8785,
+      "gaze_y": 6.69625,
+      "hand_raise": 0,
+      "camera_zoom": 1.0518518518518518,
+      "passer_x": -360,
+      "phase": "missed_connection"
+    },
+    {
+      "at": 13,
+      "hope": 0,
+      "hurt": 1,
+      "openness": 0.43000000000000005,
+      "head_y": 7,
+      "head_angle": 3.5,
+      "gaze_x": -2,
+      "gaze_y": 7,
+      "hand_raise": 0,
+      "camera_zoom": 1.2,
+      "passer_x": -1600,
+      "phase": "missed_connection"
+    }
+  ],
+  "limits": [
+    "Approved concept remains the identity target; simplified video drawings are a new adaptation.",
+    "Full-film shot coverage, other scene interactions and final sound/dialogue remain to build."
+  ]
+}
