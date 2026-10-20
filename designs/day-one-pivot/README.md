@@ -1,3 +1,26 @@
+Latest direction (supersedes older Blender/24-FPS-only plans):
+
+## Current video direction — layered 2D/2.5D
+
+The Blender study was rejected. The active video direction is original drawn,
+layered 2D/2.5D animation: readable emotion, grounded prop contacts, walking,
+meaningful camera movement and environment interaction. Preserve the approved
+character identities, clothes and palette; simplify their video drawings.
+The approved concept and thumbnail PNGs remain unchanged.
+
+`Render 2.5D opening study` is a manual Actions workflow producing landscape and
+native portrait versions at Preview, 1080p or 4K, with 12 or 24 FPS. It renders
+**only the 14-second cafe opening study**, not an arbitrary full screenplay.
+The new renderer is `studio/layered_film.py` (SVG/Cairo, CPU). Twelve FPS is the
+current default; 24 remains selectable. Frame count equals duration × FPS,
+with no minimum-frame padding. The concept workflow also accepts either rate.
+The target duration remains soft guidance (±25%), never a script rejection rule.
+
+See [opening study](../../previews/layered-opening/README.md). Full-film shot coverage,
+other interactions, final dialogue, music and a standalone short remain unfinished.
+The portrait study is a separately staged version of the same scene, not that
+finished standalone short. Technical tests do not establish artistic quality.
+
 # New direction: character-led animated short films
 
 Status: visual development, not a completed production renderer. The previous

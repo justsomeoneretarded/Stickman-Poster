@@ -27,7 +27,7 @@
       "sound": "Door bell, soft cup contact, rain against the window.",
       "music": "Sparse two-note felt-piano motif with room between notes.",
       "essential_text": "",
-      "frames": 408
+      "frames": 204
     },
     {
       "id": "02",
@@ -40,7 +40,7 @@
       "sound": "Pencil drag, tray crash, a brief apology from background ambience without intelligible extra dialogue.",
       "music": "One motif note is left unresolved; no dramatic villain cue.",
       "essential_text": "",
-      "frames": 504
+      "frames": 252
     },
     {
       "id": "03",
@@ -53,7 +53,7 @@
       "sound": "Rain gust, paper rustle, a single phone vibration.",
       "music": "Soft low pad enters under the piano; keep the missed glance small.",
       "essential_text": "",
-      "frames": 600
+      "frames": 300
     },
     {
       "id": "04",
@@ -66,7 +66,7 @@
       "sound": "Coins rolling, knees against fabric, dry and wet paper textures, door bell.",
       "music": "Let the score briefly brighten during the handoff, then recede without a comic sting.",
       "essential_text": "",
-      "frames": 552
+      "frames": 276
     },
     {
       "id": "05",
@@ -79,7 +79,7 @@
       "sound": "Chair legs scrape, paper folds, her steps and the door closing.",
       "music": "The motif thins to a single sustained tone; leave silence after the door.",
       "essential_text": "",
-      "frames": 552
+      "frames": 276
     },
     {
       "id": "06",
@@ -92,7 +92,7 @@
       "sound": "Bag zip, wet pavement, traffic muffled behind rain.",
       "music": "Use rain and room tone alone for most of this beat.",
       "essential_text": "",
-      "frames": 552
+      "frames": 276
     },
     {
       "id": "07",
@@ -114,7 +114,7 @@
       "sound": "Door bell, paper flattening, notebook settling against a palm.",
       "music": "The original piano motif returns with one added answering note; no swelling climax.",
       "essential_text": "",
-      "frames": 672
+      "frames": 336
     },
     {
       "id": "08",
@@ -132,7 +132,7 @@
       "sound": "Chair scrape, coat rustle, cup and saucer, a relaxed breath.",
       "music": "Warm but restrained harmony; leave space for the line and chair sound.",
       "essential_text": "",
-      "frames": 624
+      "frames": 312
     },
     {
       "id": "09",
@@ -145,7 +145,7 @@
       "sound": "Ordinary caf\u00e9 room tone, small friendly indistinct conversation without new intelligible lines.",
       "music": "Finish the motif simply; fade into room tone rather than a slogan or title card.",
       "essential_text": "",
-      "frames": 576
+      "frames": 288
     }
   ],
   "short_edit": {

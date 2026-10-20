@@ -1,0 +1,58 @@
+name: Render 2.5D opening study
+on:
+  workflow_dispatch:
+    inputs:
+      quality:
+        description: Resolution for the 14-second acting study (not a full film)
+        type: choice
+        default: 1080p
+        options: [Preview, 1080p, 4K]
+      fps:
+        description: Animation frame rate
+        type: choice
+        default: '12'
+        options: ['12', '24']
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        format: [landscape, portrait]
+    env:
+      QUALITY: ${{ inputs.quality }}
+      FPS: ${{ inputs.fps }}
+      FORMAT: ${{ matrix.format }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install CPU renderer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libcairo2
+          pip install -r requirements-layered.lock
+          pip install --no-deps -e .
+      - name: Render and verify every decoded frame
+        run: |
+          python - <<'PY'
+          import os
+          from studio.layered_film import render
+          portrait=os.environ['FORMAT']=='portrait'
+          widths={'Preview':(1280,720),'1080p':(1920,1080),'4K':(3840,2160)}
+          width=widths[os.environ['QUALITY']][int(portrait)]
+          render('output/'+os.environ['FORMAT'],width,int(os.environ['FPS']),portrait)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layered-opening-${{ matrix.format }}-${{ inputs.quality }}-${{ inputs.fps }}fps
+          retention-days: 14
+          path: |
+            output/${{ matrix.format }}/opening.mp4
+            output/${{ matrix.format }}/opening.svg
+            output/${{ matrix.format }}/frame-*.png
+            output/${{ matrix.format }}/render-report.json
+          if-no-files-found: error

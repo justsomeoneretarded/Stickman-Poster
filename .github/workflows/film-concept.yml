@@ -19,8 +19,13 @@ on:
         required: true
         default: 1080p
         options: [1080p, 4K]
+      fps:
+        description: Animation frame rate
+        type: choice
+        default: '12'
+        options: ['12', '24']
       minutes:
-        description: Target minutes (±25% guidance; 24 FPS, frame count follows duration)
+        description: Target minutes (±25% guidance; frame count follows duration)
         type: string
         required: true
         default: '3'
@@ -46,6 +51,7 @@ jobs:
       FILM_TITLE: ${{ inputs.title }}
       FILM_DESCRIPTION: ${{ inputs.description }}
       FILM_QUALITY: ${{ inputs.quality }}
+      FILM_FPS: ${{ inputs.fps }}
       FILM_MINUTES: ${{ inputs.minutes }}
       FILM_VOICES: ${{ inputs.voices }}
       HF_HUB_DISABLE_TELEMETRY: '1'
@@ -77,7 +83,7 @@ jobs:
           tar -xzf work/llama.tar.gz -C work/llama-cpu
       - name: Develop original story, screenplay and publishing package
         run: |
-          .venv/bin/python -m studio.film_concept --title "$FILM_TITLE" --description "$FILM_DESCRIPTION" --quality "$FILM_QUALITY" --minutes "$FILM_MINUTES" --voices "$FILM_VOICES" --out output/film-concept
+          .venv/bin/python -m studio.film_concept --title "$FILM_TITLE" --description "$FILM_DESCRIPTION" --quality "$FILM_QUALITY" --minutes "$FILM_MINUTES" --fps "$FILM_FPS" --voices "$FILM_VOICES" --out output/film-concept
           .venv/bin/python - <<'PY'
           import json,os
           from pathlib import Path

@@ -25,8 +25,8 @@ jobs:
       - name: Install renderer prerequisites
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg fonts-dejavu-core
-          python -m pip install -r requirements-render.lock
+          sudo apt-get install -y ffmpeg fonts-dejavu-core libcairo2
+          python -m pip install -r requirements-layered.lock
           python -m pip install --no-deps -e .
       - name: Unit tests
         run: python -m unittest discover -s tests -v
@@ -81,4 +81,13 @@ jobs:
           name: turbo-three-voice-qualification
           retention-days: 7
           path: previews/turbo-voice-qualification/
+          if-no-files-found: error
+
+      - name: Upload layered opening studies
+        if: hashFiles('previews/layered-opening/landscape/opening.mp4') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: layered-2d-opening-both-formats
+          retention-days: 14
+          path: previews/layered-opening/
           if-no-files-found: error

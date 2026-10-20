@@ -5,14 +5,14 @@
   "long_form": {
     "width": 1920,
     "height": 1080,
-    "fps": 24,
-    "planned_frames": 5040,
+    "fps": 12,
+    "planned_frames": 2520,
     "measured_rendered_frames": null
   },
   "short_form": {
     "width": 1080,
     "height": 1920,
-    "fps": 24
+    "fps": 12
   },
   "duration": {
     "target_seconds": 180.0,
