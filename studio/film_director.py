@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from .film_concept import CAST,write_package
 from .local_llm import LocalWriter
+from .writer import MODEL_ID,MODEL_REVISION
 
 SETTINGS=['cafe','street','bedroom','park','bus_stop','studio','classroom']
 ACTIONS=['sit','stand','walk','run','reach','sip','draw','phone','offer','receive','look_away','slump','open_door','pick_up','put_down','listen']
@@ -118,7 +119,7 @@ def compile_film(outline,directed,request):
 
 def develop(request,out,model_dir,short=False):
     out=Path(out);out.mkdir(parents=True,exist_ok=True);draft=out/'director';draft.mkdir(exist_ok=True)
-    signature=hashlib.sha256(json.dumps([request,'executable-film-v1'],sort_keys=True).encode()).hexdigest()
+    signature=hashlib.sha256(json.dumps([request,MODEL_ID,MODEL_REVISION,'executable-film-v1'],sort_keys=True).encode()+Path(__file__).read_bytes()).hexdigest()
     cast=', '.join(CAST[v] for v in request['characters'])
     with LocalWriter(model_dir,draft,context=8192) as writer:
         prompt=('Write an original mostly silent emotional animated film from a title and two-line brief. No voiceover, moral lecture, compulsory joke or forced redemption. '
@@ -165,6 +166,6 @@ def develop(request,out,model_dir,short=False):
             'Do not promise a plot or ending absent from the film. source_scene_id must be an existing sequence ID. Image prompts describe a complete original illustration, no logos.')
         film['thumbnails']=_cached(writer,draft,'thumbnails',thumb_prompt,outline,thumb_schema,1800,signature,check_thumbs)['thumbnails']
         film['story_arc']={s['beat']:s['change'] for s in outline['scenes']}
-    source={'type':'local_model_directed_film','signature':signature,'writer':'pinned Qwen3-4B via llama.cpp','timing':'app-owned; model uses symbolic pacing'}
+    source={'type':'local_model_directed_film','signature':signature,'writer':MODEL_ID,'revision':MODEL_REVISION,'timing':'app-owned; model uses symbolic pacing'}
     write_package(film,request,out,source)
     return film

@@ -29,14 +29,14 @@ def plan(args):
 
 
 def picture(package,portrait,width=None):
-    from .film_art import frame
+    from .film_fast import frame
     from fractions import Fraction
     import numpy as np
     package=Path(package);film=read(package/'film.json');request=read(package/'request.json');fps=request['fps']
     width=width or ((1080 if portrait else 1920) if request['resolution']=='1080p' else (2160 if portrait else 3840))
     height=round(width*(16/9 if portrait else 9/16)/2)*2
     output=package/'video';output.mkdir(exist_ok=True);clips=output/'shots';clips.mkdir(exist_ok=True)
-    art_hash=hashlib.sha256(Path(__file__).with_name('film_art.py').read_bytes()+Path(__file__).with_name('layered_film.py').read_bytes()).hexdigest()
+    art_hash=hashlib.sha256(Path(__file__).with_name('film_art.py').read_bytes()+Path(__file__).with_name('film_fast.py').read_bytes()+Path(__file__).with_name('layered_film.py').read_bytes()).hexdigest()
     images=[];reports=[];count=0
     for sequence in film['scenes']:
         for shot in sequence['shots']:

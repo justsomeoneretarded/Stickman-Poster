@@ -22,7 +22,7 @@ The workflow runs through actual video production, not only a screenplay:
    context-aware cues with story reasons. Music ducks under dry dialogue; no
    echo/reverb is added. Intentional silence is supported. No automatic rule
    adds a sound merely because a phone/car/cup appears.
-6. The articulated SVG/Cairo renderer paints every actual frame, animating
+6. The articulated SVG/Cairo renderer composites every actual frame, caching static sets while animating
    expressions, eyes, gestures, articulated walking, prop handling, handoffs and
    camera shots. Native portrait blocking is rendered for the short.
 7. Three actual original vector thumbnail posters are rendered from film art.

@@ -87,3 +87,43 @@ class CompleteFilmTests(unittest.TestCase):
         expected=Image.open(io.BytesIO(cairosvg.svg2png(bytestring=raw.encode(),output_width=320,output_height=180))).convert('RGB')
         actual=frame(s,1,320)
         self.assertEqual(np.max(abs(np.array(expected).astype(float)-np.array(actual))),0)
+
+    def test_cached_set_compositor_keeps_native_animation_and_correct_alpha(self):
+        import io,cairosvg
+        from PIL import Image
+        from studio.film_fast import raster,frame as layered
+        source='<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4" fill="red" fill-opacity=".5"/></svg>'
+        expected=Image.open(io.BytesIO(cairosvg.svg2png(bytestring=source.encode()))).convert('RGBA')
+        self.assertEqual(list(raster(source,4,4).getdata()),list(expected.getdata()))
+        s=shot();s['seconds']=3;s['id']='composite';s['framing']='closeup';s['motion']='hold'
+        a=np.array(layered(s,.1,320)).astype(float);b=np.array(layered(s,2.5,320)).astype(float)
+        self.assertGreater(np.mean(abs(a-b)),.2)
+        self.assertEqual(layered(s,1,180,True).size,(180,320))
+
+    def test_title_drives_staged_directing_and_complete_film_can_resume(self):
+        from unittest.mock import patch
+        from studio.film_director import develop
+        _,r=fixture(5)
+        outline={'logline':'A new story.','story':'She risks looking up.','ending':'She stays.',
+             'publishing_description':'A new story based on a brief.','keywords':['quiet','story','girl','choice','animation'],
+             'scenes':[dict(id=f's{i}',location='cafe',beat='turning point',action='She looks up.',change='She becomes hopeful.') for i in range(6)]}
+        thumbs=[dict(hook_text=f'CHOICE {i}',emotional_promise='A small connection',composition=str(i),image_prompt=f'Composition {i}',source_scene_id='s0') for i in range(3)]
+        class Writer:
+            calls=0
+            def __init__(self,*a,**kw):pass
+            def __enter__(self):return self
+            def __exit__(self,*a):pass
+            def complete(self,messages,schema,tokens):
+                Writer.calls+=1
+                if Writer.calls==1:
+                    self_test.assertEqual(json.loads(messages[1]['content'])['title'],r['title'])
+                    return json.dumps(outline)
+                if Writer.calls==8:return json.dumps({'thumbnails':thumbs})
+                return json.dumps({'shots':[shot(),shot(),shot()]})
+        self_test=self
+        with tempfile.TemporaryDirectory() as d,patch('studio.film_director.LocalWriter',Writer):
+            film=develop(r,d,None);develop(r,d,None)
+            self.assertEqual(Writer.calls,8)
+            self.assertEqual(len([s for seq in film['scenes'] for s in seq['shots']]),18)
+            self.assertAlmostEqual(sum(seq['seconds'] for seq in film['scenes']),300)
+            self.assertTrue((Path(d)/'description.txt').exists())

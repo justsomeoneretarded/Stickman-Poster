@@ -91,6 +91,7 @@ def character(actor,t,u,seconds,x,y,scale,contact=None,speaking=False):
         q.append(path(f'M{end[0]-23} {end[1]-6}Q{end[0]+5} {end[1]-10} {end[0]+38} {end[1]+9}Q{end[0]+40} {end[1]+21} {end[0]-25} {end[1]+17}Z','#44362c','#24292b',2))
     # Lower-body occlusion is explicit: the table surface is painted after the legs.
     if seated and actor.get('_setting','cafe') in ('cafe','studio','classroom'):
+        q.append(path('M-110 362L-130 455 M160 362L183 455','none','#292b2a',13))
         q.append(path('M-164 309L174 309L203 361L-147 361Z','url(#table)','#272c2c',3))
         q.append(path('M-147 361H203V373H-147Z','#392f29','#252a2c',2))
     cloth='url(#cloth)' if name=='Maya' else '#795c44' if name=='Leo' else '#817059'
@@ -144,6 +145,7 @@ def background(setting,w,h,t,door=False):
         if setting=='cafe':
             q.append(rect(w*.07,h*.62,w*.86,h*.08,'url(#table)',8))
             q.append(rect(w*.67,h*.63,w*.12,h*.17,'url(#seat)',18))
+            q.append(path(f'M{w*.69} {h*.8}L{w*.685} {floor} M{w*.77} {h*.8}L{w*.78} {floor}','none','#2c2e2b',12))
         elif setting=='bedroom':
             q.append(rect(w*.05,h*.67,w*.5,h*.23,'#394349',20));q.append(path(f'M{w*.06} {h*.72}Q{w*.29} {h*.64} {w*.56} {h*.76}V{h*.9}H{w*.05}Z','#4b5559','#263039',3))
             q.append(ellipse(w*.16,h*.71,w*.08,h*.035,'#9b9c90'))
