@@ -11,6 +11,11 @@ original 3D character designs FIRST. See `designs/day-one-pivot/` for the actual
 concept board, original thumbnail proof and replacement production brief.
 The references use simplified 2D film animation and more detailed illustrated
 thumbnails; the concepts interpret their palette and emotion in requested 3D.
+The cast is now named Maya (female, left, chestnut wavy hair), Leo (male,
+center) and Max (male, right). All three wear complete outfits with trousers
+and shoes; muted tactile cloth follows Leo’s T-shirt. The thumbnail has been
+updated to show Maya’s hair and covered arms, retaining its approved layout.
+Names are project identities, not automatic on-screen labels.
 These are generated concept images, not rigged models or a completed renderer.
 The current Actions generator remains the legacy pipeline until a replacement
 Blender animation proof is built and qualified. Silent scenes, original music

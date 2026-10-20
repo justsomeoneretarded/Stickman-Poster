@@ -27,14 +27,18 @@ accessories and staging.
 
 ## Three-character design brief
 
-| Internal ID | Shape and identity | Acting range | Palette |
+| Name / internal ID | Shape and identity | Acting range | Palette |
 | --- | --- | --- | --- |
-| observer | Slim body, rounded oval head, charcoal scarf, inward resting silhouette | Searching eyes, hesitation, retreat, small hopeful smiles | Warm ivory, sand, charcoal |
-| companion | Compact, broader body, rounded head, muted umber shirt, open hands | Reassurance, humor when requested, frustration, guarded warmth | Oatmeal, stone, umber |
-| thinker | Taller narrow body, tapered rounded head, muted olive vest | Restlessness, doubt, concentration, resolve | Ivory, warm gray, dull olive |
+| Maya / observer | Female; slim body, rounded oval head, chestnut wavy bob, charcoal scarf, taupe long-sleeve top, full trousers and closed shoes | Searching eyes, hesitation, retreat, small hopeful smiles | Warm ivory, sand, charcoal |
+| Leo / companion | Male; compact broader body, rounded head, muted umber T-shirt, full trousers and closed shoes, open hands | Reassurance, humor when requested, frustration, guarded warmth | Oatmeal, stone, umber |
+| Max / thinker | Male; taller narrow body, tapered rounded head, muted olive vest over a taupe long-sleeve top, full trousers and closed shoes | Restlessness, doubt, concentration, resolve | Ivory, warm gray, dull olive |
 
 These are flexible cast designs, not mandatory personality roles or plot beats.
-No names are printed on the images or added as video nameplates. Existing voice
+All clothing uses the middle character’s muted matte tactile T-shirt fabric as
+the material guide. All three are fully dressed, including full-length trousers
+and closed shoes. Maya has hair in both her board views and the matching
+thumbnail. Names identify the cast in project data and documentation; no names
+are printed on the images or added as video nameplates. Existing voice
 choices remain available; a visual character must not require a fixed voice or
 three speakers in every film.
 

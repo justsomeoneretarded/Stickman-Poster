@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "status": "visual concepts; not rigged models",
+  "characters": [
+    {
+      "id": "observer",
+      "name": "Maya",
+      "gender": "female",
+      "hair": "chestnut shoulder-length wavy bob",
+      "outfit": [
+        "charcoal scarf",
+        "muted taupe long-sleeve top",
+        "full-length warm-gray trousers",
+        "brown closed-toe shoes"
+      ]
+    },
+    {
+      "id": "companion",
+      "name": "Leo",
+      "gender": "male",
+      "outfit": [
+        "original muted umber T-shirt",
+        "full-length darker umber trousers",
+        "dark brown closed-toe shoes"
+      ]
+    },
+    {
+      "id": "thinker",
+      "name": "Max",
+      "gender": "male",
+      "outfit": [
+        "muted olive vest",
+        "taupe long-sleeve shirt",
+        "full-length charcoal-olive trousers",
+        "dark closed-toe shoes"
+      ]
+    }
+  ],
+  "clothing_material": "muted matte tactile cotton/knit matching Leo original T-shirt",
+  "print_character_names_on_screen": false,
+  "voice_binding": "Selectable separately; concept data does not modify legacy rendering."
+}
