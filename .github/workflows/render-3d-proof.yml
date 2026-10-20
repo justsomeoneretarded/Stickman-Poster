@@ -1,0 +1,84 @@
+name: Render 3D cafe acting proof
+run-name: "3D acting proof — ${{ inputs.quality }} — 24 FPS"
+on:
+  workflow_dispatch:
+    inputs:
+      quality:
+        description: Native render resolution for the 8-second acting study
+        type: choice
+        required: true
+        default: Preview
+        options: [Preview, 1080p, 4K]
+      engine:
+        description: Blender renderer (CPU/software graphics; runtime varies)
+        type: choice
+        default: BLENDER_EEVEE_NEXT
+        options: [BLENDER_EEVEE_NEXT, CYCLES]
+permissions:
+  contents: read
+jobs:
+  render:
+    strategy:
+      fail-fast: false
+      matrix:
+        aspect: [landscape, portrait]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      PROOF_QUALITY: ${{ inputs.quality }}
+      PROOF_ENGINE: ${{ inputs.engine }}
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      GALLIUM_DRIVER: llvmpipe
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install video and headless graphics dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg xvfb xauth libegl1 libgl1 libgl1-mesa-dri libxi6 libxrender1 libxkbcommon0 libxxf86vm1 libxcursor1 libxrandr2 libxinerama1 libsm6 libice6
+          python -m venv .venv
+          .venv/bin/pip install -r requirements-render.lock
+          .venv/bin/pip install --no-deps -e .
+      - uses: actions/cache@v4
+        with:
+          path: work/blender-4.3.2-linux-x64
+          key: blender-4.3.2-linux-x64-4da1c956
+      - name: Install verified Blender binary
+        run: |
+          if [ ! -x work/blender-4.3.2-linux-x64/blender ]; then
+            mkdir -p work
+            curl -fL --retry 3 https://download.blender.org/release/Blender4.3/blender-4.3.2-linux-x64.tar.xz -o work/blender.tar.xz
+            echo '4da1c956673c0485e63054e563ee69198cc8f80d8157dd7592dffc8a6a5592e6  work/blender.tar.xz' | sha256sum -c -
+            tar -xf work/blender.tar.xz -C work
+          fi
+      - name: Render real geometry and verify every delivered frame
+        run: |
+          xvfb-run -a .venv/bin/python -m studio.film_render --blender work/blender-4.3.2-linux-x64/blender --quality "$PROOF_QUALITY" --engine "$PROOF_ENGINE" --denoise --aspect '${{ matrix.aspect }}' --out 'output/3d-proof/${{ matrix.aspect }}'
+          printf 'Actual 8-second 3D acting study at 24 FPS. This is not the full film or a final-character quality approval. No soundtrack yet.\n' >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload movie, editable scene and render evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: 3d-acting-proof-${{ matrix.aspect }}
+          retention-days: 7
+          path: |
+            output/3d-proof/${{ matrix.aspect }}/motion-proof.mp4
+            output/3d-proof/${{ matrix.aspect }}/cafe-acting-proof.blend
+            output/3d-proof/${{ matrix.aspect }}/video-check.json
+            output/3d-proof/${{ matrix.aspect }}/render-receipt.json
+            output/3d-proof/${{ matrix.aspect }}/000001.png
+            output/3d-proof/${{ matrix.aspect }}/000096.png
+            output/3d-proof/${{ matrix.aspect }}/000192.png
+          if-no-files-found: error
+      - name: Upload partial render diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 3d-render-diagnostics-${{ matrix.aspect }}
+          retention-days: 3
+          path: |
+            output/3d-proof/${{ matrix.aspect }}/cafe-acting-proof.blend
+            output/3d-proof/${{ matrix.aspect }}/render-receipt.json
+            output/3d-proof/${{ matrix.aspect }}/000001.png
+          if-no-files-found: ignore

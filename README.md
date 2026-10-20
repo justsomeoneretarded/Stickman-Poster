@@ -244,11 +244,10 @@ direction. Enter a title, description, intended **1080p** or **4K** resolution,
 target minutes and allowed dialogue voices. The initial editable idea is
 **Am I Invisible?**. Future runs use their own inputs, not a stored episode.
 
-The main-film specification is **24 FPS, at least 5,000 frames** (minimum
-3:28.34). Requested duration has a preferred **±25%** range; missing that range
-produces an advisory note, never a duration rejection. When the frame minimum
-and requested range conflict, the frame minimum takes priority. A vertical short
-is planned separately and does not inherit the main-film minimum.
+All films use **24 FPS**. Frame count follows actual duration: five minutes
+is 7,200 frames. There is no minimum frame count. Requested duration has a
+preferred **±25%** range; missing it produces an advisory note, never a duration
+rejection. The vertical short is timed separately.
 
 Download the `film-concept` artifact for `story.txt`, `script.md`,
 `description.txt`, `keywords.txt`, `publishing.json`, `film.json`, the short edit
@@ -260,3 +259,19 @@ resolution in this stage are **planned**, not evidence of a rendered 3D film.
 5,040 planned frames. This initial draft was developed in chat; the workflow
 uses the pinned local model to generate fresh packages inside the application.
 The legacy **Generate voiced episode** workflow still uses the old renderer.
+
+## First Blender render implementation
+
+**Render 3D cafe acting proof** is a separate manual workflow for an actual
+8-second / 192-frame animation study, with landscape and portrait render jobs.
+It builds real geometry, keyed head/gaze/blinks, articulated cloth sleeves,
+hands and a hand-parented mug. It renders at 24 FPS and verifies the encoded
+frame count. Preview, native 1080p and native 4K options are provided. No
+concept-image plate is used. The movie is silent at this stage.
+
+This is an early Maya/cafe technical study, not the complete Am I Invisible?
+film, not all three final character rigs, and not a claim of visual parity with
+the approved character board. Physical details, facial modeling, hair, clothing,
+the remaining cast, staged story actions, dialogue/score and final shot editing
+still need production work. The workflow uploads the editable Blender scene,
+movie and render receipts. See `studio/blender/README.md`.

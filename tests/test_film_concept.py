@@ -26,19 +26,27 @@ class FilmConceptTests(unittest.TestCase):
             for name in ('story.txt','script.md','description.txt','keywords.txt','publishing.json','short-edit.md'):
                 self.assertTrue((Path(d)/name).read_text().strip())
 
-    def test_frame_floor_wins_over_incompatible_duration_without_throwing(self):
+    def test_short_duration_is_not_stretched_to_an_arbitrary_frame_floor(self):
         r=make_request('Brief film','Visual story.',1,'4K')
         film=copy.deepcopy(self.film)
         for s in film['scenes']:s['seconds']=2;s.pop('frames',None)
         with tempfile.TemporaryDirectory() as d:
             spec=write_package(film,r,d,{'type':'test_fixture'})
-            self.assertEqual(spec['long_form']['planned_frames'],5000)
+            self.assertEqual(spec['long_form']['planned_frames'],432)
             self.assertEqual((spec['long_form']['width'],spec['long_form']['height']),(3840,2160))
             self.assertEqual((spec['short_form']['width'],spec['short_form']['height']),(2160,3840))
             self.assertFalse(spec['duration']['in_preferred_range'])
             self.assertTrue(json.loads((Path(d)/'review.json').read_text())['warnings'])
             saved=json.loads((Path(d)/'film.json').read_text())
             self.assertEqual(schedule_scenes(saved),saved)
+
+    def test_five_minutes_is_7200_frames_with_no_artificial_floor(self):
+        film=copy.deepcopy(self.film)
+        film['scenes']=film['scenes'][:5]
+        for scene in film['scenes']:scene['seconds']=60
+        planned=schedule_scenes(film)
+        self.assertEqual(sum(s['frames'] for s in planned['scenes']),7200)
+        self.assertEqual(sum(s['seconds'] for s in planned['scenes']),300)
 
     def test_long_story_is_not_rejected_and_silence_is_valid(self):
         r=make_request('Slow cinema','Silence and rain.',3)

@@ -1,0 +1,14 @@
+{
+  "renderer": "Blender CYCLES",
+  "blender": "4.3.2",
+  "fps": 24,
+  "start_frame": 80,
+  "end_frame": 80,
+  "rendered_frames": 1,
+  "width": 640,
+  "height": 360,
+  "samples": 8,
+  "wall_seconds": 112.71,
+  "status": "actual geometry animation proof; not a finished film",
+  "audio": "not included"
+}

@@ -20,7 +20,7 @@ on:
         default: 1080p
         options: [1080p, 4K]
       minutes:
-        description: Target minutes (±25% guidance; main film minimum 5,000 frames at 24 FPS)
+        description: Target minutes (±25% guidance; 24 FPS, frame count follows duration)
         type: string
         required: true
         default: '3'

@@ -9,6 +9,5 @@
     "male2"
   ],
   "duration_margin": 0.25,
-  "fps": 24,
-  "minimum_main_frames": 5000
+  "fps": 24
 }

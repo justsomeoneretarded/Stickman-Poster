@@ -16,5 +16,5 @@ its own title and description. This package is not a finished video, rig,
 composed soundtrack or claim of rendered 1080p/4K quality.
 
 Timing: a 3-minute request gives a preferred 2:15–3:45 range. This draft plans
-**3:30, 24 FPS, 5,040 frames**, meeting the user’s 5,000-frame main-film minimum.
+**3:30, 24 FPS, 5,040 frames**. The frame count is duration × 24, not a minimum.
 All frame counts are production budgets; actual rendered frames are unmeasured.

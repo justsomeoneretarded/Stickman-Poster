@@ -3,15 +3,27 @@
 Updated 19 October 2026 from the current thread, repository, and the readable
 conversation section of the user-provided previous-chat paste.
 
+## 3D implementation started
+
+`studio/blender/cafe_proof.py` builds real Maya/café geometry with keyed gaze,
+blinks, head, sleeves, hands and a mug parented to the hand. It is an early
+8-second acting study, not the full film or final approved character mesh.
+`studio.film_render` encodes actual frames and verifies exact 24 FPS and decoded
+frame count. New manual **Render 3D cafe acting proof** workflow renders landscape
+and portrait via pinned Blender 4.3.2, with Preview/1080p/4K native resolution.
+Local OS Blender lacks denoising support; official build is pinned for rendering.
+No final Leo/Max meshes, whole-story animation or soundtrack are claimed complete.
+
 ## First film concept and workflow controls
 
 The user selected “Am I Invisible?” (typed “am in invisible”) for the first film.
 `films/am-i-invisible/` contains the first assistant-authored editorial story,
 script, description, keywords, short edit and production spec. It is not rendered.
-The initial plan is 210 seconds / 5,040 frames. Main films must use 24 FPS and
-at least 5,000 rendered frames. Target minutes carry ±25% advisory range, not
-fatal validation; an incompatible short target is flagged and the frame floor
-wins. Short-form edits retain their independent duration.
+The initial plan is 210 seconds / 5,040 frames. All films use exactly 24 FPS;
+frame count follows actual duration (five minutes = 7,200 frames). The user
+clarified that 5,000 was an example, not a minimum; all frame-floor logic was
+removed. Target minutes carry ±25% advisory range, not fatal validation.
+Short-form edits retain their independent duration.
 
 A NEW manual **Develop animated short film** workflow accepts fresh title,
 description, 1080p/4K intended resolution, target minutes and optional voice set.

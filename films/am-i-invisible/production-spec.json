@@ -6,15 +6,13 @@
     "width": 1920,
     "height": 1080,
     "fps": 24,
-    "minimum_frames": 5000,
     "planned_frames": 5040,
     "measured_rendered_frames": null
   },
   "short_form": {
     "width": 1080,
     "height": 1920,
-    "fps": 24,
-    "minimum_main_frame_rule_applies": false
+    "fps": 24
   },
   "duration": {
     "target_seconds": 180.0,

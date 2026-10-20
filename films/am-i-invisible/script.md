@@ -4,7 +4,7 @@ After mistaking small everyday oversights for proof that nobody notices her, a q
 
 Planning target: 3 minutes; preferred range [135.0, 225.0] seconds. Not a rejection rule.
 
-Main-film floor: 5,000 frames at 24 FPS. Frame budgets are planned, not rendered proof.
+24 FPS throughout. Frame budgets equal planned duration × 24, not rendered proof.
 
 Character names below identify speakers in the script; they are not on-screen labels.
 
