@@ -1,0 +1,141 @@
+[
+  {
+    "id": "01",
+    "start_seconds": 0,
+    "end_seconds": 17.0,
+    "actors": [
+      "Maya",
+      "Leo"
+    ],
+    "action": "Maya sits small in the booth. Leo approaches carrying two cups, notices the empty opposite seat and returns one to the tray. Follow Maya\u2019s eyes to the bare circle where the cup almost touched. Her fingers tighten around her own cup.",
+    "camera": "Begin on the empty chair across from Maya; low close-up on the second cup, then rack focus to her expression.",
+    "emotion_start": "guarded expectation",
+    "emotion_end": "small disappointment",
+    "story_beat": "hook",
+    "screen_text": []
+  },
+  {
+    "id": "02",
+    "start_seconds": 17.0,
+    "end_seconds": 38.0,
+    "actors": [
+      "Maya",
+      "Leo"
+    ],
+    "action": "Maya sketches Leo adjusting a crooked lamp. She raises a hand to order; a tray clatters behind him and he turns away. She lowers her hand and continues the same line on the page, pressing harder, then tears the lamp drawing loose and slips it under her saucer.",
+    "camera": "Close views of pencil, shoulder tension and lifted fingers; show the dropped tray in the same geography so the missed signal has a clear cause.",
+    "emotion_start": "trying to participate",
+    "emotion_end": "withdrawn",
+    "story_beat": "escalation",
+    "screen_text": []
+  },
+  {
+    "id": "03",
+    "start_seconds": 38.0,
+    "end_seconds": 63.0,
+    "actors": [
+      "Maya",
+      "Max"
+    ],
+    "action": "Max struggles through the doorway with a rain-softened paper bag. Maya suppresses a smile and starts to look up at him. His phone vibrates. He looks down, missing her expression. Maya\u2019s smile drains; she turns the page to a sketch of his wet bag.",
+    "camera": "Medium view that holds both eyelines, then a restrained face close-up. Avoid repeated frontal talking compositions.",
+    "emotion_start": "a brief private smile",
+    "emotion_end": "misread rejection",
+    "story_beat": "escalation",
+    "screen_text": []
+  },
+  {
+    "id": "04",
+    "start_seconds": 63.0,
+    "end_seconds": 86.0,
+    "actors": [
+      "Maya",
+      "Max"
+    ],
+    "action": "Wind scatters Max\u2019s loose coins and receipts. Maya crouches, gathers the coins into a dry paper scrap from her sketchbook, and folds it into a simple wrapper with her little wet-bag drawing showing. He accepts it, distracted by his phone, mouths thanks and hurries out. Hold her lifted hand after the door closes.",
+    "camera": "Floor-level contact shots of knees, fingers and coins; shared two-shot for the handoff; hold her hand for a beat.",
+    "emotion_start": "tentatively generous",
+    "emotion_end": "left reaching",
+    "story_beat": "pinch point",
+    "screen_text": []
+  },
+  {
+    "id": "05",
+    "start_seconds": 86.0,
+    "end_seconds": 109.0,
+    "actors": [
+      "Maya",
+      "Leo"
+    ],
+    "action": "Maya sketches the empty chair and folds the drawing into her pocket. Across the caf\u00e9 Leo lifts her lamp drawing and gathers wet napkins beside a bin, partly obscured by his tray; do not actually show him throwing away her drawing. Maya sees the motion and decides what it means. She stands, pulls her scarf free, misses the notebook beneath it and leaves.",
+    "camera": "Show exactly what Maya can and cannot see. Insert the notebook remaining on the seat after she exits.",
+    "emotion_start": "hurt, watching for proof",
+    "emotion_end": "convinced she is unwanted",
+    "story_beat": "all is lost",
+    "screen_text": []
+  },
+  {
+    "id": "06",
+    "start_seconds": 109.0,
+    "end_seconds": 132.0,
+    "actors": [
+      "Maya",
+      "Leo",
+      "Max"
+    ],
+    "action": "Maya searches her bag for her sketchbook. She turns back, stops outside the rainy window and sees her familiar booth empty. Her shoulders drop. She begins to turn away, then notices the little drawing beside the register.",
+    "camera": "Stay with her face reflected in glass; shift focus through the glass to the drawing. No magical transparency.",
+    "emotion_start": "ready to withdraw",
+    "emotion_end": "uncertain hope",
+    "story_beat": "turning point",
+    "screen_text": []
+  },
+  {
+    "id": "07",
+    "start_seconds": 132.0,
+    "end_seconds": 160.0,
+    "actors": [
+      "Maya",
+      "Leo",
+      "Max"
+    ],
+    "action": "The lamp drawing is flattened beside the register. Max carefully turns the wrapper so Leo can see the sketch. Leo has placed Maya\u2019s notebook away from the wet counter. Maya enters. Leo lifts it. Max recognizes the artist; Maya meets his eyes and nods.",
+    "camera": "Over Maya\u2019s shoulder for the reveal, then a wide triangle connecting the three people; close-up on the safe dry notebook.",
+    "emotion_start": "braced for embarrassment",
+    "emotion_end": "recognized",
+    "story_beat": "revelation",
+    "screen_text": []
+  },
+  {
+    "id": "08",
+    "start_seconds": 160.0,
+    "end_seconds": 186.0,
+    "actors": [
+      "Maya",
+      "Leo",
+      "Max"
+    ],
+    "action": "Leo gestures to an unused chair beside the counter. Maya briefly glances back toward her old booth. She sets down her bag and draws the offered chair toward her. Max moves his coat off the neighboring seat; Leo places a cup where she can reach it.",
+    "camera": "Hold the pause before her decision. Track the chair\u2019s weight and her seated contact; show hands supporting the cup naturally.",
+    "emotion_start": "afraid to ask",
+    "emotion_end": "tentative belonging",
+    "story_beat": "climax",
+    "screen_text": []
+  },
+  {
+    "id": "09",
+    "start_seconds": 186.0,
+    "end_seconds": 210.0,
+    "actors": [
+      "Maya",
+      "Leo",
+      "Max"
+    ],
+    "action": "Maya opens her notebook. Max starts describing the ruined bag with his hands; she rests her pencil and looks up to listen. Leo straightens the lamp, now lighting all three. Return to the original booth and its still-empty opposite chair. Maya is no longer there.",
+    "camera": "Intimate side view of the listening face, then a quiet wide match to the opening. End on the empty booth with the shared counter visible beyond.",
+    "emotion_start": "settling in",
+    "emotion_end": "present, not cured",
+    "story_beat": "resolution",
+    "screen_text": []
+  }
+]

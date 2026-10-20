@@ -29,7 +29,8 @@ class FilmConceptTests(unittest.TestCase):
     def test_short_duration_is_not_stretched_to_an_arbitrary_frame_floor(self):
         r=make_request('Brief film','Visual story.',1,'4K')
         film=copy.deepcopy(self.film)
-        for s in film['scenes']:s['seconds']=2;s.pop('frames',None)
+        for s in film['scenes']:
+            s['seconds']=2;s.pop('frames',None);s.pop('cues',None)
         with tempfile.TemporaryDirectory() as d:
             spec=write_package(film,r,d,{'type':'test_fixture'})
             self.assertEqual(spec['long_form']['planned_frames'],432)
@@ -51,7 +52,8 @@ class FilmConceptTests(unittest.TestCase):
     def test_long_story_is_not_rejected_and_silence_is_valid(self):
         r=make_request('Slow cinema','Silence and rain.',3)
         film=copy.deepcopy(self.film)
-        for s in film['scenes']:s['seconds']=100;s['dialogue']=[];s.pop('frames',None)
+        for s in film['scenes']:
+            s['seconds']=100;s['dialogue']=[];s['cues']=[c for c in s.get('cues',[]) if c['kind']!='speech'];s.pop('frames',None)
         with tempfile.TemporaryDirectory() as d:
             spec=write_package(film,r,d,{'type':'test_fixture'})
             self.assertGreater(spec['duration']['planned_seconds'],225)

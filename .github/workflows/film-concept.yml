@@ -11,7 +11,7 @@ on:
       description:
         description: Story idea, feelings, events and ending you want
         required: true
-        default: 'An original quiet emotional short about Maya feeling unnoticed in a rainy cafe. An empty chair and her drawings carry the story. Leo and Max are ordinary imperfect people, not villains. Show specific silent actions, a setback, and a small earned moment of connection. No literal invisibility, shadow monster, counters, lecture or forced joke. Keep dialogue sparse and the ending hopeful without claiming loneliness is cured.'
+        default: 'A girl feels lonely even when surrounded by people. Tell it through quiet actions and a small, believable change; mostly no dialogue.'
         type: string
       quality:
         description: Intended final video resolution (this stage generates the story package, not rendered video)
@@ -28,12 +28,29 @@ on:
         description: Target minutes (±25% guidance; frame count follows duration)
         type: string
         required: true
-        default: '3'
+        default: '5'
+      characters:
+        description: Characters who may appear (independent of who may speak)
+        type: choice
+        default: Maya + Leo + Max
+        options:
+          - Maya (female)
+          - Leo (Kit Laser)
+          - Max (Warguy)
+          - Maya + Leo
+          - Maya + Max
+          - Leo + Max
+          - Maya + Leo + Max
+      thumbnail_images:
+        description: Generate 3 reference-guided images (uses your image API credits; requires OPENAI_API_KEY)
+        type: boolean
+        default: false
       voices:
         description: Voices allowed for optional dialogue (silent scenes are supported)
         type: choice
         default: 3 speakers — Maya + Leo + Max
         options:
+          - No speech
           - 1 speaker — Maya (female)
           - 1 speaker — Leo (Kit Laser)
           - 1 speaker — Max (Warguy)
@@ -53,6 +70,7 @@ jobs:
       FILM_QUALITY: ${{ inputs.quality }}
       FILM_FPS: ${{ inputs.fps }}
       FILM_MINUTES: ${{ inputs.minutes }}
+      FILM_CHARACTERS: ${{ inputs.characters }}
       FILM_VOICES: ${{ inputs.voices }}
       HF_HUB_DISABLE_TELEMETRY: '1'
     steps:
@@ -60,6 +78,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Check optional thumbnail image configuration
+        if: inputs.thumbnail_images
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo 'Add the OPENAI_API_KEY repository secret to generate thumbnail images, or disable thumbnail_images for planning only.'
+            exit 1
+          fi
       - name: Install script environment
         run: |
           python -m venv .venv
@@ -83,7 +110,7 @@ jobs:
           tar -xzf work/llama.tar.gz -C work/llama-cpu
       - name: Develop original story, screenplay and publishing package
         run: |
-          .venv/bin/python -m studio.film_concept --title "$FILM_TITLE" --description "$FILM_DESCRIPTION" --quality "$FILM_QUALITY" --minutes "$FILM_MINUTES" --fps "$FILM_FPS" --voices "$FILM_VOICES" --out output/film-concept
+          .venv/bin/python -m studio.film_concept --title "$FILM_TITLE" --description "$FILM_DESCRIPTION" --quality "$FILM_QUALITY" --minutes "$FILM_MINUTES" --fps "$FILM_FPS" --characters "$FILM_CHARACTERS" --voices "$FILM_VOICES" --out output/film-concept
           .venv/bin/python - <<'PY'
           import json,os
           from pathlib import Path
@@ -91,9 +118,24 @@ jobs:
           with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
               f.write('Film development package generated. No video has been rendered by this workflow.\n\n')
               f.write('Intended resolution: '+spec['resolution']+'\n\nDuration planning: '+json.dumps(spec['duration'])+'\n\n')
-              f.write('Download film-concept: story.txt, script.md, description.txt, keywords.txt, publishing.json, film.json and the short edit plan.\n')
+              f.write('Download film-concept: story.txt, script.md, description.txt (includes full visual screenplay), subtitles.srt, screen-text.srt, shot-plan.json, sound-plan.json, three thumbnail briefs, keywords and short edit plan. Thumbnail images and full video are not rendered at this stage.\n')
+          PY
+      - name: Generate three original thumbnail options
+        if: inputs.thumbnail_images
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: .venv/bin/python -m studio.film_thumbnails --package output/film-concept
+      - name: Report actual deliverables
+        run: |
+          .venv/bin/python - <<'PY'
+          import json,os
+          from pathlib import Path
+          status=json.loads(Path('output/film-concept/delivery-status.json').read_text())
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write('\nActual delivery status: '+json.dumps(status)+'\n')
           PY
       - name: Upload story and publishing deliverables
+        if: always() && hashFiles('output/film-concept/production-spec.json') != ''
         uses: actions/upload-artifact@v4
         with:
           name: film-concept-${{ github.run_number }}
@@ -109,6 +151,16 @@ jobs:
             output/film-concept/production-spec.json
             output/film-concept/request.json
             output/film-concept/review.json
+            output/film-concept/publishing-description.txt
+            output/film-concept/shot-plan.json
+            output/film-concept/sound-plan.json
+            output/film-concept/story-arc.json
+            output/film-concept/subtitles.srt
+            output/film-concept/screen-text.srt
+            output/film-concept/subtitle-notes.txt
+            output/film-concept/thumbnail-briefs.json
+            output/film-concept/thumbnails/
+            output/film-concept/delivery-status.json
           if-no-files-found: error
       - name: Upload writer diagnostics on failure
         if: failure()

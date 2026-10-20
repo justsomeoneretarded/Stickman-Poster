@@ -27,7 +27,50 @@
       "sound": "Door bell, soft cup contact, rain against the window.",
       "music": "Sparse two-note felt-piano motif with room between notes.",
       "essential_text": "",
-      "frames": 204
+      "frames": 204,
+      "actors": [
+        "Maya",
+        "Leo"
+      ],
+      "emotion_start": "guarded expectation",
+      "emotion_end": "small disappointment",
+      "story_beat": "hook",
+      "screen_text": [],
+      "cues": [
+        {
+          "kind": "ambience",
+          "start_seconds": 0,
+          "end_seconds": 17,
+          "detail": "Rain beyond the glass",
+          "reason": "Establishes separation without explaining her feelings",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 7,
+          "end_seconds": 8,
+          "detail": "Cup settles back onto a tray",
+          "reason": "Makes the almost-offered place audibly disappear",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "music",
+          "start_seconds": 0,
+          "end_seconds": 17.0,
+          "detail": "Sparse two-note felt-piano motif with room between notes.",
+          "reason": "Connects this sequence to the recurring simple motif without narrating the emotion",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ]
     },
     {
       "id": "02",
@@ -40,7 +83,50 @@
       "sound": "Pencil drag, tray crash, a brief apology from background ambience without intelligible extra dialogue.",
       "music": "One motif note is left unresolved; no dramatic villain cue.",
       "essential_text": "",
-      "frames": 252
+      "frames": 252,
+      "actors": [
+        "Maya",
+        "Leo"
+      ],
+      "emotion_start": "trying to participate",
+      "emotion_end": "withdrawn",
+      "story_beat": "escalation",
+      "screen_text": [],
+      "cues": [
+        {
+          "kind": "foley",
+          "start_seconds": 5,
+          "end_seconds": 6,
+          "detail": "Tray clatters behind the counter",
+          "reason": "Redirects Leo at the exact moment of her raised hand",
+          "caption": "[tray clatters]",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 12,
+          "end_seconds": 17,
+          "detail": "Pencil presses and scratches paper",
+          "reason": "Carries the frustration she cannot say",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "music",
+          "start_seconds": 0,
+          "end_seconds": 21.0,
+          "detail": "One motif note is left unresolved; no dramatic villain cue.",
+          "reason": "Connects this sequence to the recurring simple motif without narrating the emotion",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ]
     },
     {
       "id": "03",
@@ -53,7 +139,28 @@
       "sound": "Rain gust, paper rustle, a single phone vibration.",
       "music": "Soft low pad enters under the piano; keep the missed glance small.",
       "essential_text": "",
-      "frames": 300
+      "frames": 300,
+      "actors": [
+        "Maya",
+        "Max"
+      ],
+      "emotion_start": "a brief private smile",
+      "emotion_end": "misread rejection",
+      "story_beat": "escalation",
+      "screen_text": [],
+      "cues": [
+        {
+          "kind": "foley",
+          "start_seconds": 9,
+          "end_seconds": 11,
+          "detail": "Phone vibrates inside Max\u2019s coat",
+          "reason": "Pulls his gaze away before he sees her smile",
+          "caption": "[phone vibrates]",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ]
     },
     {
       "id": "04",
@@ -66,7 +173,39 @@
       "sound": "Coins rolling, knees against fabric, dry and wet paper textures, door bell.",
       "music": "Let the score briefly brighten during the handoff, then recede without a comic sting.",
       "essential_text": "",
-      "frames": 276
+      "frames": 276,
+      "actors": [
+        "Maya",
+        "Max"
+      ],
+      "emotion_start": "tentatively generous",
+      "emotion_end": "left reaching",
+      "story_beat": "pinch point",
+      "screen_text": [],
+      "cues": [
+        {
+          "kind": "foley",
+          "start_seconds": 2,
+          "end_seconds": 4,
+          "detail": "Coins scatter onto tile",
+          "reason": "Gives her a concrete opportunity to help",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 19,
+          "end_seconds": 21,
+          "detail": "Door opens, bell rings and rain rises",
+          "reason": "Closes the encounter while her hand is still raised",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ]
     },
     {
       "id": "05",
@@ -79,7 +218,39 @@
       "sound": "Chair legs scrape, paper folds, her steps and the door closing.",
       "music": "The motif thins to a single sustained tone; leave silence after the door.",
       "essential_text": "",
-      "frames": 276
+      "frames": 276,
+      "actors": [
+        "Maya",
+        "Leo"
+      ],
+      "emotion_start": "hurt, watching for proof",
+      "emotion_end": "convinced she is unwanted",
+      "story_beat": "all is lost",
+      "screen_text": [],
+      "cues": [
+        {
+          "kind": "silence",
+          "start_seconds": 12,
+          "end_seconds": 16,
+          "detail": "Drop the music; retain only muffled room tone",
+          "reason": "Her mistaken interpretation needs space, not a villain cue",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 20,
+          "end_seconds": 22,
+          "detail": "Chair scrape and a short door bell",
+          "reason": "Makes her departure a choice with physical weight",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ]
     },
     {
       "id": "06",
@@ -92,7 +263,29 @@
       "sound": "Bag zip, wet pavement, traffic muffled behind rain.",
       "music": "Use rain and room tone alone for most of this beat.",
       "essential_text": "",
-      "frames": 276
+      "frames": 276,
+      "actors": [
+        "Maya",
+        "Leo",
+        "Max"
+      ],
+      "emotion_start": "ready to withdraw",
+      "emotion_end": "uncertain hope",
+      "story_beat": "turning point",
+      "screen_text": [],
+      "cues": [
+        {
+          "kind": "ambience",
+          "start_seconds": 0,
+          "end_seconds": 23,
+          "detail": "Rain and distant traffic outside the closed cafe window",
+          "reason": "Places us outside with her rather than inside with reassuring conversation",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ]
     },
     {
       "id": "07",
@@ -114,7 +307,51 @@
       "sound": "Door bell, paper flattening, notebook settling against a palm.",
       "music": "The original piano motif returns with one added answering note; no swelling climax.",
       "essential_text": "",
-      "frames": 336
+      "frames": 336,
+      "actors": [
+        "Maya",
+        "Leo",
+        "Max"
+      ],
+      "emotion_start": "braced for embarrassment",
+      "emotion_end": "recognized",
+      "story_beat": "revelation",
+      "screen_text": [],
+      "cues": [
+        {
+          "kind": "speech",
+          "start_seconds": 7,
+          "end_seconds": 10,
+          "detail": "Leo quietly offers the dry notebook",
+          "reason": "Confirms he cared for something she thought he discarded",
+          "caption": "",
+          "speaker": "Leo",
+          "text": "I kept it dry.",
+          "offscreen": false
+        },
+        {
+          "kind": "speech",
+          "start_seconds": 15,
+          "end_seconds": 18,
+          "detail": "Max recognizes the person who drew his bag",
+          "reason": "His delayed recognition answers the earlier missed glance",
+          "caption": "",
+          "speaker": "Max",
+          "text": "You made this?",
+          "offscreen": false
+        },
+        {
+          "kind": "music",
+          "start_seconds": 0,
+          "end_seconds": 28.0,
+          "detail": "The original piano motif returns with one added answering note; no swelling climax.",
+          "reason": "Connects this sequence to the recurring simple motif without narrating the emotion",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ]
     },
     {
       "id": "08",
@@ -132,7 +369,51 @@
       "sound": "Chair scrape, coat rustle, cup and saucer, a relaxed breath.",
       "music": "Warm but restrained harmony; leave space for the line and chair sound.",
       "essential_text": "",
-      "frames": 312
+      "frames": 312,
+      "actors": [
+        "Maya",
+        "Leo",
+        "Max"
+      ],
+      "emotion_start": "afraid to ask",
+      "emotion_end": "tentative belonging",
+      "story_beat": "climax",
+      "screen_text": [],
+      "cues": [
+        {
+          "kind": "speech",
+          "start_seconds": 4,
+          "end_seconds": 7,
+          "detail": "Maya asks a small practical question",
+          "reason": "She makes the vulnerable choice herself",
+          "caption": "",
+          "speaker": "Maya",
+          "text": "Can I sit here?",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 10,
+          "end_seconds": 12,
+          "detail": "Chair moves beside the counter",
+          "reason": "The offer becomes a usable place rather than reassuring words",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "music",
+          "start_seconds": 0,
+          "end_seconds": 26.0,
+          "detail": "Warm but restrained harmony; leave space for the line and chair sound.",
+          "reason": "Connects this sequence to the recurring simple motif without narrating the emotion",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ]
     },
     {
       "id": "09",
@@ -145,7 +426,40 @@
       "sound": "Ordinary caf\u00e9 room tone, small friendly indistinct conversation without new intelligible lines.",
       "music": "Finish the motif simply; fade into room tone rather than a slogan or title card.",
       "essential_text": "",
-      "frames": 288
+      "frames": 288,
+      "actors": [
+        "Maya",
+        "Leo",
+        "Max"
+      ],
+      "emotion_start": "settling in",
+      "emotion_end": "present, not cured",
+      "story_beat": "resolution",
+      "screen_text": [],
+      "cues": [
+        {
+          "kind": "ambience",
+          "start_seconds": 0,
+          "end_seconds": 24,
+          "detail": "Gentle room tone, quieter rain and distant crockery",
+          "reason": "Life continues normally; loneliness has not magically disappeared",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "music",
+          "start_seconds": 0,
+          "end_seconds": 24.0,
+          "detail": "Finish the motif simply; fade into room tone rather than a slogan or title card.",
+          "reason": "Connects this sequence to the recurring simple motif without narrating the emotion",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ]
     }
   ],
   "short_edit": {
@@ -158,5 +472,42 @@
     ],
     "story": "Open on the almost-placed second cup and empty chair. Maya\u2019s discouraged departure leads straight to discovering her drawing and notebook through the window. Show Max carefully unfolding her drawing, Maya choosing the offered chair, and the contrast with the now-empty original booth. Preserve enough of the paper-wrapper handoff as a brief insert that the reveal makes sense. Aim for roughly 45\u201360 seconds through a new edit, not by accelerating every long-form shot.",
     "ending": "Maya puts her pencil down and looks up at the people beside her; return to her old empty booth to complete the visual question."
-  }
+  },
+  "story_arc": {
+    "story_type": "Quiet character drama; a small reconnection rather than a cure or a moral lesson.",
+    "desire": "Maya wants to feel noticed without having to perform for attention.",
+    "hook": "A second cup almost reaches the empty place opposite her, then is taken away.",
+    "exposition": "Her private drawings notice details about people who seem not to notice her.",
+    "inciting_change": "A greeting is interrupted, and she starts interpreting ordinary distractions as rejection.",
+    "escalation": "The missed order, wet-bag encounter and unacknowledged kindness reinforce the same fear in different ways.",
+    "pinch_point": "Max leaves before her hand has fully lowered. Her little offering seems not to have mattered.",
+    "all_is_lost": "She thinks her drawing is being discarded, leaves, and discovers she has forgotten her notebook.",
+    "turning_point": "Through the wet window she sees that the drawing was saved.",
+    "climax": "She returns, accepts being seen and risks asking for a place beside someone.",
+    "falling_action": "A chair is cleared, a cup placed within reach, and she listens instead of retreating into her drawing.",
+    "resolution": "Return to the same empty booth. It remains empty because she has chosen another seat."
+  },
+  "thumbnails": [
+    {
+      "hook_text": "AM I INVISIBLE?",
+      "emotional_promise": "Feeling unseen in a room full of people",
+      "source_scene_id": "01",
+      "composition": "Maya large on the left, warm-lit empty opposite seat on the right, rain and distant blurred figures behind.",
+      "image_prompt": "Original cinematic illustrated 16:9 thumbnail. Maya, chestnut wavy shoulder-length hair, charcoal scarf, taupe knit long sleeves and warm-gray trousers, sits at a rain-streaked cafe window. Her expressive brown eyes glance toward a painfully empty chair opposite. One cream cup in her hand, one untouched place across the table. Dark navy and charcoal setting, tactile fabric, warm amber rim light, creamy skin, soft sculpted 2.5D shading, strong readable silhouette. Upper headline zone with bold cream-white rounded words AM I INVISIBLE? Large face, honest longing rather than exaggerated horror. No extra labels or logos."
+    },
+    {
+      "hook_text": "NO ONE NOTICES",
+      "emotional_promise": "The fear that a small attempt to connect did not land",
+      "source_scene_id": "04",
+      "composition": "A close foreground hand holding the little folded drawing; Maya\u2019s face hopeful then uncertain while a blurred person leaves behind her.",
+      "image_prompt": "Original cinematic illustrated 16:9 thumbnail, the same approved Maya with chestnut wavy hair, taupe knit top, charcoal scarf, full gray trousers. Intimate low camera: her small folded paper drawing in a hand in the foreground, her face sharply visible above it, a distant softly blurred departing figure by a rainy cafe door. Large expressive eyes, a tiny incomplete hopeful smile, vulnerable unfinished gesture. Warm amber light catches her face and paper against deep charcoal/navy shadows. Bold cream-white upper headline NO ONE NOTICES. Strong clean visual hierarchy and mobile-readable design. Do not depict rejection as cruelty, no monster, no tears pasted onto the image, no logos."
+    },
+    {
+      "hook_text": "DO I MATTER?",
+      "emotional_promise": "The fear that something personal will be thrown away",
+      "source_scene_id": "05",
+      "composition": "Maya\u2019s worried close-up occupies one half; her crooked-lamp sketch and a distant bin occupy the other, leaving the fate of the drawing uncertain.",
+      "image_prompt": "Original cinematic illustrated 16:9 thumbnail using approved Maya: chestnut wavy shoulder-length hair, taupe knitted long sleeves, charcoal scarf, warm-gray trousers. Close three-quarter face, brows drawn with genuine uncertainty. At the other side of the composition a hand holds her little paper sketch of a crooked cafe lamp near discarded wet napkins; the image must not show the drawing actually thrown into the bin, because it is saved in the story. Rain-blue shadows and warm amber edge light on cream paper and her face, tactile stylized cinematic illustration, simple strong shapes. Bold cream-white upper headline DO I MATTER? Keep expression readable on a phone, no logos or character labels."
+    }
+  ]
 }

@@ -9,5 +9,10 @@
     "male2"
   ],
   "duration_margin": 0.25,
-  "fps": 12
+  "fps": 12,
+  "characters": [
+    "female",
+    "male1",
+    "male2"
+  ]
 }

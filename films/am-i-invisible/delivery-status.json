@@ -1,0 +1,12 @@
+{
+  "stage": "production_plan",
+  "video_rendered": false,
+  "thumbnail_images_rendered": 0,
+  "thumbnail_briefs": 3,
+  "subtitle_timing": "planned; retime after final render",
+  "missing": [
+    "Full-film layered animation renderer",
+    "Contextual audio synthesis and mix",
+    "Three final thumbnail images unless image backend is configured"
+  ]
+}

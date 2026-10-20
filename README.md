@@ -27,7 +27,13 @@ other interactions, final dialogue, music and a standalone short remain unfinish
 The portrait study is a separately staged version of the same scene, not that
 finished standalone short. Technical tests do not establish artistic quality.
 
-**New:** [Generate an episode with GitHub Actions](docs/ACTIONS.md): enter a title
+**Visual-first planning update:** [Workflow and exact deliverables](docs/VISUAL_FILM_WORKFLOW.md):
+independent character/voice choices, timed contextual audio and screen text, full
+script in the description, subtitle tracks, and three thumbnail concepts. Optional
+reference-guided image generation requires an image API secret. This planning
+workflow does not yet render a full arbitrary film.
+
+**Legacy:** [Generate an episode with GitHub Actions](docs/ACTIONS.md): enter a title
 and short description, choose one to three voices, and download the generated
 scripts and two voiced video artifacts: 16:9 long-form and a standalone 9:16 short. The three reusable voice profiles are public; no voice secret is required.
 Local model scripting and character dialogue are now implemented; artistic and

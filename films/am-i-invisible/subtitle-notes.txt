@@ -1,0 +1,4 @@
+Planned timeline only. These are not measured or word-aligned subtitles for a finished video.
+subtitles.srt: actual speech and deliberately selected meaningful sound captions.
+screen-text.srt: separately planned sparse visual text; not automatically burned in.
+Empty tracks are valid for silence/no screen text. Retiming is required after picture and audio lock.

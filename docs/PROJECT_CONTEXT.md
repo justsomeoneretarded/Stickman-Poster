@@ -1,3 +1,9 @@
+Latest requirements: title + two-line brief → primarily silent visual story; no obligatory voiceover.
+All three visible characters and all three voice profiles remain selectable independently.
+Full visual screenplay must be in description.txt; sparse subtitles and separate timed screen text.
+Contextual sound cues need story reasons. Exactly three distinct thumbnail options.
+See [current workflow and limitations](VISUAL_FILM_WORKFLOW.md). Optional API images require explicit checkbox and OPENAI_API_KEY.
+
 Latest direction (supersedes older Blender/24-FPS-only plans):
 
 ## Current video direction — layered 2D/2.5D
