@@ -87,3 +87,21 @@ class FilmConceptTests(unittest.TestCase):
             generate(r,d,None);generate(r,d,None)
             self.assertEqual(Writer.calls,1)
             self.assertEqual(json.loads((Path(d)/'publishing.json').read_text())['title'],r['title'])
+
+    def test_interrupted_response_retries_without_shortening_requested_film(self):
+        film=self.film
+        class Writer:
+            calls=0
+            def __init__(self,*a,**kw):pass
+            def __enter__(self):return self
+            def __exit__(self,*a):pass
+            def complete(self,messages,schema,tokens):
+                Writer.calls+=1
+                if Writer.calls==1:raise ValueError('Writer output hit the token budget; reduce episode length')
+                self_test.assertIn('Keep the requested duration',messages[1]['content'])
+                self_test.assertIn('"minutes": 5.0',messages[1]['content'])
+                return json.dumps(film)
+        self_test=self
+        with tempfile.TemporaryDirectory() as d,patch('studio.local_llm.LocalWriter',Writer):
+            generate(make_request('An unspoken film','A girl is lonely.',5),d,None)
+        self.assertEqual(Writer.calls,2)

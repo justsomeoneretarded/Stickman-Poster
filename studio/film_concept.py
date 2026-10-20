@@ -201,13 +201,17 @@ def generate(request,out,model_dir):
     with LocalWriter(model_dir,out,context=24576) as writer:
         error=''
         for attempt in range(3):
-            raw=writer.complete([{'role':'system','content':prompt},{'role':'user','content':json.dumps(request)+error}],schema(),14000)
-            (out/f'model-draft-{attempt}.json').write_text(raw)
+            print(f'Writing visual film: attempt {attempt+1}/3',flush=True)
             try:
+                raw=writer.complete([{'role':'system','content':prompt},{'role':'user','content':json.dumps(request)+error}],schema(),14000)
+                (out/f'model-draft-{attempt}.json').write_text(raw)
                 film=validate_film(json.loads(raw),request)
                 return write_package(film,request,out,source)
             except (ValueError,KeyError,TypeError) as exc:
-                error='\nRepair this structural problem: '+str(exc)
+                print(f'Writer repair needed: {exc}',flush=True)
+                error='\nRepair this production-plan problem: '+str(exc)
+                if 'token budget' in str(exc):
+                    error='\nReturn complete JSON with more compact descriptions. Keep the requested duration and all delivery fields; do not shorten the film or cut dialogue. Avoid redundant cue descriptions.'
                 if attempt==2:raise
 
 
