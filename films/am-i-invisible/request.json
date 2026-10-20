@@ -1,0 +1,14 @@
+{
+  "title": "Am I Invisible?",
+  "description": "An original quiet emotional short about Maya feeling unnoticed in a rainy cafe. An empty chair and her drawings carry the story. Leo and Max are ordinary imperfect people, not villains. Show specific silent actions, a setback, and a small earned moment of connection. No literal invisibility, shadow monster, counters, lecture or forced joke. Keep dialogue sparse and the ending hopeful without claiming loneliness is cured.",
+  "minutes": 3.0,
+  "resolution": "1080p",
+  "voices": [
+    "female",
+    "male1",
+    "male2"
+  ],
+  "duration_margin": 0.25,
+  "fps": 24,
+  "minimum_main_frames": 5000
+}

@@ -1,0 +1,117 @@
+name: Develop animated short film
+run-name: "Film concept — ${{ inputs.title }} — ${{ inputs.quality }}"
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: Film title (editable for every run)
+        required: true
+        default: Am I Invisible?
+        type: string
+      description:
+        description: Story idea, feelings, events and ending you want
+        required: true
+        default: 'An original quiet emotional short about Maya feeling unnoticed in a rainy cafe. An empty chair and her drawings carry the story. Leo and Max are ordinary imperfect people, not villains. Show specific silent actions, a setback, and a small earned moment of connection. No literal invisibility, shadow monster, counters, lecture or forced joke. Keep dialogue sparse and the ending hopeful without claiming loneliness is cured.'
+        type: string
+      quality:
+        description: Intended final video resolution (this stage generates the story package, not rendered video)
+        type: choice
+        required: true
+        default: 1080p
+        options: [1080p, 4K]
+      minutes:
+        description: Target minutes (±25% guidance; main film minimum 5,000 frames at 24 FPS)
+        type: string
+        required: true
+        default: '3'
+      voices:
+        description: Voices allowed for optional dialogue (silent scenes are supported)
+        type: choice
+        default: 3 speakers — Maya + Leo + Max
+        options:
+          - 1 speaker — Maya (female)
+          - 1 speaker — Leo (Kit Laser)
+          - 1 speaker — Max (Warguy)
+          - 2 speakers — Maya + Leo
+          - 2 speakers — Maya + Max
+          - 2 speakers — Leo + Max
+          - 3 speakers — Maya + Leo + Max
+permissions:
+  contents: read
+jobs:
+  develop:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      FILM_TITLE: ${{ inputs.title }}
+      FILM_DESCRIPTION: ${{ inputs.description }}
+      FILM_QUALITY: ${{ inputs.quality }}
+      FILM_MINUTES: ${{ inputs.minutes }}
+      FILM_VOICES: ${{ inputs.voices }}
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install script environment
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install -r requirements-render.lock huggingface-hub==1.33.0
+          .venv/bin/pip install --no-deps -e .
+      - uses: actions/cache@v4
+        with:
+          path: models/script-qwen3
+          key: film-script-qwen3-a06e946b-v1
+      - name: Download pinned writer only (no TTS model needed for concept development)
+        run: |
+          .venv/bin/python - <<'PY'
+          from huggingface_hub import hf_hub_download
+          from studio.writer import MODEL_ID, MODEL_REVISION
+          from studio.local_llm import MODEL_FILE
+          hf_hub_download(MODEL_ID, MODEL_FILE, revision=MODEL_REVISION, local_dir='models/script-qwen3')
+          PY
+          mkdir -p work/llama-cpu
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b11729/llama-b11729-bin-ubuntu-x64.tar.gz -o work/llama.tar.gz
+          echo 'ef0db60597825a63534a536bd60d3c290cf82631b2a48461278dc2c9eb436c25  work/llama.tar.gz' | sha256sum -c -
+          tar -xzf work/llama.tar.gz -C work/llama-cpu
+      - name: Develop original story, screenplay and publishing package
+        run: |
+          .venv/bin/python -m studio.film_concept --title "$FILM_TITLE" --description "$FILM_DESCRIPTION" --quality "$FILM_QUALITY" --minutes "$FILM_MINUTES" --voices "$FILM_VOICES" --out output/film-concept
+          .venv/bin/python - <<'PY'
+          import json,os
+          from pathlib import Path
+          spec=json.loads(Path('output/film-concept/production-spec.json').read_text())
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write('Film development package generated. No video has been rendered by this workflow.\n\n')
+              f.write('Intended resolution: '+spec['resolution']+'\n\nDuration planning: '+json.dumps(spec['duration'])+'\n\n')
+              f.write('Download film-concept: story.txt, script.md, description.txt, keywords.txt, publishing.json, film.json and the short edit plan.\n')
+          PY
+      - name: Upload story and publishing deliverables
+        uses: actions/upload-artifact@v4
+        with:
+          name: film-concept-${{ github.run_number }}
+          retention-days: 14
+          path: |
+            output/film-concept/story.txt
+            output/film-concept/script.md
+            output/film-concept/description.txt
+            output/film-concept/keywords.txt
+            output/film-concept/publishing.json
+            output/film-concept/film.json
+            output/film-concept/short-edit.md
+            output/film-concept/production-spec.json
+            output/film-concept/request.json
+            output/film-concept/review.json
+          if-no-files-found: error
+      - name: Upload writer diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: film-concept-diagnostics-${{ github.run_number }}
+          retention-days: 7
+          path: |
+            output/film-concept/model-draft-*.json
+            output/film-concept/last-truncated-output.txt
+            output/film-concept/llama-server.log
+          if-no-files-found: ignore

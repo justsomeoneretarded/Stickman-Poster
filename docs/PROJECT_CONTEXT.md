@@ -3,6 +3,24 @@
 Updated 19 October 2026 from the current thread, repository, and the readable
 conversation section of the user-provided previous-chat paste.
 
+## First film concept and workflow controls
+
+The user selected “Am I Invisible?” (typed “am in invisible”) for the first film.
+`films/am-i-invisible/` contains the first assistant-authored editorial story,
+script, description, keywords, short edit and production spec. It is not rendered.
+The initial plan is 210 seconds / 5,040 frames. Main films must use 24 FPS and
+at least 5,000 rendered frames. Target minutes carry ±25% advisory range, not
+fatal validation; an incompatible short target is flagged and the frame floor
+wins. Short-form edits retain their independent duration.
+
+A NEW manual **Develop animated short film** workflow accepts fresh title,
+description, 1080p/4K intended resolution, target minutes and optional voice set.
+`studio.film_concept` generates fresh model-written stories/scripts/publishing
+packages in-app, with silent scenes supported; it does not run the legacy
+renderer. Resolution and frame counts remain planning metadata until a real 3D
+render exists. Model-script output, story prose and publishing descriptions are
+separate deliverables, plus useful keywords and a vertical edit plan.
+
 ## Latest creative pivot — supersedes the hypothetical-stickman direction
 
 The user selected character-led emotional animated short films, citing uploaded
