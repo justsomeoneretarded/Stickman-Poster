@@ -22,16 +22,17 @@ current default; 24 remains selectable. Frame count equals duration × FPS,
 with no minimum-frame padding. The concept workflow also accepts either rate.
 The target duration remains soft guidance (±25%), never a script rejection rule.
 
-See [opening study](previews/layered-opening/README.md). Full-film shot coverage,
-other interactions, final dialogue, music and a standalone short remain unfinished.
+See [opening study](previews/layered-opening/README.md). The new full-film pipeline extends the renderer through reusable directed shots;
+its finite action library and artistic quality still need review.
 The portrait study is a separately staged version of the same scene, not that
 finished standalone short. Technical tests do not establish artistic quality.
 
-**Visual-first planning update:** [Workflow and exact deliverables](docs/VISUAL_FILM_WORKFLOW.md):
-independent character/voice choices, timed contextual audio and screen text, full
-script in the description, subtitle tracks, and three thumbnail concepts. Optional
-reference-guided image generation requires an image API secret. This planning
-workflow does not yet render a full arbitrary film.
+**Complete film workflow:** [Create complete animated film](https://github.com/justsomeoneretarded/Stickman-Poster/actions/workflows/film-concept.yml)
+accepts a title/brief and runs writing, executable directing, actual animation,
+contextual sound, optional dry Turbo dialogue, measured subtitles, three thumbnails,
+and both final MP4 formats. [Inputs, exact outputs and finite-library limits](docs/VISUAL_FILM_WORKFLOW.md).
+Three film-art vector posters need no image API; the approved detailed illustrated
+thumbnail finish remains an optional image-model stage requiring a key.
 
 **Legacy:** [Generate an episode with GitHub Actions](docs/ACTIONS.md): enter a title
 and short description, choose one to three voices, and download the generated

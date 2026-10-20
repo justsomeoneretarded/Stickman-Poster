@@ -1,3 +1,7 @@
+Latest implementation: film-concept.yml now runs COMPLETE animated production via studio.complete_film.
+The new director uses symbolic actions/pacing and app-owned numeric timings, avoiding the invalid durations that failed the old monolithic writer.
+See VISUAL_FILM_WORKFLOW.md for current outputs and library limits. Older plan-only descriptions below are historical.
+
 Latest requirements: title + two-line brief → primarily silent visual story; no obligatory voiceover.
 All three visible characters and all three voice profiles remain selectable independently.
 Full visual screenplay must be in description.txt; sparse subtitles and separate timed screen text.

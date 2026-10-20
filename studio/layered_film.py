@@ -56,8 +56,8 @@ def eye(cx,cy,openness,gx,gy,key):
         path(f'M{cx-24} {cy} Q{cx} {cy-hh*1.6} {cx+24} {cy}','none','#332f2e',2.4))
 
 
-def maya(t,x,y,scale=1,under=False):
-    s=state(t);h=s['hope'];sad=s['hurt'];lift=s['head_y'];breath=math.sin(t*1.5)*1.2
+def maya(t,x,y,scale=1,under=False,acting=None):
+    s=state(t) if acting is None else acting;h=s['hope'];sad=s['hurt'];lift=s['head_y'];breath=math.sin(t*1.5)*1.2
     q=[f'<g transform="translate({x},{y}) scale({scale})">']
     # Full trousers and closed shoes remain beneath the foreground table.
     for side in (-1,1):

@@ -1,52 +1,44 @@
-name: Develop animated short film
-run-name: "Film concept — ${{ inputs.title }} — ${{ inputs.quality }}"
+name: Create complete animated film
+run-name: "${{ inputs.title }} — complete film + standalone short"
 on:
   workflow_dispatch:
     inputs:
       title:
-        description: Film title (editable for every run)
+        description: Film title / idea
         required: true
         default: Am I Invisible?
         type: string
       description:
-        description: Story idea, feelings, events and ending you want
+        description: Brief story setting, feeling and events (two lines are enough)
         required: true
-        default: 'A girl feels lonely even when surrounded by people. Tell it through quiet actions and a small, believable change; mostly no dialogue.'
+        default: A girl feels lonely even when surrounded by people. Tell it through quiet actions and a small, believable change; mostly no dialogue.
+        type: string
+      minutes:
+        description: Long-film target minutes (±25% guidance, never a word-count failure)
+        required: true
+        default: '5'
+        type: string
+      short_seconds:
+        description: Standalone vertical short target seconds
+        default: '60'
         type: string
       quality:
-        description: Intended final video resolution (this stage generates the story package, not rendered video)
+        description: Actual rendered resolution for both videos
         type: choice
-        required: true
         default: 1080p
         options: [1080p, 4K]
       fps:
-        description: Animation frame rate
+        description: Actual animation frame rate
         type: choice
         default: '12'
         options: ['12', '24']
-      minutes:
-        description: Target minutes (±25% guidance; frame count follows duration)
-        type: string
-        required: true
-        default: '5'
       characters:
-        description: Characters who may appear (independent of who may speak)
+        description: Characters who may appear
         type: choice
         default: Maya + Leo + Max
-        options:
-          - Maya (female)
-          - Leo (Kit Laser)
-          - Max (Warguy)
-          - Maya + Leo
-          - Maya + Max
-          - Leo + Max
-          - Maya + Leo + Max
-      thumbnail_images:
-        description: Generate 3 reference-guided images (uses your image API credits; requires OPENAI_API_KEY)
-        type: boolean
-        default: false
+        options: [Maya (female), Leo (Kit Laser), Max (Warguy), Maya + Leo, Maya + Max, Leo + Max, Maya + Leo + Max]
       voices:
-        description: Voices allowed for optional dialogue (silent scenes are supported)
+        description: Permitted voices for occasional in-world speech (never obligatory narration)
         type: choice
         default: 3 speakers — Maya + Leo + Max
         options:
@@ -58,118 +50,164 @@ on:
           - 2 speakers — Maya + Max
           - 2 speakers — Leo + Max
           - 3 speakers — Maya + Leo + Max
+      thumbnail_images:
+        description: Use image API for detailed illustrated thumbnails (OPENAI_API_KEY and credits); otherwise 3 original film-art posters
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
-  develop:
+  produce:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 360
     env:
       FILM_TITLE: ${{ inputs.title }}
       FILM_DESCRIPTION: ${{ inputs.description }}
+      FILM_MINUTES: ${{ inputs.minutes }}
+      FILM_SHORT: ${{ inputs.short_seconds }}
       FILM_QUALITY: ${{ inputs.quality }}
       FILM_FPS: ${{ inputs.fps }}
-      FILM_MINUTES: ${{ inputs.minutes }}
       FILM_CHARACTERS: ${{ inputs.characters }}
       FILM_VOICES: ${{ inputs.voices }}
+      HF_HOME: ${{ github.workspace }}/work/hf-cache
       HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Check optional thumbnail image configuration
+      - name: Validate optional image API configuration
         if: inputs.thumbnail_images
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           if [ -z "$OPENAI_API_KEY" ]; then
-            echo 'Add the OPENAI_API_KEY repository secret to generate thumbnail images, or disable thumbnail_images for planning only.'
+            echo 'Detailed illustrated thumbnails require OPENAI_API_KEY. Disable this option for three original vector film-art thumbnails.'
             exit 1
           fi
-      - name: Install script environment
+      - name: Install CPU animation and writer environment
         run: |
-          python -m venv .venv
-          .venv/bin/pip install -r requirements-render.lock huggingface-hub==1.33.0
-          .venv/bin/pip install --no-deps -e .
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libcairo2 fonts-dejavu-core
+          python -m pip install uv==0.12.23
+          uv venv .venv --python 3.12
+          uv pip install --python .venv/bin/python -r requirements-layered.lock huggingface-hub==1.33.0
+          uv pip install --python .venv/bin/python --no-deps -e .
       - uses: actions/cache@v4
         with:
-          path: models/script-qwen3
-          key: film-script-qwen3-a06e946b-v1
-      - name: Download pinned writer only (no TTS model needed for concept development)
+          path: models
+          key: complete-film-qwen-a06e946b-turbo-749d1c1a-v1
+      - name: Check Hugging Face access before downloading models
+        run: |
+          .venv/bin/python - <<'PY'
+          import urllib.request
+          with urllib.request.urlopen('https://huggingface.co',timeout=30) as r:
+              assert r.status==200
+          print('Hugging Face reachable over the configured network.')
+          PY
+      - name: Install pinned local writer
         run: |
           .venv/bin/python - <<'PY'
           from huggingface_hub import hf_hub_download
-          from studio.writer import MODEL_ID, MODEL_REVISION
+          from studio.writer import MODEL_ID,MODEL_REVISION
           from studio.local_llm import MODEL_FILE
-          hf_hub_download(MODEL_ID, MODEL_FILE, revision=MODEL_REVISION, local_dir='models/script-qwen3')
+          hf_hub_download(MODEL_ID,MODEL_FILE,revision=MODEL_REVISION,local_dir='models/script-qwen3')
           PY
           mkdir -p work/llama-cpu
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b11729/llama-b11729-bin-ubuntu-x64.tar.gz -o work/llama.tar.gz
           echo 'ef0db60597825a63534a536bd60d3c290cf82631b2a48461278dc2c9eb436c25  work/llama.tar.gz' | sha256sum -c -
           tar -xzf work/llama.tar.gz -C work/llama-cpu
-      - name: Develop original story, screenplay and publishing package
+      - name: Key resumable directed scenes
+        id: key
         run: |
-          .venv/bin/python -m studio.film_concept --title "$FILM_TITLE" --description "$FILM_DESCRIPTION" --quality "$FILM_QUALITY" --minutes "$FILM_MINUTES" --fps "$FILM_FPS" --characters "$FILM_CHARACTERS" --voices "$FILM_VOICES" --out output/film-concept
           .venv/bin/python - <<'PY'
-          import json,os
+          import os,json,hashlib
           from pathlib import Path
-          spec=json.loads(Path('output/film-concept/production-spec.json').read_text())
-          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
-              f.write('Film development package generated. No video has been rendered by this workflow.\n\n')
-              f.write('Intended resolution: '+spec['resolution']+'\n\nDuration planning: '+json.dumps(spec['duration'])+'\n\n')
-              f.write('Download film-concept: story.txt, script.md, description.txt (includes full visual screenplay), subtitles.srt, screen-text.srt, shot-plan.json, sound-plan.json, three thumbnail briefs, keywords and short edit plan. Thumbnail images and full video are not rendered at this stage.\n')
+          keys=['FILM_TITLE','FILM_DESCRIPTION','FILM_MINUTES','FILM_SHORT','FILM_QUALITY','FILM_FPS','FILM_CHARACTERS','FILM_VOICES']
+          data=json.dumps({k:os.environ[k] for k in keys},sort_keys=True).encode()+Path('studio/film_director.py').read_bytes()
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('digest='+hashlib.sha256(data).hexdigest()+'\n')
           PY
-      - name: Generate three original thumbnail options
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            output/film/long-form/director
+            output/film/short-form/director
+          key: directed-${{ steps.key.outputs.digest }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: directed-${{ steps.key.outputs.digest }}-
+      - name: Write and direct both complete stories
+        id: plan
+        run: |
+          .venv/bin/python -u -m studio.complete_film --stage plan --out output/film --title "$FILM_TITLE" --description "$FILM_DESCRIPTION" --minutes "$FILM_MINUTES" --short-seconds "$FILM_SHORT" --quality "$FILM_QUALITY" --fps "$FILM_FPS" --characters "$FILM_CHARACTERS" --voices "$FILM_VOICES"
+      - name: Save completed scene directions even on partial writing failure
+        if: always() && steps.key.outputs.digest != ''
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            output/film/long-form/director
+            output/film/short-form/director
+          key: directed-${{ steps.key.outputs.digest }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Install Turbo only when actual speech is directed
+        if: steps.plan.outputs.speech == 'true'
+        run: |
+          uv venv .voice-venv --python 3.12
+          uv pip install --python .voice-venv/bin/python --index-strategy unsafe-best-match -r requirements-voice-cpu.lock
+          uv pip install --python .voice-venv/bin/python --no-deps -e .
+          .voice-venv/bin/python - <<'PY'
+          from huggingface_hub import snapshot_download
+          from studio.voice import MODEL_REVISIONS
+          snapshot_download('ResembleAI/chatterbox-turbo',revision=MODEL_REVISIONS['turbo'],local_dir='models/chatterbox-turbo',allow_patterns=['ve.safetensors','s3gen_meanflow.safetensors','t3_turbo_v1.safetensors','*.json','*.txt','*.yaml'])
+          PY
+      - name: Synthesize only actual dialogue using the selected public profiles
+        if: steps.plan.outputs.speech == 'true'
+        run: .voice-venv/bin/python -u -m studio.complete_film --stage voice --out output/film
+      - name: Mix directed music, foley and measured dialogue; retime subtitles
+        run: .venv/bin/python -u -m studio.complete_film --stage sound --out output/film
+      - name: Render complete landscape film and standalone portrait short
+        run: |
+          .venv/bin/python - <<'PY'
+          import subprocess
+          from concurrent.futures import ThreadPoolExecutor
+          def run(args):subprocess.run(['.venv/bin/python','-u','-m','studio.complete_film','--stage','picture']+args,check=True)
+          with ThreadPoolExecutor(max_workers=2) as pool:
+              jobs=[pool.submit(run,['--package','output/film/long-form']),pool.submit(run,['--package','output/film/short-form','--portrait'])]
+              for job in jobs:job.result()
+          PY
+      - name: Render three original film-art thumbnail images
+        run: .venv/bin/python -m studio.complete_film --stage posters --out output/film
+      - name: Optional detailed reference-guided image-model thumbnails
         if: inputs.thumbnail_images
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: .venv/bin/python -m studio.film_thumbnails --package output/film-concept
-      - name: Report actual deliverables
+        run: .venv/bin/python -m studio.film_thumbnails --package output/film/long-form
+      - name: Require complete videos, sound, subtitles and three images
         run: |
+          .venv/bin/python -m studio.complete_film --stage finalize --out output/film
           .venv/bin/python - <<'PY'
-          import json,os
+          import os,json
           from pathlib import Path
-          status=json.loads(Path('output/film-concept/delivery-status.json').read_text())
-          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
-              f.write('\nActual delivery status: '+json.dumps(status)+'\n')
+          status=json.loads(Path('output/film/deliverables/completion.json').read_text())
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:f.write('Complete animated deliverables: '+json.dumps(status)+'\n')
           PY
-      - name: Upload story and publishing deliverables
-        if: always() && hashFiles('output/film-concept/production-spec.json') != ''
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: film-concept-${{ github.run_number }}
+          name: complete-animated-film-${{ github.run_number }}
           retention-days: 14
-          path: |
-            output/film-concept/story.txt
-            output/film-concept/script.md
-            output/film-concept/description.txt
-            output/film-concept/keywords.txt
-            output/film-concept/publishing.json
-            output/film-concept/film.json
-            output/film-concept/short-edit.md
-            output/film-concept/production-spec.json
-            output/film-concept/request.json
-            output/film-concept/review.json
-            output/film-concept/publishing-description.txt
-            output/film-concept/shot-plan.json
-            output/film-concept/sound-plan.json
-            output/film-concept/story-arc.json
-            output/film-concept/subtitles.srt
-            output/film-concept/screen-text.srt
-            output/film-concept/subtitle-notes.txt
-            output/film-concept/thumbnail-briefs.json
-            output/film-concept/thumbnails/
-            output/film-concept/delivery-status.json
+          path: output/film/deliverables/
           if-no-files-found: error
-      - name: Upload writer diagnostics on failure
+      - name: Upload diagnostics and any completed work on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: film-concept-diagnostics-${{ github.run_number }}
+          name: incomplete-film-diagnostics-${{ github.run_number }}
           retention-days: 7
           path: |
-            output/film-concept/model-draft-*.json
-            output/film-concept/last-truncated-output.txt
-            output/film-concept/llama-server.log
+            output/film/**/director/
+            output/film/**/video/final.mp4
+            output/film/**/video/render-report.json
+            output/film/**/audio/mix-report.json
+            output/film/**/film.json
+            output/film/**/request.json
           if-no-files-found: ignore
