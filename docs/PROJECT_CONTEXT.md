@@ -3,6 +3,23 @@
 Updated 19 October 2026 from the current thread, repository, and the readable
 conversation section of the user-provided previous-chat paste.
 
+## Latest creative pivot — supersedes the hypothetical-stickman direction
+
+The user selected character-led emotional animated short films, citing uploaded
+Day One Films references and thumbnails. They requested three similar-grade
+original 3D character designs FIRST. See `designs/day-one-pivot/` for the actual
+concept board, original thumbnail proof and replacement production brief.
+The references use simplified 2D film animation and more detailed illustrated
+thumbnails; the concepts interpret their palette and emotion in requested 3D.
+These are generated concept images, not rigged models or a completed renderer.
+The current Actions generator remains the legacy pipeline until a replacement
+Blender animation proof is built and qualified. Silent scenes, original music
+cues, physical interactions and thumbnail development are explicit new needs.
+Retain per-run title/description, flexible durations, selectable 1–3 voices,
+Turbo for optional speech, native long/short delivery and minimal video overlays.
+Do not impose jokes or a moral by default. Do not copy the supplied plots or
+publish their original media in the repository.
+
 ## Latest TTS change
 
 The user requested replacing Nano with Turbo. Production model directory is now

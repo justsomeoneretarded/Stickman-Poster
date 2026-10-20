@@ -1,5 +1,11 @@
 # Stickman Studio — development prototype
 
+Current creative direction: original character-led animated short films with a
+muted cinematic palette, expressive acting and purpose-designed thumbnails.
+[Three-character concepts and pivot brief](designs/day-one-pivot/README.md).
+This is a visual-development milestone; the workflow below still uses the legacy
+renderer until the new animation system is built and qualified.
+
 **New:** [Generate an episode with GitHub Actions](docs/ACTIONS.md): enter a title
 and short description, choose one to three voices, and download the generated
 scripts and two voiced video artifacts: 16:9 long-form and a standalone 9:16 short. The three reusable voice profiles are public; no voice secret is required.
