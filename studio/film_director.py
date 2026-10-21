@@ -139,6 +139,27 @@ def develop(request,out,model_dir,short=False):
             if not 6<=len(value['scenes'])<=10 or len({s['id'] for s in value['scenes']})!=len(value['scenes']):raise ValueError('Use 6–10 unique sequence IDs')
             return value
         outline=_cached(writer,draft,'outline',prompt,request,outline_schema(),2600,signature,check_outline)
+        editor_prompt=(
+            'Act as a story editor, then return a complete improved outline in the supplied schema. '
+            'The title and description define THIS film: choose its genre, central question, conflict and ending from them. '
+            'Never import a previous film, loneliness, office lunches, weekdays, a helpful coworker, an inner critic, '
+            'a compulsory joke or a redemption arc unless appropriate to this request. '
+            'Do not merely restate an emotion or decorate an empty plot. Establish what the character wants, '
+            'what they try, what changes because of that attempt, and why their next choice follows. '
+            'Check the opening gives viewers a concrete reason to wonder what happens next. '
+            'Replace interchangeable mood scenes with specific events, obstacles, discoveries and reactions. '
+            'Escalation may be comic, adventurous, tense or intimate; do not force sadness into every idea. '
+            'Make the climax answer the central question through a visible action, and the aftermath pay off an earlier detail. '
+            'Preserve ambiguity or an unhappy ending if requested. No lecture or instant emotional cure. '
+            'In each scene action describe an observable event and reaction; in change describe its consequence '
+            'for the next scene. The story field must tell the complete actual story, including its ending, not a teaser. '
+            'Keep selected cast and supported settings/actions/props from the production constraints. '
+            'This is a qualitative revision, not a numeric quality score or a runtime/word-count gate. '
+            'Return concise complete JSON with 6–10 unique scene IDs, no durations.')
+        outline=_cached(writer,draft,'story-edit',editor_prompt,
+            {'request':request,'draft':outline,'production_constraints':{
+                'cast':cast,'settings':SETTINGS,'actions':ACTIONS,'props':PROPS}},
+            outline_schema(),3000,signature,check_outline)
         directed=[]
         for i,sequence in enumerate(outline['scenes']):
             prompt=('Direct this sequence into 3–5 distinct shots in a layered 2D character film. Use only the supported symbolic choices. '

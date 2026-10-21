@@ -118,12 +118,19 @@ class CompleteFilmTests(unittest.TestCase):
                 if Writer.calls==1:
                     self_test.assertEqual(json.loads(messages[1]['content'])['title'],r['title'])
                     return json.dumps(outline)
-                if Writer.calls==8:return json.dumps({'thumbnails':thumbs})
+                if Writer.calls==2:
+                    payload=json.loads(messages[1]['content'])
+                    self_test.assertEqual(payload['request']['title'],r['title'])
+                    self_test.assertEqual(payload['draft'],outline)
+                    edited=copy.deepcopy(outline);edited['story']='An edited complete story, including its ending.'
+                    return json.dumps(edited)
+                if Writer.calls==9:return json.dumps({'thumbnails':thumbs})
                 return json.dumps({'shots':[shot(),shot(),shot()]})
         self_test=self
         with tempfile.TemporaryDirectory() as d,patch('studio.film_director.LocalWriter',Writer):
             film=develop(r,d,None);develop(r,d,None)
-            self.assertEqual(Writer.calls,8)
+            self.assertEqual(Writer.calls,9)
+            self.assertEqual(film['story'],'An edited complete story, including its ending.')
             self.assertEqual(len([s for seq in film['scenes'] for s in seq['shots']]),18)
             self.assertAlmostEqual(sum(seq['seconds'] for seq in film['scenes']),300)
             self.assertTrue((Path(d)/'description.txt').exists())

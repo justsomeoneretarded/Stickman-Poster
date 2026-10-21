@@ -94,3 +94,9 @@ completed videos, and never labels an incomplete package complete. Model access,
 image API errors and actual media integrity failures remain genuine failures.
 Full-length timing varies substantially with model generation, story complexity,
 resolution and runner CPU. Earlier short-test estimates are not a full-run SLA.
+
+### Story development for every new idea
+
+The director now drafts an outline and runs a separate cached `story-edit` pass before planning shots. The editor receives the current request, draft and actual production capabilities. It revises the complete plot for a concrete desire, attempts and consequences, escalation, an action-led climax and a payoff. It must preserve the requested genre and ending rather than turn every idea into a loneliness/redemption film.
+
+`AM_I_INVISIBLE_STORY_REVISION.md` is a story-specific authored example, not a template loaded by the workflow. Weekdays, office lunches, a helpful coworker and an inner critic are not automatic ingredients. A new title/description changes the outline and editor cache keys. Editing uses the same outline schema; it introduces no word-count, runtime or subjective-score failure threshold. The editor's artistic effectiveness still needs review on real generated stories; passing technical tests does not certify storytelling quality. Available renderer actions and settings remain a separate production limitation.
