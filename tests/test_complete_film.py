@@ -41,6 +41,27 @@ class CompleteFilmTests(unittest.TestCase):
         s['actors']=[actor(action='walk')]
         with self.assertRaisesRegex(ValueError,'change position'):validate_shots({'shots':[s,s,s]},r)
 
+    def test_generated_staging_and_foley_are_repaired_without_changing_speech(self):
+        from studio.film_director import prepare_shots
+        _,r=fixture();r['voices']=['female']
+        s=shot();s['actors']=[actor(),actor('Leo',pos='left'),actor('Max',action='walk',pos='right')]
+        s['actors'][2]['to']='left'
+        s['cues']=[dict(asset='steps',speaker='Maya',text='soft footsteps',reason='Arrival',offscreen=False),
+                   dict(asset='speech',speaker='Maya',text='Hello.',reason='Greeting',offscreen=False)]
+        source={'shots':[copy.deepcopy(s) for _ in range(3)]}
+        result=prepare_shots(source,r)
+        for fixed in result['shots']:
+            self.assertEqual([a['from'] for a in fixed['actors']],['left','center','right'])
+            self.assertEqual(fixed['actors'][1]['to'],'center')
+            self.assertEqual(fixed['actors'][2]['to'],'left')
+            self.assertEqual(fixed['cues'][0]['text'],'')
+            self.assertEqual(fixed['cues'][0]['speaker'],'')
+            self.assertIn('soft footsteps',fixed['cues'][0]['reason'])
+            self.assertEqual(fixed['cues'][1]['text'],'Hello.')
+        self.assertEqual(source['shots'][0]['actors'][1]['from'],'left')
+        source['shots'][0]['cues'][1]['speaker']='Leo'
+        with self.assertRaisesRegex(ValueError,'selected voice'):prepare_shots(source,r)
+
     def test_new_art_varies_expression_and_action_not_only_camera(self):
         s=shot();s['seconds']=3;s['id']='one';s['framing']='closeup';s['motion']='hold'
         a=np.array(frame(s,.1,320)).astype(float);b=np.array(frame(s,2.5,320)).astype(float)

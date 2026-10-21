@@ -56,6 +56,33 @@ def _cached(writer,folder,name,prompt,user,schema,tokens,signature,validator):
             if attempt==2:raise
 
 
+def prepare_shots(value,request):
+    """Resolve app-owned staging and irrelevant foley fields before strict checks."""
+    value=copy.deepcopy(value)
+    for shot in value['shots']:
+        actors=shot['actors']
+        used=set();duplicates=[]
+        for actor in actors:
+            if actor['from'] in used:duplicates.append(actor)
+            else:used.add(actor['from'])
+        free=[p for p in ('left','center','right') if p not in used]
+        for actor in duplicates:
+            # Preserve the destination of travelling actors whenever possible.
+            choices=[p for p in free if actor['action'] not in ('walk','run') or p!=actor['to']]
+            if not choices:continue  # Let the strict validator diagnose impossible staging.
+            position=choices[0];free.remove(position)
+            stationary=actor['from']==actor['to']
+            actor['from']=position
+            if stationary and actor['action'] not in ('walk','run'):actor['to']=position
+        for cue in shot['cues']:
+            if cue['asset']!='speech':
+                # Foley text is annotation, never dialogue. Retain it for review.
+                if cue.get('text','').strip():
+                    cue['reason']=(cue.get('reason','')+' Sound annotation: '+cue['text']).strip()
+                cue['speaker']='';cue['text']=''
+    return validate_shots(value,request)
+
+
 def validate_shots(value,request):
     if not 3<=len(value['shots'])<=5:raise ValueError('Use 3–5 directed shots per sequence')
     visible={CAST[v] for v in request['characters']};voices={CAST[v] for v in request['voices']}
@@ -179,7 +206,7 @@ def develop(request,out,model_dir,short=False):
                     'focus must be a visible actor. Keep descriptions concise and every camera move motivated. '
                     'Choose score quiet/warm/tense/silent deliberately. No numeric durations or timestamps. Return complete JSON.')
             user={'request':request,'complete_story':outline,'current_sequence':sequence,'previous_sequence':outline['scenes'][i-1] if i else None}
-            value=_cached(writer,draft,f'sequence-{i+1:02}',prompt,user,shot_schema(request),3000,signature,lambda v:validate_shots(v,request))
+            value=_cached(writer,draft,f'sequence-{i+1:02}',prompt,user,shot_schema(request),3000,signature,lambda v:prepare_shots(v,request))
             directed.append(value)
         film=compile_film(outline,directed,request)
         string=STR;thumb=obj({k:string for k in ('hook_text','emotional_promise','composition','image_prompt','source_scene_id')})
