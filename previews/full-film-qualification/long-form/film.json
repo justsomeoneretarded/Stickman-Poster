@@ -1,0 +1,1470 @@
+{
+  "logline": "After mistaking small everyday oversights for proof that nobody notices her, a quiet caf\u00e9 regular returns for a forgotten sketchbook\u2014and finds a reason to stop hiding behind it.",
+  "story": "Every afternoon, Maya takes the same booth in a rain-streaked caf\u00e9. Across from her is an empty chair. Leo approaches with two cups out of habit, sees the empty seat, and takes one away. Maya watches the place where it almost landed.\n\nShe sketches people in her notebook: Leo wrestling with a crooked lamp, Max trying to shelter a paper bag from the rain. She tears the lamp drawing loose and slips it under her saucer. Looking down at the page feels safer than looking at them. When she raises a hand to order, Leo turns toward a crashing tray. When she starts to smile at Max, he looks down at his ringing phone. None of these moments is cruel. Together, they become the story Maya tells herself.\n\nA gust through the opening door scatters Max\u2019s receipts and loose coins. Maya helps him collect them. One receipt is soaked. She wraps his coins in a dry scrap from her sketchbook, leaving a tiny drawing of his ridiculous struggle with the wet bag on the outside. His phone rings again. He mouths a distracted thank-you and rushes out. Maya\u2019s hand stays raised a moment after he has gone.\n\nAt her booth, she draws the empty chair again. She tears the page out, almost leaves it on the table, then folds it into her pocket. Leo lifts the lamp drawing from beneath her saucer along with the wet paper scraps nearby. Through the moving tray and cups, she sees what looks like the last of her drawing disappearing into a bin. She leaves before he can catch her eye. Her scarf slips across the seat, hiding the sketchbook she has left behind.\n\nOutside, Maya reaches into her bag and finds no notebook. Through the caf\u00e9 window, the empty booth looks like a small stage after everyone has gone home. She almost walks away. Then she spots her crooked-lamp drawing, flattened and taped beside the register. Beneath it sits her notebook, safe and dry.\n\nInside, Max stands at the counter, holding the paper wrapper she gave him. He is trying to show Leo the drawing, turning it the right way up with the awkward care of someone handling something important. Leo notices Maya and holds up the notebook: \u201cI kept it dry.\u201d Max looks from her to the drawing. \u201cYou made this?\u201d Maya nods. For once, she does not immediately lower her eyes.\n\nLeo gestures to a chair beside them while he finishes cleaning the counter. There is a tiny pause in which Maya could retreat to her booth. She pulls the chair out instead. \u201cCan I sit here?\u201d Max shifts his coat out of the way. Leo puts down a cup. Neither makes a speech. Nobody asks her to become a different person.\n\nThe caf\u00e9 continues around them. Maya opens her sketchbook, then lets the pencil rest. Max is halfway through explaining the ruined paper bag with his hands. Maya looks up and listens. The final wide shot returns to the original booth: the chair across from it is still empty. Maya is simply no longer sitting there.",
+  "publishing_description": "Have you ever felt invisible in a room full of people? Maya spends her afternoons drawing strangers in a caf\u00e9, convinced nobody notices her. A forgotten sketchbook gives her a reason to return\u2014and a small chance to connect. Am I Invisible? is an original animated short about loneliness, mistaken assumptions, and the quiet courage of taking a seat. Featuring Maya, Leo and Max.",
+  "keywords": [
+    "Am I Invisible",
+    "animated short film",
+    "feeling invisible",
+    "loneliness",
+    "human connection",
+    "quiet storytelling",
+    "Maya Leo Max",
+    "cinematic animation",
+    "emotional short film",
+    "cafe story"
+  ],
+  "thumbnail_text": "",
+  "scenes": [
+    {
+      "id": "01",
+      "seconds": 23.25,
+      "location": "cafe",
+      "dramatic_change": "The empty chair becomes a concrete image of Maya\u2019s isolation.",
+      "action": "Maya sits small in the booth. Leo approaches carrying two cups, notices the empty opposite seat and returns one to the tray. Follow Maya\u2019s eyes to the bare circle where the cup almost touched. Her fingers tighten around her own cup.",
+      "camera": "wide: Read the change in gaze and hand position.\ncloseup: Read the change in gaze and hand position.\nmedium: Read the change in gaze and hand position.",
+      "dialogue": [],
+      "sound": "Contextual cues selected by the director; see sound-plan.json.",
+      "music": "Original sparse motif, directed shot by shot.",
+      "essential_text": "",
+      "actors": [
+        "Maya"
+      ],
+      "emotion_start": "sad",
+      "emotion_end": "sad",
+      "story_beat": "hook",
+      "cues": [
+        {
+          "kind": "ambience",
+          "start_seconds": 0.62,
+          "end_seconds": 2.42,
+          "detail": "rain",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ],
+      "screen_text": [],
+      "shots": [
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "sit",
+              "prop": "cup",
+              "emotion_start": "sad",
+              "emotion_end": "sad",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "wide",
+          "score": "quiet",
+          "motion": "hold",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "rain",
+              "at": "begin",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 0.62,
+              "end_seconds": 2.42
+            }
+          ],
+          "id": "shot-001",
+          "seconds": 7.75,
+          "start_in_sequence": 0
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "reach",
+              "prop": "cup",
+              "emotion_start": "hopeful",
+              "emotion_end": "sad",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "closeup",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [],
+          "id": "shot-002",
+          "seconds": 7.75,
+          "start_in_sequence": 7.75
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "look_away",
+              "prop": "cup",
+              "emotion_start": "sad",
+              "emotion_end": "sad",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "medium",
+          "score": "quiet",
+          "motion": "pull",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [],
+          "id": "shot-003",
+          "seconds": 7.75,
+          "start_in_sequence": 15.5
+        }
+      ],
+      "frames": 279
+    },
+    {
+      "id": "02",
+      "seconds": 23.25,
+      "location": "cafe",
+      "dramatic_change": "Maya wants contact but keeps choosing the safety of watching.",
+      "action": "Maya sketches Leo adjusting a crooked lamp. She raises a hand to order; a tray clatters behind him and he turns away. She lowers her hand and continues the same line on the page, pressing harder, then tears the lamp drawing loose and slips it under her saucer.",
+      "camera": "insert: Read the change in gaze and hand position.\nmedium: Read the change in gaze and hand position.\ncloseup: Read the change in gaze and hand position.",
+      "dialogue": [],
+      "sound": "Contextual cues selected by the director; see sound-plan.json.",
+      "music": "Original sparse motif, directed shot by shot.",
+      "essential_text": "",
+      "actors": [
+        "Maya",
+        "Leo"
+      ],
+      "emotion_start": "sad",
+      "emotion_end": "sad",
+      "story_beat": "escalation",
+      "cues": [
+        {
+          "kind": "foley",
+          "start_seconds": 3.4875000000000003,
+          "end_seconds": 5.2875000000000005,
+          "detail": "pencil",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 11.2375,
+          "end_seconds": 13.037500000000001,
+          "detail": "cup_set",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "[tray clatters]",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ],
+      "screen_text": [],
+      "shots": [
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "draw",
+              "prop": "sketchbook",
+              "emotion_start": "sad",
+              "emotion_end": "hopeful",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "insert",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "pencil",
+              "at": "middle",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 5.2875000000000005
+            }
+          ],
+          "id": "shot-004",
+          "seconds": 7.75,
+          "start_in_sequence": 0
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "reach",
+              "prop": "none",
+              "emotion_start": "hopeful",
+              "emotion_end": "anxious",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            },
+            {
+              "character": "Leo",
+              "action": "look_away",
+              "prop": "none",
+              "emotion_start": "neutral",
+              "emotion_end": "neutral",
+              "from": "right",
+              "to": "right",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "medium",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "cup_set",
+              "at": "middle",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "[tray clatters]",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 5.2875000000000005
+            }
+          ],
+          "id": "shot-005",
+          "seconds": 7.75,
+          "start_in_sequence": 7.75
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "slump",
+              "prop": "paper",
+              "emotion_start": "sad",
+              "emotion_end": "sad",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "closeup",
+          "score": "silent",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [],
+          "id": "shot-006",
+          "seconds": 7.75,
+          "start_in_sequence": 15.5
+        }
+      ],
+      "frames": 279
+    },
+    {
+      "id": "03",
+      "seconds": 23.25,
+      "location": "cafe",
+      "dramatic_change": "An ordinary interruption feels personal to Maya.",
+      "action": "Max struggles through the doorway with a rain-softened paper bag. Maya suppresses a smile and starts to look up at him. His phone vibrates. He looks down, missing her expression. Maya\u2019s smile drains; she turns the page to a sketch of his wet bag.",
+      "camera": "wide: Read the change in gaze and hand position.\ncloseup: Read the change in gaze and hand position.\nmedium: Read the change in gaze and hand position.",
+      "dialogue": [],
+      "sound": "Contextual cues selected by the director; see sound-plan.json.",
+      "music": "Original sparse motif, directed shot by shot.",
+      "essential_text": "",
+      "actors": [
+        "Max",
+        "Maya"
+      ],
+      "emotion_start": "tired",
+      "emotion_end": "neutral",
+      "story_beat": "escalation",
+      "cues": [
+        {
+          "kind": "foley",
+          "start_seconds": 0.62,
+          "end_seconds": 2.42,
+          "detail": "steps",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 18.9875,
+          "end_seconds": 20.7875,
+          "detail": "phone_vibration",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "[phone vibrates]",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ],
+      "screen_text": [],
+      "shots": [
+        {
+          "actors": [
+            {
+              "character": "Max",
+              "action": "walk",
+              "prop": "bag",
+              "emotion_start": "tired",
+              "emotion_end": "neutral",
+              "from": "right",
+              "to": "center",
+              "look": "left"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "wide",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Max",
+          "cues": [
+            {
+              "asset": "steps",
+              "at": "begin",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 0.62,
+              "end_seconds": 2.42
+            }
+          ],
+          "id": "shot-007",
+          "seconds": 7.75,
+          "start_in_sequence": 0
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "sit",
+              "prop": "sketchbook",
+              "emotion_start": "sad",
+              "emotion_end": "hopeful",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "closeup",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [],
+          "id": "shot-008",
+          "seconds": 7.75,
+          "start_in_sequence": 7.75
+        },
+        {
+          "actors": [
+            {
+              "character": "Max",
+              "action": "phone",
+              "prop": "phone",
+              "emotion_start": "neutral",
+              "emotion_end": "neutral",
+              "from": "right",
+              "to": "right",
+              "look": "down"
+            },
+            {
+              "character": "Maya",
+              "action": "look_away",
+              "prop": "paper",
+              "emotion_start": "hopeful",
+              "emotion_end": "sad",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "medium",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Max",
+          "cues": [
+            {
+              "asset": "phone_vibration",
+              "at": "middle",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "[phone vibrates]",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 5.2875000000000005
+            }
+          ],
+          "id": "shot-009",
+          "seconds": 7.75,
+          "start_in_sequence": 15.5
+        }
+      ],
+      "frames": 279
+    },
+    {
+      "id": "04",
+      "seconds": 23.25,
+      "location": "cafe",
+      "dramatic_change": "Maya actively helps instead of only observing.",
+      "action": "Wind scatters Max\u2019s loose coins and receipts. Maya crouches, gathers the coins into a dry paper scrap from her sketchbook, and folds it into a simple wrapper with her little wet-bag drawing showing. He accepts it, distracted by his phone, mouths thanks and hurries out. Hold her lifted hand after the door closes.",
+      "camera": "medium: Read the change in gaze and hand position.\nmedium: Read the change in gaze and hand position.\ncloseup: Read the change in gaze and hand position.",
+      "dialogue": [],
+      "sound": "Contextual cues selected by the director; see sound-plan.json.",
+      "music": "Original sparse motif, directed shot by shot.",
+      "essential_text": "",
+      "actors": [
+        "Max",
+        "Maya"
+      ],
+      "emotion_start": "anxious",
+      "emotion_end": "sad",
+      "story_beat": "pinch point",
+      "cues": [
+        {
+          "kind": "foley",
+          "start_seconds": 3.4875000000000003,
+          "end_seconds": 5.2875000000000005,
+          "detail": "coin_drop",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 11.2375,
+          "end_seconds": 13.037500000000001,
+          "detail": "paper_rustle",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 21.3125,
+          "end_seconds": 23.1125,
+          "detail": "door_bell",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ],
+      "screen_text": [],
+      "shots": [
+        {
+          "actors": [
+            {
+              "character": "Max",
+              "action": "pick_up",
+              "prop": "bag",
+              "emotion_start": "anxious",
+              "emotion_end": "anxious",
+              "from": "right",
+              "to": "right",
+              "look": "down"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "medium",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Max",
+          "cues": [
+            {
+              "asset": "coin_drop",
+              "at": "middle",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 5.2875000000000005
+            }
+          ],
+          "id": "shot-010",
+          "seconds": 7.75,
+          "start_in_sequence": 0
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "offer",
+              "prop": "paper",
+              "emotion_start": "anxious",
+              "emotion_end": "hopeful",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            },
+            {
+              "character": "Max",
+              "action": "receive",
+              "prop": "paper",
+              "emotion_start": "tired",
+              "emotion_end": "neutral",
+              "from": "right",
+              "to": "right",
+              "look": "left"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "medium",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "paper_rustle",
+              "at": "middle",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 5.2875000000000005
+            }
+          ],
+          "id": "shot-011",
+          "seconds": 7.75,
+          "start_in_sequence": 7.75
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "stand",
+              "prop": "none",
+              "emotion_start": "hopeful",
+              "emotion_end": "sad",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "closeup",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "door_bell",
+              "at": "end",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 5.8125,
+              "end_seconds": 7.6125
+            }
+          ],
+          "id": "shot-012",
+          "seconds": 7.75,
+          "start_in_sequence": 15.5
+        }
+      ],
+      "frames": 279
+    },
+    {
+      "id": "05",
+      "seconds": 23.25,
+      "location": "cafe",
+      "dramatic_change": "A mistaken interpretation pushes Maya to leave.",
+      "action": "Maya sketches the empty chair and folds the drawing into her pocket. Across the caf\u00e9 Leo lifts her lamp drawing and gathers wet napkins beside a bin, partly obscured by his tray; do not actually show him throwing away her drawing. Maya sees the motion and decides what it means. She stands, pulls her scarf free, misses the notebook beneath it and leaves.",
+      "camera": "insert: Read the change in gaze and hand position.\ninsert: Read the change in gaze and hand position.\nwide: Read the change in gaze and hand position.",
+      "dialogue": [],
+      "sound": "Contextual cues selected by the director; see sound-plan.json.",
+      "music": "Original sparse motif, directed shot by shot.",
+      "essential_text": "",
+      "actors": [
+        "Maya",
+        "Leo"
+      ],
+      "emotion_start": "sad",
+      "emotion_end": "sad",
+      "story_beat": "all is lost",
+      "cues": [
+        {
+          "kind": "foley",
+          "start_seconds": 16.12,
+          "end_seconds": 17.92,
+          "detail": "chair_scrape",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 18.9875,
+          "end_seconds": 20.7875,
+          "detail": "steps",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ],
+      "screen_text": [],
+      "shots": [
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "draw",
+              "prop": "paper",
+              "emotion_start": "sad",
+              "emotion_end": "sad",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "insert",
+          "score": "silent",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [],
+          "id": "shot-013",
+          "seconds": 7.75,
+          "start_in_sequence": 0
+        },
+        {
+          "actors": [
+            {
+              "character": "Leo",
+              "action": "pick_up",
+              "prop": "paper",
+              "emotion_start": "neutral",
+              "emotion_end": "neutral",
+              "from": "right",
+              "to": "right",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "insert",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Leo",
+          "cues": [],
+          "id": "shot-014",
+          "seconds": 7.75,
+          "start_in_sequence": 7.75
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "walk",
+              "prop": "bag",
+              "emotion_start": "sad",
+              "emotion_end": "sad",
+              "from": "center",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "wide",
+          "score": "silent",
+          "motion": "hold",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "chair_scrape",
+              "at": "begin",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 0.62,
+              "end_seconds": 2.42
+            },
+            {
+              "asset": "steps",
+              "at": "middle",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 5.2875000000000005
+            }
+          ],
+          "id": "shot-015",
+          "seconds": 7.75,
+          "start_in_sequence": 15.5
+        }
+      ],
+      "frames": 279
+    },
+    {
+      "id": "06",
+      "seconds": 23.25,
+      "location": "street",
+      "dramatic_change": "She almost gives up the one thing she came back for.",
+      "action": "Maya searches her bag for her sketchbook. She turns back, stops outside the rainy window and sees her familiar booth empty. Her shoulders drop. She begins to turn away, then notices the little drawing beside the register.",
+      "camera": "wide: Read the change in gaze and hand position.\ncloseup: Read the change in gaze and hand position.\ncloseup: Read the change in gaze and hand position.",
+      "dialogue": [],
+      "sound": "Contextual cues selected by the director; see sound-plan.json.",
+      "music": "Original sparse motif, directed shot by shot.",
+      "essential_text": "",
+      "actors": [
+        "Maya"
+      ],
+      "emotion_start": "sad",
+      "emotion_end": "hopeful",
+      "story_beat": "turning point",
+      "cues": [
+        {
+          "kind": "ambience",
+          "start_seconds": 0.62,
+          "end_seconds": 2.42,
+          "detail": "rain",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 3.4875000000000003,
+          "end_seconds": 5.2875000000000005,
+          "detail": "steps",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ],
+      "screen_text": [],
+      "shots": [
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "walk",
+              "prop": "bag",
+              "emotion_start": "sad",
+              "emotion_end": "sad",
+              "from": "right",
+              "to": "center",
+              "look": "right"
+            }
+          ],
+          "setting": "street",
+          "framing": "wide",
+          "score": "silent",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "rain",
+              "at": "begin",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 0.62,
+              "end_seconds": 2.42
+            },
+            {
+              "asset": "steps",
+              "at": "middle",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 5.2875000000000005
+            }
+          ],
+          "id": "shot-016",
+          "seconds": 7.75,
+          "start_in_sequence": 0
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "phone",
+              "prop": "phone",
+              "emotion_start": "anxious",
+              "emotion_end": "sad",
+              "from": "center",
+              "to": "center",
+              "look": "down"
+            }
+          ],
+          "setting": "street",
+          "framing": "closeup",
+          "score": "silent",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [],
+          "id": "shot-017",
+          "seconds": 7.75,
+          "start_in_sequence": 7.75
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "look_away",
+              "prop": "bag",
+              "emotion_start": "sad",
+              "emotion_end": "hopeful",
+              "from": "center",
+              "to": "center",
+              "look": "right"
+            }
+          ],
+          "setting": "street",
+          "framing": "closeup",
+          "score": "quiet",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [],
+          "id": "shot-018",
+          "seconds": 7.75,
+          "start_in_sequence": 15.5
+        }
+      ],
+      "frames": 279
+    },
+    {
+      "id": "07",
+      "seconds": 23.25,
+      "location": "cafe",
+      "dramatic_change": "What looked like indifference is revealed to be incomplete information.",
+      "action": "The lamp drawing is flattened beside the register. Max carefully turns the wrapper so Leo can see the sketch. Leo has placed Maya\u2019s notebook away from the wet counter. Maya enters. Leo lifts it. Max recognizes the artist; Maya meets his eyes and nods.",
+      "camera": "insert: Read the change in gaze and hand position.\nmedium: Read the change in gaze and hand position.\nmedium: Read the change in gaze and hand position.",
+      "dialogue": [
+        {
+          "character": "Leo",
+          "text": "I kept it dry."
+        }
+      ],
+      "sound": "Contextual cues selected by the director; see sound-plan.json.",
+      "music": "Original sparse motif, directed shot by shot.",
+      "essential_text": "",
+      "actors": [
+        "Leo",
+        "Maya"
+      ],
+      "emotion_start": "neutral",
+      "emotion_end": "hopeful",
+      "story_beat": "revelation",
+      "cues": [
+        {
+          "kind": "speech",
+          "start_seconds": 18.9875,
+          "end_seconds": 20.1475,
+          "detail": "speech",
+          "reason": "The simple explanation corrects her earlier interpretation.",
+          "caption": "",
+          "speaker": "Leo",
+          "text": "I kept it dry.",
+          "offscreen": false
+        }
+      ],
+      "screen_text": [],
+      "shots": [
+        {
+          "actors": [
+            {
+              "character": "Leo",
+              "action": "stand",
+              "prop": "sketchbook",
+              "emotion_start": "neutral",
+              "emotion_end": "hopeful",
+              "from": "center",
+              "to": "center",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "insert",
+          "score": "warm",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Leo",
+          "cues": [],
+          "id": "shot-019",
+          "seconds": 7.75,
+          "start_in_sequence": 0
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "stand",
+              "prop": "none",
+              "emotion_start": "anxious",
+              "emotion_end": "hopeful",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            },
+            {
+              "character": "Leo",
+              "action": "reach",
+              "prop": "sketchbook",
+              "emotion_start": "neutral",
+              "emotion_end": "hopeful",
+              "from": "right",
+              "to": "right",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "medium",
+          "score": "warm",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "The notebook has been kept safe.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [],
+          "id": "shot-020",
+          "seconds": 7.75,
+          "start_in_sequence": 7.75
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "receive",
+              "prop": "sketchbook",
+              "emotion_start": "anxious",
+              "emotion_end": "hopeful",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            },
+            {
+              "character": "Leo",
+              "action": "offer",
+              "prop": "sketchbook",
+              "emotion_start": "neutral",
+              "emotion_end": "happy",
+              "from": "right",
+              "to": "right",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "medium",
+          "score": "warm",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "speech",
+              "at": "middle",
+              "speaker": "Leo",
+              "text": "I kept it dry.",
+              "reason": "The simple explanation corrects her earlier interpretation.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 4.6475
+            }
+          ],
+          "id": "shot-021",
+          "seconds": 7.75,
+          "start_in_sequence": 15.5
+        }
+      ],
+      "frames": 279
+    },
+    {
+      "id": "08",
+      "seconds": 23.25,
+      "location": "cafe",
+      "dramatic_change": "Maya makes a small voluntary choice to join them.",
+      "action": "Leo gestures to an unused chair beside the counter. Maya briefly glances back toward her old booth. She sets down her bag and draws the offered chair toward her. Max moves his coat off the neighboring seat; Leo places a cup where she can reach it.",
+      "camera": "closeup: Read the change in gaze and hand position.\nmedium: Read the change in gaze and hand position.\nmedium: Read the change in gaze and hand position.",
+      "dialogue": [
+        {
+          "character": "Maya",
+          "text": "Can I sit here?"
+        }
+      ],
+      "sound": "Contextual cues selected by the director; see sound-plan.json.",
+      "music": "Original sparse motif, directed shot by shot.",
+      "essential_text": "",
+      "actors": [
+        "Maya",
+        "Max"
+      ],
+      "emotion_start": "anxious",
+      "emotion_end": "happy",
+      "story_beat": "climax",
+      "cues": [
+        {
+          "kind": "speech",
+          "start_seconds": 3.4875000000000003,
+          "end_seconds": 4.7675,
+          "detail": "speech",
+          "reason": "She risks asking for a place herself.",
+          "caption": "",
+          "speaker": "Maya",
+          "text": "Can I sit here?",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 11.2375,
+          "end_seconds": 13.037500000000001,
+          "detail": "chair_scrape",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        },
+        {
+          "kind": "foley",
+          "start_seconds": 18.9875,
+          "end_seconds": 20.7875,
+          "detail": "cup_set",
+          "reason": "The sound draws attention to the relevant action.",
+          "caption": "",
+          "speaker": "",
+          "text": "",
+          "offscreen": false
+        }
+      ],
+      "screen_text": [],
+      "shots": [
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "stand",
+              "prop": "none",
+              "emotion_start": "anxious",
+              "emotion_end": "hopeful",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "closeup",
+          "score": "warm",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "speech",
+              "at": "middle",
+              "speaker": "Maya",
+              "text": "Can I sit here?",
+              "reason": "She risks asking for a place herself.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 4.7675
+            }
+          ],
+          "id": "shot-022",
+          "seconds": 7.75,
+          "start_in_sequence": 0
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "reach",
+              "prop": "none",
+              "emotion_start": "anxious",
+              "emotion_end": "hopeful",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            },
+            {
+              "character": "Max",
+              "action": "put_down",
+              "prop": "bag",
+              "emotion_start": "neutral",
+              "emotion_end": "happy",
+              "from": "right",
+              "to": "right",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "medium",
+          "score": "warm",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "chair_scrape",
+              "at": "middle",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 5.2875000000000005
+            }
+          ],
+          "id": "shot-023",
+          "seconds": 7.75,
+          "start_in_sequence": 7.75
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "sit",
+              "prop": "cup",
+              "emotion_start": "hopeful",
+              "emotion_end": "happy",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "medium",
+          "score": "warm",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [
+            {
+              "asset": "cup_set",
+              "at": "middle",
+              "speaker": "",
+              "text": "",
+              "reason": "The sound draws attention to the relevant action.",
+              "caption": "",
+              "offscreen": false,
+              "start_seconds": 3.4875000000000003,
+              "end_seconds": 5.2875000000000005
+            }
+          ],
+          "id": "shot-024",
+          "seconds": 7.75,
+          "start_in_sequence": 15.5
+        }
+      ],
+      "frames": 279
+    },
+    {
+      "id": "09",
+      "seconds": 23.25,
+      "location": "cafe",
+      "dramatic_change": "The opening image changes meaning without pretending her life is fixed.",
+      "action": "Maya opens her notebook. Max starts describing the ruined bag with his hands; she rests her pencil and looks up to listen. Leo straightens the lamp, now lighting all three. Return to the original booth and its still-empty opposite chair. Maya is no longer there.",
+      "camera": "medium: Read the change in gaze and hand position.\ncloseup: Read the change in gaze and hand position.\nwide: Read the change in gaze and hand position.",
+      "dialogue": [],
+      "sound": "Contextual cues selected by the director; see sound-plan.json.",
+      "music": "Original sparse motif, directed shot by shot.",
+      "essential_text": "",
+      "actors": [
+        "Maya",
+        "Max",
+        "Leo"
+      ],
+      "emotion_start": "hopeful",
+      "emotion_end": "happy",
+      "story_beat": "resolution",
+      "cues": [],
+      "screen_text": [],
+      "shots": [
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "listen",
+              "prop": "sketchbook",
+              "emotion_start": "hopeful",
+              "emotion_end": "happy",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            },
+            {
+              "character": "Max",
+              "action": "stand",
+              "prop": "bag",
+              "emotion_start": "neutral",
+              "emotion_end": "happy",
+              "from": "right",
+              "to": "right",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "medium",
+          "score": "warm",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [],
+          "id": "shot-025",
+          "seconds": 7.75,
+          "start_in_sequence": 0
+        },
+        {
+          "actors": [
+            {
+              "character": "Maya",
+              "action": "sip",
+              "prop": "cup",
+              "emotion_start": "hopeful",
+              "emotion_end": "happy",
+              "from": "left",
+              "to": "left",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "closeup",
+          "score": "warm",
+          "motion": "push",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Maya",
+          "cues": [],
+          "id": "shot-026",
+          "seconds": 7.75,
+          "start_in_sequence": 7.75
+        },
+        {
+          "actors": [
+            {
+              "character": "Leo",
+              "action": "listen",
+              "prop": "cup",
+              "emotion_start": "neutral",
+              "emotion_end": "happy",
+              "from": "center",
+              "to": "center",
+              "look": "right"
+            }
+          ],
+          "setting": "cafe",
+          "framing": "wide",
+          "score": "warm",
+          "motion": "pull",
+          "pacing": "normal",
+          "description": "A small change in attention.",
+          "camera_reason": "Read the change in gaze and hand position.",
+          "screen_text": "",
+          "focus": "Leo",
+          "cues": [],
+          "id": "shot-027",
+          "seconds": 7.75,
+          "start_in_sequence": 15.5
+        }
+      ],
+      "frames": 279
+    }
+  ],
+  "short_edit": {
+    "scene_ids": [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09"
+    ],
+    "story": "Every afternoon, Maya takes the same booth in a rain-streaked caf\u00e9. Across from her is an empty chair. Leo approaches with two cups out of habit, sees the empty seat, and takes one away. Maya watches the place where it almost landed.\n\nShe sketches people in her notebook: Leo wrestling with a crooked lamp, Max trying to shelter a paper bag from the rain. She tears the lamp drawing loose and slips it under her saucer. Looking down at the page feels safer than looking at them. When she raises a hand to order, Leo turns toward a crashing tray. When she starts to smile at Max, he looks down at his ringing phone. None of these moments is cruel. Together, they become the story Maya tells herself.\n\nA gust through the opening door scatters Max\u2019s receipts and loose coins. Maya helps him collect them. One receipt is soaked. She wraps his coins in a dry scrap from her sketchbook, leaving a tiny drawing of his ridiculous struggle with the wet bag on the outside. His phone rings again. He mouths a distracted thank-you and rushes out. Maya\u2019s hand stays raised a moment after he has gone.\n\nAt her booth, she draws the empty chair again. She tears the page out, almost leaves it on the table, then folds it into her pocket. Leo lifts the lamp drawing from beneath her saucer along with the wet paper scraps nearby. Through the moving tray and cups, she sees what looks like the last of her drawing disappearing into a bin. She leaves before he can catch her eye. Her scarf slips across the seat, hiding the sketchbook she has left behind.\n\nOutside, Maya reaches into her bag and finds no notebook. Through the caf\u00e9 window, the empty booth looks like a small stage after everyone has gone home. She almost walks away. Then she spots her crooked-lamp drawing, flattened and taped beside the register. Beneath it sits her notebook, safe and dry.\n\nInside, Max stands at the counter, holding the paper wrapper she gave him. He is trying to show Leo the drawing, turning it the right way up with the awkward care of someone handling something important. Leo notices Maya and holds up the notebook: \u201cI kept it dry.\u201d Max looks from her to the drawing. \u201cYou made this?\u201d Maya nods. For once, she does not immediately lower her eyes.\n\nLeo gestures to a chair beside them while he finishes cleaning the counter. There is a tiny pause in which Maya could retreat to her booth. She pulls the chair out instead. \u201cCan I sit here?\u201d Max shifts his coat out of the way. Leo puts down a cup. Neither makes a speech. Nobody asks her to become a different person.\n\nThe caf\u00e9 continues around them. Maya opens her sketchbook, then lets the pencil rest. Max is halfway through explaining the ruined paper bag with his hands. Maya looks up and listens. The final wide shot returns to the original booth: the chair across from it is still empty. Maya is simply no longer sitting there.",
+    "ending": "Maya puts her pencil down and looks up at the people beside her; return to her old empty booth to complete the visual question."
+  },
+  "thumbnails": [
+    {
+      "hook_text": "AM I INVISIBLE?",
+      "emotional_promise": "Feeling unseen in a room full of people",
+      "source_scene_id": "01",
+      "composition": "Maya large on the left, warm-lit empty opposite seat on the right, rain and distant blurred figures behind.",
+      "image_prompt": "Original cinematic illustrated 16:9 thumbnail. Maya, chestnut wavy shoulder-length hair, charcoal scarf, taupe knit long sleeves and warm-gray trousers, sits at a rain-streaked cafe window. Her expressive brown eyes glance toward a painfully empty chair opposite. One cream cup in her hand, one untouched place across the table. Dark navy and charcoal setting, tactile fabric, warm amber rim light, creamy skin, soft sculpted 2.5D shading, strong readable silhouette. Upper headline zone with bold cream-white rounded words AM I INVISIBLE? Large face, honest longing rather than exaggerated horror. No extra labels or logos."
+    },
+    {
+      "hook_text": "NO ONE NOTICES",
+      "emotional_promise": "The fear that a small attempt to connect did not land",
+      "source_scene_id": "04",
+      "composition": "A close foreground hand holding the little folded drawing; Maya\u2019s face hopeful then uncertain while a blurred person leaves behind her.",
+      "image_prompt": "Original cinematic illustrated 16:9 thumbnail, the same approved Maya with chestnut wavy hair, taupe knit top, charcoal scarf, full gray trousers. Intimate low camera: her small folded paper drawing in a hand in the foreground, her face sharply visible above it, a distant softly blurred departing figure by a rainy cafe door. Large expressive eyes, a tiny incomplete hopeful smile, vulnerable unfinished gesture. Warm amber light catches her face and paper against deep charcoal/navy shadows. Bold cream-white upper headline NO ONE NOTICES. Strong clean visual hierarchy and mobile-readable design. Do not depict rejection as cruelty, no monster, no tears pasted onto the image, no logos."
+    },
+    {
+      "hook_text": "DO I MATTER?",
+      "emotional_promise": "The fear that something personal will be thrown away",
+      "source_scene_id": "05",
+      "composition": "Maya\u2019s worried close-up occupies one half; her crooked-lamp sketch and a distant bin occupy the other, leaving the fate of the drawing uncertain.",
+      "image_prompt": "Original cinematic illustrated 16:9 thumbnail using approved Maya: chestnut wavy shoulder-length hair, taupe knitted long sleeves, charcoal scarf, warm-gray trousers. Close three-quarter face, brows drawn with genuine uncertainty. At the other side of the composition a hand holds her little paper sketch of a crooked cafe lamp near discarded wet napkins; the image must not show the drawing actually thrown into the bin, because it is saved in the story. Rain-blue shadows and warm amber edge light on cream paper and her face, tactile stylized cinematic illustration, simple strong shapes. Bold cream-white upper headline DO I MATTER? Keep expression readable on a phone, no logos or character labels."
+    }
+  ],
+  "story_arc": {
+    "story_type": "Quiet character drama; a small reconnection rather than a cure or a moral lesson.",
+    "desire": "Maya wants to feel noticed without having to perform for attention.",
+    "hook": "A second cup almost reaches the empty place opposite her, then is taken away.",
+    "exposition": "Her private drawings notice details about people who seem not to notice her.",
+    "inciting_change": "A greeting is interrupted, and she starts interpreting ordinary distractions as rejection.",
+    "escalation": "The missed order, wet-bag encounter and unacknowledged kindness reinforce the same fear in different ways.",
+    "pinch_point": "Max leaves before her hand has fully lowered. Her little offering seems not to have mattered.",
+    "all_is_lost": "She thinks her drawing is being discarded, leaves, and discovers she has forgotten her notebook.",
+    "turning_point": "Through the wet window she sees that the drawing was saved.",
+    "climax": "She returns, accepts being seen and risks asking for a place beside someone.",
+    "falling_action": "A chair is cleared, a cup placed within reach, and she listens instead of retreating into her drawing.",
+    "resolution": "Return to the same empty booth. It remains empty because she has chosen another seat."
+  }
+}

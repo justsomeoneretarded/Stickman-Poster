@@ -27,6 +27,9 @@ its finite action library and artistic quality still need review.
 The portrait study is a separately staged version of the same scene, not that
 finished standalone short. Technical tests do not establish artistic quality.
 
+**Complete rendered example:** [3:29 landscape film, one-minute portrait adaptation, sound, subtitles and thumbnails](previews/full-film-qualification/README.md).
+This authored example qualifies the renderer; automatic title-to-film writing is being requalified after a boundary-rounding fix.
+
 **Complete film workflow:** [Create complete animated film](https://github.com/justsomeoneretarded/Stickman-Poster/actions/workflows/film-concept.yml)
 accepts a title/brief and runs writing, executable directing, actual animation,
 contextual sound, optional dry Turbo dialogue, measured subtitles, three thumbnails,

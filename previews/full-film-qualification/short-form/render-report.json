@@ -1,0 +1,137 @@
+{
+  "status": "rendered and fully decoded",
+  "renderer": "original articulated layered SVG/Cairo",
+  "width": 1080,
+  "height": 1920,
+  "fps": 12,
+  "frames": 720,
+  "seconds": 60.0,
+  "audio": true,
+  "shots": [
+    {
+      "shot": "shot-001",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-002",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-003",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-004",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-005",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-006",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-007",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-008",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "The notebook has been kept safe.",
+      "cached": false
+    },
+    {
+      "shot": "shot-009",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-010",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-011",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-012",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-013",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-014",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    },
+    {
+      "shot": "shot-015",
+      "frames": 48,
+      "seconds": 4.0,
+      "setting": "cafe",
+      "description": "A small change in attention.",
+      "cached": false
+    }
+  ],
+  "not_certified": [
+    "Human artistic impact",
+    "Reference-film equivalence",
+    "Human voice-similarity/listening approval"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "complete": true,
+  "videos": [
+    "long-form/final.mp4",
+    "short-form/final.mp4"
+  ],
+  "thumbnail_images": 3,
+  "subtitles": "separate line-timed SRT; no narrator or nameplates",
+  "renderer": "layered 2D articulated character animation; original procedural score/foley and optional cloned Turbo dialogue",
+  "thumbnail_style": "original film-art vector posters",
+  "limits": [
+    "Finite scene/action library; inspect story-to-picture fidelity and artistic quality.",
+    "Vector poster thumbnails differ from the optional premium image-model finish."
+  ]
+}

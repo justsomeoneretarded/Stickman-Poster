@@ -90,7 +90,7 @@ def rebuild_sequences(film):
                     'detail':asset,'reason':c['reason'],'caption':c['caption'] if asset!='silence' else '',
                     'speaker':c['speaker'],'text':c['text'],'offscreen':c['offscreen']})
                 if asset=='speech':sequence['dialogue'].append({'character':c['speaker'],'text':c['text']})
-            if shot['screen_text']:sequence['screen_text'].append({'start_seconds':offset+.2,'end_seconds':offset+shot['seconds']-.2,'text':shot['screen_text'],'purpose':shot['description']})
+            if shot['screen_text']:sequence['screen_text'].append({'start_seconds':offset+min(.2,shot['seconds']*.1),'end_seconds':offset+shot['seconds']-min(.2,shot['seconds']*.1),'text':shot['screen_text'],'purpose':shot['description']})
             offset+=shot['seconds']
         sequence['seconds']=offset
 

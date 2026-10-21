@@ -41,7 +41,7 @@ def shot_schema(request):
 
 
 def _cached(writer,folder,name,prompt,user,schema,tokens,signature,validator):
-    path=folder/(name+'.json');key=hashlib.sha256((signature+name+json.dumps(user,sort_keys=True)).encode()).hexdigest()
+    path=folder/(name+'.json');key=hashlib.sha256(json.dumps([MODEL_ID,MODEL_REVISION,name,prompt,user,schema],sort_keys=True).encode()).hexdigest()
     if path.exists():
         value=json.loads(path.read_text())
         if value.get('key')==key:return validator(value['result'])
@@ -103,7 +103,7 @@ def compile_film(outline,directed,request):
                              'reason':cue['reason'],'caption':cue['caption'] if kind!='silence' else '',
                              'speaker':cue['speaker'],'text':cue['text'],'offscreen':cue['offscreen']})
                 if kind=='speech':dialogue.append({'character':cue['speaker'],'text':cue['text']})
-            if shot['screen_text']:texts.append({'start_seconds':seconds+.2,'end_seconds':seconds+shot['seconds']-.2,'text':shot['screen_text'],'purpose':shot['description']})
+            if shot['screen_text']:texts.append({'start_seconds':seconds+min(.2,shot['seconds']*.1),'end_seconds':seconds+shot['seconds']-min(.2,shot['seconds']*.1),'text':shot['screen_text'],'purpose':shot['description']})
             seconds+=shot['seconds'];compiled.append(shot)
         actors=list(dict.fromkeys(a['character'] for s in compiled for a in s['actors']))
         sequences.append({'id':sequence['id'],'seconds':seconds,'location':sequence['location'],'dramatic_change':sequence['change'],

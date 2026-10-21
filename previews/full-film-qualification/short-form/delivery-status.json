@@ -1,0 +1,9 @@
+{
+  "stage": "complete_animated_video",
+  "video_rendered": true,
+  "thumbnail_images_rendered": 3,
+  "thumbnail_briefs": 3,
+  "subtitle_timing": "line-level timing from measured generated speech; rendered sound cues",
+  "missing": [],
+  "thumbnail_location": "../thumbnails"
+}

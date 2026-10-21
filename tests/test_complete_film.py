@@ -127,3 +127,15 @@ class CompleteFilmTests(unittest.TestCase):
             self.assertEqual(len([s for seq in film['scenes'] for s in seq['shots']]),18)
             self.assertAlmostEqual(sum(seq['seconds'] for seq in film['scenes']),300)
             self.assertTrue((Path(d)/'description.txt').exists())
+
+    def test_end_cues_and_text_survive_fractional_frame_scene_boundaries(self):
+        from studio.film_concept import validate_film
+        for minutes in (1,3,5,4.2,.03):
+            for sequence_count in (6,8,10):
+                _,r=fixture(minutes)
+                outline={'logline':'A story','story':'A story','ending':'An ending','publishing_description':'A film','keywords':['a','b','c','d','e'],
+                    'scenes':[dict(id=str(i),location='cafe',beat='beat',action='act',change='change') for i in range(sequence_count)]}
+                s=shot();s['screen_text']='Still here?'
+                s['cues']=[dict(asset='paper_rustle',at='end',speaker='',text='',caption='',offscreen=False,reason='She folds the note.')]
+                film=compile_film(outline,[{'shots':[copy.deepcopy(s) for j in range(3)]} for i in range(sequence_count)],r)
+                validate_film(film,r)

@@ -1,0 +1,18 @@
+{
+  "engine": "faster-whisper base.en int8",
+  "clips": [
+    {
+      "shot": "shot-021",
+      "expected": "I kept it dry.",
+      "transcribed": "I kept the dry.",
+      "word_error_rate": 0.25
+    },
+    {
+      "shot": "shot-022",
+      "expected": "Can I sit here?",
+      "transcribed": "Can I sit here?",
+      "word_error_rate": 0.0
+    }
+  ],
+  "limits": "Checks intelligible wording, not human voice similarity, naturalness or emotional delivery."
+}

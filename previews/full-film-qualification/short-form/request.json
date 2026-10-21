@@ -1,0 +1,18 @@
+{
+  "title": "Am I Invisible?",
+  "description": "A mostly silent original film about Maya feeling unseen and choosing a small connection.",
+  "minutes": 1,
+  "resolution": "1080p",
+  "voices": [
+    "female",
+    "male1",
+    "male2"
+  ],
+  "characters": [
+    "female",
+    "male1",
+    "male2"
+  ],
+  "duration_margin": 0.25,
+  "fps": 12
+}

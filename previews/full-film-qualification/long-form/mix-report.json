@@ -1,0 +1,11 @@
+{
+  "seconds": 209.25,
+  "sample_rate": 24000,
+  "peak_dbfs": -3.0,
+  "clipped_samples": 0,
+  "speech_clips": 2,
+  "music": "original synthesized sparse motif, shot-directed",
+  "foley": "procedural synthesis selected by explicit story-aware director cues",
+  "voice": "dry Chatterbox Turbo; no added echo or reverb",
+  "review": "Technical signal checks; listening review is still needed."
+}

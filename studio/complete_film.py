@@ -147,4 +147,10 @@ def main():
     elif a.stage=='finalize':finalize(root)
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    try:main()
+    except Exception as exc:
+        if os.environ.get('GITHUB_ACTIONS'):
+            message=(type(exc).__name__+': '+str(exc)).replace('%','%25').replace('\r','%0D').replace('\n','%0A')
+            print('::error title=Film production failed::'+message,flush=True)
+        raise

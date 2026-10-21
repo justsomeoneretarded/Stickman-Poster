@@ -1,0 +1,1 @@
+Line-level dialogue timing uses measured generated audio. Sound-caption times follow rendered cues. Not word-aligned. No captions are automatically burned into picture.

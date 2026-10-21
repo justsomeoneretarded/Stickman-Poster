@@ -125,9 +125,9 @@ jobs:
         run: |
           .venv/bin/python - <<'PY'
           import os,json,hashlib
-          from pathlib import Path
+          from studio.writer import MODEL_ID,MODEL_REVISION
           keys=['FILM_TITLE','FILM_DESCRIPTION','FILM_MINUTES','FILM_SHORT','FILM_QUALITY','FILM_FPS','FILM_CHARACTERS','FILM_VOICES']
-          data=json.dumps({k:os.environ[k] for k in keys},sort_keys=True).encode()+Path('studio/film_director.py').read_bytes()
+          data=json.dumps([{k:os.environ[k] for k in keys},MODEL_ID,MODEL_REVISION,'director-stage-cache-v2'],sort_keys=True).encode()
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('digest='+hashlib.sha256(data).hexdigest()+'\n')
           PY
       - uses: actions/cache/restore@v4

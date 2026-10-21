@@ -41,8 +41,9 @@ def delivery_schema(props,scene,string):
 
 def _span(cue,seconds,label):
     a,b=cue['start_seconds'],cue['end_seconds']
-    if any(isinstance(v,bool) or not isinstance(v,(int,float)) or not math.isfinite(v) for v in (a,b)) or not 0<=a<b<=seconds:
+    if any(isinstance(v,bool) or not isinstance(v,(int,float)) or not math.isfinite(v) for v in (a,b)) or not 0<=a<b<=seconds+1e-7:
         raise ValueError(f'{label} must have finite ordered times inside its scene')
+    if b>seconds:cue['end_seconds']=seconds
 
 
 def validate_delivery(film,request,cast):

@@ -1,0 +1,43 @@
+{
+  "stage": "rendered",
+  "render_status": "rendered",
+  "resolution": "1080p",
+  "long_form": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 12,
+    "planned_frames": 2511,
+    "measured_rendered_frames": 2511
+  },
+  "short_form": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 12
+  },
+  "duration": {
+    "target_seconds": 210.0,
+    "preferred_range_seconds": [
+      157.5,
+      262.5
+    ],
+    "planned_seconds": 209.25,
+    "measured_video_seconds": 209.25,
+    "in_preferred_range": true,
+    "strict": false,
+    "note": "Planning guidance only. An out-of-range duration does not reject the script or truncate a scene."
+  },
+  "source": {
+    "type": "authored qualification fixture; not automatic story evidence"
+  },
+  "limits": [
+    "This planning stage does not render film or synthesize music; optional thumbnail generation is a separate stage.",
+    "Story quality needs editorial review; technical validity is not artistic approval."
+  ],
+  "rendered_video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 12,
+    "frames": 2511,
+    "seconds": 209.25
+  }
+}
