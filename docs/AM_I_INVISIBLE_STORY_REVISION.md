@@ -1,0 +1,58 @@
+# Am I Invisible? — story revision
+
+Story draft for review, not a rendered-film delivery. Preserve the approved layered visual style, Maya's design/clothing, and thumbnail direction. Office, cafeteria groups, readable alarm UI, lying-in-bed acting and detailed laughter need renderer additions before this draft can be faithfully filmed. Do not substitute repeated café poses for these events.
+
+## Dramatic idea
+
+Maya wants company but has begun treating every missed connection as proof that nobody wants her around. A repeated lunch routine changes when a coworker asks to sit down. The climax is Maya making a small invitation herself, even after she has reason to retreat. Connection does not cure everything; it gives tomorrow a different possibility.
+
+No narrator. The audience understands her through what she notices, avoids, tries and finally risks. The recurring object is her packed lunch and the empty chair opposite it. This story spans four days; other films must choose their own structure.
+
+## Timed storyboard — approximately four minutes
+
+Each row contains two approximately five-second beats. Cuts follow attention and action; a facial reaction may deserve a longer hold. These are editing intentions, not runtime validation limits.
+
+| Time | Visible action and camera | Facial acting / change | Text and sound |
+|---|---|---|---|
+| 0:00–0:10 | Close insert: 7:00 alarm. Maya's hand presses snooze. Cut to her awake, staring at the ceiling while the room remains still. | Heavy upper lids; inner brows slightly raised; lips loosely parted. Eyes open but attention unfocused. | Small upper-left **MONDAY**. Phone **7:00 AM**. Alarm stops abruptly; room tone remains. |
+| 0:10–0:20 | Same phone framing: now 8:02. Her eyes snap toward it; she sits up and catches a falling shoe. | Brows lift, jaw tightens; fatigue changes to startled urgency. | Phone **8:02 AM**. Bedsheet, footfall, drawer; a thin repeating musical phrase begins. |
+| 0:20–0:30 | Bathroom mirror: she practices a small greeting smile. At the office entrance she opens her mouth to greet someone already turning away. | The practiced smile holds one beat too long, then lips press together; gaze drops. | Office entrance sign establishes place. Passing greetings belong to the background, not to her. |
+| 0:30–0:40 | At her desk, colleagues cross behind her with mugs. She half raises a hand, lowers it, then opens her lunch bag under the desk. | Eyes follow the group; brows pinch inward. She swallows and pretends to concentrate. | **9:12 AM**, readable wall clock insert. Keyboard rhythm joins the musical loop. |
+| 0:40–0:50 | Clock match cut to 12:30. Wide cafeteria: tables with groups; Maya approaches an empty chair at one table. A coat is placed on it for someone returning. | A hopeful brow lift collapses. She nods as if it did not matter, looking away before anyone sees. | **LUNCHTIME** once, then clock **12:30**. Group chatter stays indistinct. No villainous laughter. |
+| 0:50–1:00 | She chooses a table at the edge. Opposite chair fills the foreground; her lunch remains unopened while she watches a shared joke elsewhere. | Tight little imitation smile; wet-looking lower lids; mouth falls flat when she looks down. | Cut music for a breath; utensil and chair sounds make the space feel occupied. |
+| 1:00–1:10 | A phone vibration briefly brightens her face. Insert: an ordinary delivery update. She locks the phone and finally opens lunch. | Eyes widen, then narrow in disappointment. Shoulders sink after the screen goes dark. | Phone **Your parcel has arrived**. Vibration, lid click; sparse motif returns. |
+| 1:10–1:20 | Evening bus window: her reflection overlaps a pair chatting outside. At home she places the lunch container by the sink, still half full. | Face reflected in glass, eyes tracking the pair; at home she exhales through pursed lips. | **MONDAY • 6:18 PM** at the transition only. Bus, keys, container set down. |
+| 1:20–1:30 | Match the opening alarm on Tuesday. Her thumb hovers over snooze; she presses it. Jump to her office chair rolling into the same position. | Anticipation of another bad day: brow tension arrives before she even gets up. | **TUESDAY**; phone **7:00 AM**. Same alarm and musical phrase, slightly closer and drier. |
+| 1:30–1:40 | She starts typing “Anyone having lunch?” into the team chat. Cursor waits; she deletes it. Lunch bag goes back beneath the desk. | Lips part as she imagines asking; brows knit; she bites the inside of her lip before deleting. | Diegetic draft **Anyone having lunch?** disappears. No explanatory caption. Delete key and clock tick. |
+| 1:40–1:50 | Cafeteria repeat: she sits at yesterday's table before trying any other. A coworker approaches; Maya quietly pulls her bag off the opposite chair. | Eyes lift, hopeful but guarded. She straightens slightly, then braces for disappointment. | **12:31 PM**, wall clock. Approaching footsteps interrupt the loop. |
+| 1:50–2:00 | Coworker Leo points at the chair: “Mind if I sit?” Maya nods. He sits without demanding a conversation and opens an overfilled lunch box. | Tiny startled blink; brows release. Her mouth almost smiles, then she hides it behind a sip. | Only essential speech, subtitle **Mind if I sit?** Chair scrape; music leaves space. |
+| 2:00–2:10 | Leo's lunch-box lid will not close; a tomato rolls across the table. Maya catches it before it falls. He looks at the enormous container, then at the single tomato in her hand. | Her gaze moves from tomato to his sheepish face. One mouth corner lifts; cheeks begin to rise. | Soft roll and tap. Allow a silent shared look; no forced punchline text. |
+| 2:10–2:20 | She gives it back. He mouths thanks and smiles at his own awkwardness. Maya's suppressed smile becomes a short, unexpected laugh. | Eyes narrow naturally as cheeks lift; brows soften; shoulders release with the exhale. Hold her surprised smile afterwards. | A small genuine laugh if a selected voice is available; otherwise breath and performance. Warm answering notes enter quietly. |
+| 2:20–2:30 | They compare lunches with gestures. Leo asks “Tomorrow?” as he leaves. Maya nods, then stays looking at the now-empty chair with a different expression. | Open gaze; smile remains without being held artificially. Her body leans toward the table instead of away. | Subtitle **Tomorrow?** The chair is empty again, but no longer framed as rejection. |
+| 2:30–2:40 | Wednesday: alarm rings. She stops it, sits up and packs an extra piece of fruit. At lunch she deliberately leaves the opposite chair clear. | Still tired, but brows less compressed; a small private smile as she packs. | **WEDNESDAY**. Phone **7:00 AM**; cafeteria clock **12:30**. Familiar motif with a new answering phrase. |
+| 2:40–2:50 | Clock now 12:42. Chair still empty. Through cafeteria glass she sees Leo occupied with a work problem. She turns the extra fruit in her hand. | Smile fades; lower lids tighten; she avoids looking at the chair. A backward step emotionally, not a reset. | Clock **12:42**. Music thins. Office voices muffled through glass. |
+| 2:50–3:00 | She nearly puts the extra fruit back in her bag. Notices Leo rubbing his forehead over scattered papers. Her hand stops. | Hurt gives way to attention: brows separate, eyes settle on him rather than on herself. | No caption saying what she realizes. Paper, distant printer, quiet room tone. |
+| 3:00–3:10 | She crosses the office carrying both lunches. Stops outside his desk; he has not noticed her. Her hand tightens on the bag; she almost turns away. | Shallow breath; lips press, then release. Eyes flick once toward the exit, then return to him. | Steps cease. Brief musical silence before the choice. |
+| 3:10–3:20 | She gently taps the spare fruit beside his papers: “Lunch?” He looks up, surprised, then relieved, and clears a space. | Her eyebrows lift in a vulnerable question. His shoulders drop; her anxious mouth opens into an answering smile. | Subtitle **Lunch?** Fruit taps desk. Warm motif returns without a triumphant swell. |
+| 3:20–3:30 | They eat at the desk. Leo makes the same exaggerated attempt to close his lunch box. Maya catches the escaping tomato before he does; this time they both laugh. | Anticipation in her eyes before the catch; spontaneous grin, cheek lift, natural head movement. | A callback earned by their shared experience. Short laugh, lid click; light rhythmic accompaniment. |
+| 3:30–3:40 | Thursday morning: alarm, hand approaches snooze, pauses. She sits up. Match to her walking into the cafeteria and moving her bag off a third chair. | Fatigue remains; she is not transformed into permanent cheerfulness. Open eye contact replaces averted gaze. | **THURSDAY**. Same **7:00 AM** insert, different choice. Brighter room tone, unchanged character palette. |
+| 3:40–3:50 | Another quiet coworker hesitates with a tray nearby. Maya notices, meets their eyes and gently pushes the empty chair out. | Small encouraging smile, lifted inner brows; no huge theatrical grin. Newcomer's tense mouth relaxes. | Chair scrape echoes Tuesday's sound, now caused by Maya. No new speech required. |
+| 3:50–4:00 | Wide: three people at the table, other groups still living their own lives. Close on Maya listening, then laughing softly. End on her open lunch and the occupied chair. | Relaxed jaw, responsive eyes, easy breathing. End on belonging in this moment, not a claim that depression is cured. | No closing moral or slogan. Let the musical question receive a gentle answer; cafeteria ambience outlasts the final note. |
+
+## Screen-text rules for this film
+
+- Day cards establish a changed day; show briefly in consistent placement and safe areas in both aspect ratios.
+- Phone and wall-clock times belong on the objects. Camera composition must make them readable; do not scatter duplicate time captions over every shot.
+- The unsent lunch invitation is a story action. Show its creation and deletion, not a paragraph explaining loneliness.
+- Spoken subtitles contain only actual speech; meaningful sound captions are a separate accessibility decision. No character-name labels.
+- Text never replaces the emotional reaction or explains what the audience has just seen.
+
+## Optional inner-critic version
+
+A small original red creature could appear after Monday's snooze and say “They won't notice.” Maya's eyes turn toward it, then away. It returns as she deletes Tuesday's message and begins to interrupt before Wednesday's invitation; she acts despite it. Do not copy the reference's shadow-character design or word counter. Do not make the creature the source of all her feelings, validate its claim as fact, or have a new friend magically destroy it. The base draft above works without this device; it is not a default for other stories.
+
+## Music and editorial direction
+
+Use an original restrained, evolving cue: an unresolved two-part phrase Monday, its repetitive unanswered half Tuesday, a tentative answering line during the lunch exchange, subtraction during Wednesday's wait, and a modest resolution after Maya's own invitation. Keep mundane sound present; avoid a relentless sad pad or sudden motivational anthem. Audition the score against picture and actual speech before judging quality.
+
+Editorial checks: can viewers infer Maya's desire without narration? Does each repeat change our understanding? Is Wednesday's choice motivated by what she sees? Does the ending pay off the empty chair and lunch motif? Does each approximately five-second passage contain new action, information, attention or emotion, without becoming frantic? Technical tests cannot answer these artistic questions alone.
