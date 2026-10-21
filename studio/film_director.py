@@ -2,6 +2,7 @@
 import copy
 import hashlib
 import json
+from itertools import permutations
 from pathlib import Path
 from .film_concept import CAST,write_package
 from .local_llm import LocalWriter
@@ -13,6 +14,12 @@ EMOTIONS=['neutral','sad','hopeful','anxious','happy','bored','angry','tired']
 PROPS=['none','cup','phone','sketchbook','paper','bag']
 ASSETS=['room','rain','wind','steps','phone_vibration','door_bell','cup_set','chair_scrape','car_horn','coin_drop','paper_rustle','pencil','speech','silence']
 PACING={'brief':1,'normal':1.35,'linger':1.75}
+# Shared capability contract: grammar, compiler and validator use the same rules.
+MOVING={'walk','run'}
+ACTION_PROPS={a:tuple(PROPS) for a in ACTIONS}
+ACTION_PROPS.update(sip=('cup',),phone=('phone',),draw=('paper','sketchbook'),
+                    pick_up=tuple(PROPS[1:]),put_down=tuple(PROPS[1:]),
+                    offer=tuple(PROPS[1:]),receive=tuple(PROPS[1:]))
 
 
 def obj(properties):return {'type':'object','properties':properties,'required':list(properties),'additionalProperties':False}
@@ -27,11 +34,17 @@ def outline_schema():
 
 def shot_schema(request):
     actors=[CAST[v] for v in request['characters']];voices=[CAST[v] for v in request['voices']]
-    actor=obj({'character':enum(actors),'action':enum(ACTIONS),'emotion_start':enum(EMOTIONS),'emotion_end':enum(EMOTIONS),
-               'prop':enum(PROPS),'posture':enum(['standing','seated']),'from':enum(['left','center','right']),'to':enum(['left','center','right']),
-               'look':enum(['left','right','down','forward'])})
-    cue=obj({'asset':enum([a for a in ASSETS if a!='speech' or voices]),'at':enum(['begin','middle','end']),
-             'speaker':enum(['']+voices),'text':STR,'caption':STR,'offscreen':{'type':'boolean'},'reason':STR})
+    actor_fields={'character':enum(actors),'emotion_start':enum(EMOTIONS),'emotion_end':enum(EMOTIONS),
+                  'posture':enum(['standing','seated']),'from':enum(['left','center','right']),
+                  'to':enum(['left','center','right']),'look':enum(['left','right','down','forward'])}
+    # A model can only select props compatible with its selected action.
+    actor={'anyOf':[obj({**actor_fields,'action':enum([action]),'prop':enum(list(ACTION_PROPS[action]))})
+                    for action in ACTIONS]}
+    cue_fields={'at':enum(['begin','middle','end']),'caption':STR,'offscreen':{'type':'boolean'},'reason':STR}
+    variants=[obj({**cue_fields,'asset':enum([a for a in ASSETS if a!='speech']),
+                   'speaker':enum(['']),'text':enum([''])})]
+    if voices:variants.append(obj({**cue_fields,'asset':enum(['speech']),'speaker':enum(voices),'text':STR}))
+    cue={'anyOf':variants}
     shot=obj({'setting':enum(SETTINGS),'actors':{'type':'array','minItems':1,'maxItems':len(actors),'items':actor},
               'framing':enum(['wide','medium','closeup','insert']),'focus':enum(actors),
               'motion':enum(['hold','push','pull','pan']),'pacing':enum(list(PACING)),
@@ -44,12 +57,16 @@ def _cached(writer,folder,name,prompt,user,schema,tokens,signature,validator):
     path=folder/(name+'.json');key=hashlib.sha256(json.dumps([MODEL_ID,MODEL_REVISION,name,prompt,user,schema],sort_keys=True).encode()).hexdigest()
     if path.exists():
         value=json.loads(path.read_text())
-        if value.get('key')==key:return validator(value['result'])
+        if value.get('key')==key:
+            try:return validator(value['result'])
+            except (ValueError,KeyError,TypeError) as exc:
+                print(f'{name}: cached direction needs repair: {exc}',flush=True)
     feedback=''
     for attempt in range(3):
         print(f'{name}: generation {attempt+1}/3',flush=True)
         try:
             value=json.loads(writer.complete([{'role':'system','content':prompt},{'role':'user','content':json.dumps(user)+feedback}],schema,tokens))
+            (folder/f'{name}-attempt-{attempt+1}.json').write_text(json.dumps(value,indent=2)+'\n')
             value=validator(value);path.write_text(json.dumps({'key':key,'result':value},indent=2)+'\n');return value
         except (ValueError,KeyError,TypeError) as exc:
             print(f'{name}: repair {exc}',flush=True);feedback='\nReturn complete concise JSON. Repair: '+str(exc)
@@ -61,19 +78,35 @@ def prepare_shots(value,request):
     value=copy.deepcopy(value)
     for shot in value['shots']:
         actors=shot['actors']
-        used=set();duplicates=[]
-        for actor in actors:
-            if actor['from'] in used:duplicates.append(actor)
-            else:used.add(actor['from'])
-        free=[p for p in ('left','center','right') if p not in used]
-        for actor in duplicates:
-            # Preserve the destination of travelling actors whenever possible.
-            choices=[p for p in free if actor['action'] not in ('walk','run') or p!=actor['to']]
-            if not choices:continue  # Let the strict validator diagnose impossible staging.
-            position=choices[0];free.remove(position)
-            stationary=actor['from']==actor['to']
+        # Solve the whole cast placement jointly, rather than greedily fixing one clash.
+        slots=('left','center','right')
+        if len(actors)>len(slots):raise ValueError('More actors than supported stage slots')
+        placement=min(permutations(slots,len(actors)),
+            key=lambda ps:sum(p!=a['from'] for p,a in zip(ps,actors)))
+        repairs=[]
+        for actor,position in zip(actors,placement):
+            original=copy.deepcopy(actor)
+            action=actor['action']
+            if action not in ACTION_PROPS:raise ValueError('Unsupported actor action: '+action)
             actor['from']=position
-            if stationary and actor['action'] not in ('walk','run'):actor['to']=position
+            if action in MOVING:
+                if actor['to']==position:
+                    choices=[p for p in slots if p!=position]
+                    actor['to']=choices[-1] if actor.get('look')!='left' else choices[0]
+                actor['posture']='standing'
+            else:
+                actor['to']=position
+            allowed=ACTION_PROPS[action]
+            if actor['prop'] not in allowed:
+                # The action is intent; provision its prerequisite rather than dropping it.
+                actor['prop']=allowed[0]
+            if actor!=original:repairs.append({'character':actor['character'],'before':original,'after':copy.deepcopy(actor)})
+        if repairs:shot.setdefault('production_repairs',[]).extend(repairs)
+        pair=[a for a in actors if a['action'] in ('offer','receive')]
+        if len(pair)==2 and {a['action'] for a in pair}=={'offer','receive'}:
+            giver=next(a for a in pair if a['action']=='offer')
+            receiver=next(a for a in pair if a['action']=='receive')
+            receiver['prop']=giver['prop']
         for cue in shot['cues']:
             if cue['asset']!='speech':
                 # Foley text is annotation, never dialogue. Retain it for review.
@@ -95,9 +128,8 @@ def validate_shots(value,request):
         for actor in shot['actors']:
             if actor['action'] not in ACTIONS or actor['prop'] not in PROPS:raise ValueError('Unsupported actor action/prop')
             if actor['action'] in ('walk','run') and actor['from']==actor['to']:raise ValueError('Walking/running must actually change position')
-            if actor['action']=='sip' and actor['prop']!='cup':raise ValueError('Sipping needs a cup')
-            if actor['action']=='phone' and actor['prop']!='phone':raise ValueError('Phone acting needs a phone')
-            if actor['action']=='draw' and actor['prop'] not in ('paper','sketchbook'):raise ValueError('Drawing needs paper or a sketchbook')
+            if actor['prop'] not in ACTION_PROPS[actor['action']]:
+                raise ValueError(actor['action']+' needs a compatible prop: '+', '.join(ACTION_PROPS[actor['action']]))
         if any(a['action'] in ('offer','receive') for a in shot['actors']):
             roles={a['action'] for a in shot['actors']}
             pair=[a for a in shot['actors'] if a['action'] in ('offer','receive')]

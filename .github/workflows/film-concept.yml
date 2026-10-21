@@ -96,6 +96,8 @@ jobs:
           uv venv .venv --python 3.12
           uv pip install --python .venv/bin/python -r requirements-layered.lock huggingface-hub==1.33.0
           uv pip install --python .venv/bin/python --no-deps -e .
+      - name: Check renderer contract before model generation
+        run: .venv/bin/python -m unittest discover -s tests -p test_complete_film.py -q
       - uses: actions/cache@v4
         with:
           path: models

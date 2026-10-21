@@ -31,7 +31,8 @@ class CompleteFilmTests(unittest.TestCase):
     def test_model_never_supplies_duration_and_no_speech_is_grammar_enforced(self):
         _,r=fixture();schema=shot_schema(r);props=schema['properties']['shots']['items']['properties']
         self.assertNotIn('seconds',props)
-        self.assertNotIn('speech',props['cues']['items']['properties']['asset']['enum'])
+        self.assertNotIn('speech',props['cues']['items']['anyOf'][0]['properties']['asset']['enum'])
+        self.assertEqual(len(props['cues']['items']['anyOf']),1)
         f,r=fixture(5)
         self.assertAlmostEqual(sum(s['seconds'] for seq in f['scenes'] for s in seq['shots']),300)
 
@@ -61,6 +62,40 @@ class CompleteFilmTests(unittest.TestCase):
         self.assertEqual(source['shots'][0]['actors'][1]['from'],'left')
         source['shots'][0]['cues'][1]['speaker']='Leo'
         with self.assertRaisesRegex(ValueError,'selected voice'):prepare_shots(source,r)
+
+    def test_capability_contract_covers_all_actions_props_and_staging(self):
+        from itertools import product
+        from studio.film_director import ACTIONS,PROPS,ACTION_PROPS,MOVING,prepare_shots
+        _,r=fixture()
+        slots=('left','center','right')
+        for action,prop,start,end in product(ACTIONS,PROPS,slots,slots):
+            with self.subTest(action=action,prop=prop,start=start,end=end):
+                s=shot();a=actor(action=action,prop=prop,pos=start);a['to']=end;s['actors']=[a]
+                if action in ('offer','receive'):
+                    partner=actor('Leo',action='receive' if action=='offer' else 'offer',prop=prop,pos=start)
+                    s['actors'].append(partner)
+                result=prepare_shots({'shots':[copy.deepcopy(s) for _ in range(3)]},r)
+                fixed=result['shots'][0]['actors'][0]
+                self.assertEqual(fixed['action'],action)
+                self.assertIn(fixed['prop'],ACTION_PROPS[action])
+                self.assertEqual(fixed['from']!=fixed['to'],action in MOVING)
+                self.assertEqual(prepare_shots(result,r),result)
+        for positions in product(slots,repeat=3):
+            s=shot();s['actors']=[actor(n,action='walk',pos=p) for n,p in zip(('Maya','Leo','Max'),positions)]
+            result=prepare_shots({'shots':[copy.deepcopy(s) for _ in range(3)]},r)
+            self.assertEqual(len({a['from'] for a in result['shots'][0]['actors']}),3)
+
+    def test_grammar_encodes_action_dependencies_and_speech_variants(self):
+        from studio.film_director import ACTION_PROPS
+        _,r=fixture();r['voices']=['female']
+        schema=shot_schema(r)['properties']['shots']['items']['properties']
+        variants=schema['actors']['items']['anyOf']
+        for variant in variants:
+            fields=variant['properties'];action=fields['action']['enum'][0]
+            self.assertEqual(fields['prop']['enum'],list(ACTION_PROPS[action]))
+        sound,speech=schema['cues']['items']['anyOf']
+        self.assertEqual(sound['properties']['text']['enum'],[''])
+        self.assertEqual(speech['properties']['speaker']['enum'],['Maya'])
 
     def test_new_art_varies_expression_and_action_not_only_camera(self):
         s=shot();s['seconds']=3;s['id']='one';s['framing']='closeup';s['motion']='hold'
